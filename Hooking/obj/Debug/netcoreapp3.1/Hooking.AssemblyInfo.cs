@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-Hooking-77613633-AAF7-4145-A5D5-40EAC65701C5")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hooking")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
