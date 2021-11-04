@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Hooking.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Hooking.Areas.Identity.Pages.Account
 {
@@ -21,19 +24,28 @@ namespace Hooking.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _emailSender = emailSender;
+
+            using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
+            {
+                string json = reader.ReadToEnd();
+                _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
+            }
         }
 
         [BindProperty]
@@ -88,8 +100,20 @@ namespace Hooking.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Potvrdite Vašu e-mail adresu",
+                        $"Poštovani,<br><br>molimo Vas da potvrdite Vašu registraciju na Hooking klikom na <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
+                    
+                    var userCount = _userManager.Users.Count();
+                    if (userCount == 1)
+                    {
+                        if (_roleManager.Roles.ToList().Count == 0)
+                        {
+                            IdentityRole role = new IdentityRole();
+                            role.Name = "Admin";
+                            await _roleManager.CreateAsync(role);
+                            await _userManager.AddToRoleAsync(user, "Admin");
+                        }
+                    }
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -100,7 +124,9 @@ namespace Hooking.Areas.Identity.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
+
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
