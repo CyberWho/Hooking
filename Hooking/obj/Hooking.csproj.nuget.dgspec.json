@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Pedja\\Source\\Repos\\Hooking\\Hooking\\Hooking.csproj": {}
+    "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pedja\\Source\\Repos\\Hooking\\Hooking\\Hooking.csproj": {
+    "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pedja\\Source\\Repos\\Hooking\\Hooking\\Hooking.csproj",
+        "projectUniqueName": "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj",
         "projectName": "Hooking",
-        "projectPath": "C:\\Users\\Pedja\\Source\\Repos\\Hooking\\Hooking\\Hooking.csproj",
-        "packagesPath": "C:\\Users\\Pedja\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pedja\\Source\\Repos\\Hooking\\Hooking\\obj\\",
+        "projectPath": "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj",
+        "packagesPath": "C:\\Users\\despo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Pedja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\despo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
