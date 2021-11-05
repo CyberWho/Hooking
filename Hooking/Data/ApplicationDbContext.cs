@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hooking.Models;
 
 namespace Hooking.Data
 {
@@ -12,5 +13,9 @@ namespace Hooking.Data
             : base(options)
         {
         }
+        public DbSet<Hooking.Models.UserDetails> UserDetails { get; set; }
+        public DbSet<Hooking.Models.BoatOwner> BoatOwner { get; set; }
+        public DbSet<Hooking.Models.CottageOwner> CottageOwner { get; set; }
+        public DbSet<Hooking.Models.Instructor> Instructor { get; set; }
     }
 }
