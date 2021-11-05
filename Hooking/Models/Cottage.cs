@@ -18,14 +18,5 @@ namespace Hooking.Models
         public int GradeCount { get; set; }
         public string CancelationPolicyId { get; set; }
 
-        // FreeParking, FreeWifi, Heating, OnlineCheckIn
-
-        // CottageRoom (N) <------> (N) Cottage
-
-        // 1, 3
-        // 1, 2
-        // 1 TV, Bedroom, AirCondition, 2, 1
-        // 2 TV, Bedroom, 2 kreveta
-        // 3 TV, Bedroom, AirCondition, 2, 3
     }
 }
