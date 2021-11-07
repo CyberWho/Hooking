@@ -54,7 +54,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CottageId,PetFriendly,NonSmoking,CheckinTime,CheckoutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
+        public async Task<IActionResult> Create([Bind("PetFriendly,NonSmoking,CheckinTime,CheckoutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CottageId,PetFriendly,NonSmoking,CheckinTime,CheckoutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PetFriendly,NonSmoking,CheckinTime,CheckoutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
         {
             if (id != houseRules.Id)
             {

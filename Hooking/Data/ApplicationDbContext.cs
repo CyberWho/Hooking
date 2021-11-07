@@ -24,5 +24,7 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.CottagesRooms> CottagesRooms { get; set; }
         public DbSet<Hooking.Models.Facilities> Facilities { get; set; }
         public DbSet<Hooking.Models.HouseRules> HouseRules { get; set; }
+        public DbSet<Hooking.Models.CottagesFacilities> CottagesFacilities { get; set; }
+        public DbSet<Hooking.Models.CottagesHouseRules> CottagesHouseRules { get; set; }
     }
 }

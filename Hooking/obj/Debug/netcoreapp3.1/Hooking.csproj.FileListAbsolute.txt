@@ -465,3 +465,13 @@ C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\
 C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Details.cshtml.g.cs
 C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Edit.cshtml.g.cs
 C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Index.cshtml.g.cs

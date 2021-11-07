@@ -54,7 +54,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CottageId,Parking,Wifi,Heating,BarbecueFacilities,OnlineCheckin,Jacuzzi,SeaView,MountainView,Kitchen,WashingMachine,AirportShuttle,IndoorPool,OutdoorPool,StockedBar,Garden,Id,RowVersion")] Facilities facilities)
+        public async Task<IActionResult> Create([Bind("Parking,Wifi,Heating,BarbecueFacilities,OnlineCheckin,Jacuzzi,SeaView,MountainView,Kitchen,WashingMachine,AirportShuttle,IndoorPool,OutdoorPool,StockedBar,Garden,Id,RowVersion")] Facilities facilities)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CottageId,Parking,Wifi,Heating,BarbecueFacilities,OnlineCheckin,Jacuzzi,SeaView,MountainView,Kitchen,WashingMachine,AirportShuttle,IndoorPool,OutdoorPool,StockedBar,Garden,Id,RowVersion")] Facilities facilities)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Parking,Wifi,Heating,BarbecueFacilities,OnlineCheckin,Jacuzzi,SeaView,MountainView,Kitchen,WashingMachine,AirportShuttle,IndoorPool,OutdoorPool,StockedBar,Garden,Id,RowVersion")] Facilities facilities)
         {
             if (id != facilities.Id)
             {

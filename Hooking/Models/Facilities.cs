@@ -7,7 +7,6 @@ namespace Hooking.Models
 {
     public class Facilities : BaseModel
     {
-        public string CottageId { get; set; }
         public bool Parking { get; set; }
         public bool Wifi { get; set; }
         public bool Heating { get; set; }

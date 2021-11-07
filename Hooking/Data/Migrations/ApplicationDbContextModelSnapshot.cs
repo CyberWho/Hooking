@@ -270,6 +270,50 @@ namespace Hooking.Data.Migrations
                     b.ToTable("CottageSpecialOffer");
                 });
 
+            modelBuilder.Entity("Hooking.Models.CottagesFacilities", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FacilitiesId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottagesFacilities");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottagesHouseRules", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HouseRulesId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottagesHouseRules");
+                });
+
             modelBuilder.Entity("Hooking.Models.CottagesRooms", b =>
                 {
                     b.Property<Guid>("Id")
@@ -303,9 +347,6 @@ namespace Hooking.Data.Migrations
 
                     b.Property<bool>("BarbecueFacilities")
                         .HasColumnType("bit");
-
-                    b.Property<string>("CottageId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Garden")
                         .HasColumnType("bit");
@@ -370,9 +411,6 @@ namespace Hooking.Data.Migrations
 
                     b.Property<DateTime>("CheckoutTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("CottageId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("NonSmoking")
                         .HasColumnType("bit");

@@ -7,7 +7,6 @@ namespace Hooking.Models
 {
     public class HouseRules : BaseModel
     {
-        public string CottageId { get; set; }
         public bool PetFriendly { get; set; }
         public bool NonSmoking { get; set; }
         public DateTime CheckinTime { get; set; }
