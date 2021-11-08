@@ -27,18 +27,20 @@ namespace Hooking.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Polje 'E-mail adresa' je obavezno")]
+            [EmailAddress(ErrorMessage = "E-mail adresa nije u validnom formatu")]
+            [Display(Name = "E-mail adresa")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Polje 'Lozinka' je obavezno")]
+            [StringLength(100, ErrorMessage = "{0} mora biti dugačka bar {2} i najviše {1} karaktera.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [Display(Name = "Lozinka")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Potvrdite lozinku")]
+            [Compare("Password", ErrorMessage = "Unete lozinke se ne poklapaju.")] 
             public string ConfirmPassword { get; set; }
 
             public string Code { get; set; }

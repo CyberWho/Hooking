@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\Pedja\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Pedja\\.nuget\\packages"
+      "C:\\Users\\despo\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\despo\\.nuget\\packages"
     ]
   }
 }
