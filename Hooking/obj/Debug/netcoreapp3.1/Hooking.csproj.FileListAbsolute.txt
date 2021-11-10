@@ -407,22 +407,988 @@ C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.cspr
 C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Create.cshtml.g.cs
 C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Index.cshtml.g.cs
-C:\Users\despo\Source\Repos\Hooking\Hooking\bin\Debug\netcoreapp3.1\Data\emailCredentials.json
-C:\Users\despo\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Create.cshtml.g.cs
-C:\Users\despo\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Index.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Users\View.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwners\Create.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwners\Delete.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwners\Details.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwners\Edit.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwners\Index.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwners\Create.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwners\Delete.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwners\Details.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwners\Edit.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwners\Index.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Instructors\Create.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Instructors\Delete.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Instructors\Details.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Instructors\Edit.cshtml.g.cs
-C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Instructors\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\bin\Debug\netcoreapp3.1\Data\emailCredentials.json
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Index.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Create.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Delete.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Details.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Edit.cshtml.g.cs
+C:\Users\despo\source\repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Index.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Create.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Delete.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Details.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Edit.cshtml.g.cs
+C:\Users\Pedja\Source\Repos\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.csprojAssemblyReference.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.AssemblyInfoInputs.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.AssemblyInfo.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorAssemblyInfo.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorAssemblyInfo.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.TagHelpers.input.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.TagHelpers.output.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorCoreGenerate.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\AccessDenied.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ConfirmEmail.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ConfirmEmailChange.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ExternalLogin.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ForgotPassword.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Lockout.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\LoginWith2fa.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\LoginWithRecoveryCode.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Logout.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ChangePassword.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\DeletePersonalData.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Disable2fa.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\DownloadPersonalData.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Email.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\EnableAuthenticator.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ExternalLogins.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\GenerateRecoveryCodes.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\PersonalData.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ResetAuthenticator.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\SetPassword.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\TwoFactorAuthentication.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_Layout.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_ManageNav.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_ViewImports.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ResetPassword.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_StatusMessage.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Error.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorTargetAssemblyInfo.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorTargetAssemblyInfo.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.pdb
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Data\emailCredentials.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.local.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.StaticWebAssets.xml
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.exe
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.deps.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.runtimeconfig.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.runtimeconfig.dev.json
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.pdb
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.Views.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Hooking.Views.pdb
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V3.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V4.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\dotnet-aspnet-codegenerator-design.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\NuGet.Frameworks.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Composition.AttributedModel.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Composition.Convention.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Composition.Hosting.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Composition.Runtime.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Composition.TypedParts.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.Views.pdb
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.csproj.CopyComplete
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\staticwebassets\Hooking.StaticWebAssets.Manifest.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\staticwebassets\Hooking.StaticWebAssets.xml
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.genruntimeconfig.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Hooking.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Data.Sqlite.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.batteries_v2.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.nativelibrary.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.core.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.provider.dynamic_cdecl.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\alpine-x64\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Index.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Create.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Delete.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Details.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Edit.cshtml.g.cs
+C:\Users\Lenovo T450\Desktop\⁮ISA PROJEKAT\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\appsettings.Development.json
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Data\emailCredentials.json
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.StaticWebAssets.xml
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.exe
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.deps.json
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.runtimeconfig.json
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.runtimeconfig.dev.json
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.pdb
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.Views.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Hooking.Views.pdb
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V3.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.Views.V4.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Data.Sqlite.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\dotnet-aspnet-codegenerator-design.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\NuGet.Frameworks.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.batteries_v2.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.nativelibrary.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.core.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\SQLitePCLRaw.provider.dynamic_cdecl.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Collections.Immutable.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Composition.AttributedModel.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Composition.Convention.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Composition.Hosting.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Composition.Runtime.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Composition.TypedParts.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Diagnostics.DiagnosticSource.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\System.Text.Json.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\alpine-x64\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.csproj.AssemblyReference.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.AssemblyInfoInputs.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.AssemblyInfo.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorAssemblyInfo.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorAssemblyInfo.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\staticwebassets\Hooking.StaticWebAssets.Manifest.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\staticwebassets\Hooking.StaticWebAssets.xml
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\scopedcss\bundle\Hooking.styles.css
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.TagHelpers.input.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.TagHelpers.output.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorCoreGenerate.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\AccessDenied.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ConfirmEmail.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ConfirmEmailChange.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ExternalLogin.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ForgotPassword.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Lockout.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\LoginWith2fa.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\LoginWithRecoveryCode.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Logout.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ChangePassword.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\DeletePersonalData.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Disable2fa.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\DownloadPersonalData.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Email.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\EnableAuthenticator.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ExternalLogins.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\GenerateRecoveryCodes.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\PersonalData.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ResetAuthenticator.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\SetPassword.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\TwoFactorAuthentication.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_Layout.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_ManageNav.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_ViewImports.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Register.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ResetPassword.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_StatusMessage.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_ViewImports.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Error.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFavorites\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingEquipments\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureFishingTechniques\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRealisations\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservationReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReservations\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureRules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventuresAdventureRules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\AdventureSpecialOffers\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Adventures\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Amenities\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatAmenities\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFavorites\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatFishingEquipments\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatOwnerReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservationReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReservations\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatRules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatsBoatRules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\BoatSpecialOffers\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Boats\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CancelationPolicies\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageOwnerReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservationReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReservations\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageRooms\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesFacilities\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesHouseRules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottageSpecialOffers\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\CottagesRooms\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Cottages\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Facilities\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingEquipments\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\FishingTechniques\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\HouseRules\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\InstructorReviews\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\InstructorReviews\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\InstructorReviews\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\InstructorReviews\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\InstructorReviews\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Role\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Create.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Delete.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Details.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Edit.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\UserDeleteRequests\Index.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorTargetAssemblyInfo.cache
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.RazorTargetAssemblyInfo.cs
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.Views.pdb
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.csproj.CopyComplete
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.dll
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.pdb
+C:\Users\DELL\Desktop\ConflictMerge\Hooking\Hooking\obj\Debug\netcoreapp3.1\Hooking.genruntimeconfig.cache

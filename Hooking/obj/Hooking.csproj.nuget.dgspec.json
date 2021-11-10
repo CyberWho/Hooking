@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj": {}
+    "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj": {}
   },
   "projects": {
-    "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj": {
+    "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj",
+        "projectUniqueName": "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj",
         "projectName": "Hooking",
-        "projectPath": "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\Hooking.csproj",
-        "packagesPath": "C:\\Users\\despo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\despo\\source\\repos\\Hooking\\Hooking\\obj\\",
+        "projectPath": "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj",
+        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\despo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -53,6 +53,10 @@
               "version": "[3.1.20, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[3.1.20, )"
             },
