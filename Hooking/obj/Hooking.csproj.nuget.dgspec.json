@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj": {}
+    "C:\\Users\\Lenovo T450\\Desktop\\⁮ISA PROJEKAT\\Hooking\\Hooking.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj": {
+    "C:\\Users\\Lenovo T450\\Desktop\\⁮ISA PROJEKAT\\Hooking\\Hooking.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo T450\\Desktop\\⁮ISA PROJEKAT\\Hooking\\Hooking.csproj",
         "projectName": "Hooking",
-        "projectPath": "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\Hooking.csproj",
-        "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DELL\\Desktop\\ConflictMerge\\Hooking\\Hooking\\obj\\",
+        "projectPath": "C:\\Users\\Lenovo T450\\Desktop\\⁮ISA PROJEKAT\\Hooking\\Hooking.csproj",
+        "packagesPath": "C:\\Users\\Lenovo T450\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lenovo T450\\Desktop\\⁮ISA PROJEKAT\\Hooking\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\DELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lenovo T450\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +26,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -38,7 +37,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
@@ -89,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.414\\RuntimeIdentifierGraph.json"
         }
       }
     }

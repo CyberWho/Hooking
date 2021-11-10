@@ -19,47 +19,16 @@ namespace Hooking.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Hooking.Models.BoatOwner", b =>
+            modelBuilder.Entity("Hooking.Models.CancelationPolicy", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("AverageGrade")
-                        .HasColumnType("float");
-
-                    b.Property<int>("GradeCount")
+                    b.Property<int>("FreeUntil")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsCaptain")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFirstOfficer")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("UserDetailsId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BoatOwner");
-                });
-
-            modelBuilder.Entity("Hooking.Models.CottageOwner", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("AverageGrade")
-                        .HasColumnType("float");
-
-                    b.Property<int>("GradeCount")
+                    b.Property<int>("PenaltyPercentage")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -67,43 +36,12 @@ namespace Hooking.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<string>("UserDetailsId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("CottageOwner");
+                    b.ToTable("CancelationPolicy");
                 });
 
-            modelBuilder.Entity("Hooking.Models.Instructor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double>("AverageGrade")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Biography")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GradeCount")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("UserDetailsId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Instructor");
-                });
-
-            modelBuilder.Entity("Hooking.Models.UserDetails", b =>
+            modelBuilder.Entity("Hooking.Models.Cottage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,22 +50,31 @@ namespace Hooking.Data.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
+
+                    b.Property<double>("AverageGrade")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CancelationPolicyId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IdentityUserId")
+                    b.Property<int>("GradeCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PenaltyCount")
+                    b.Property<int>("RoomCount")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -137,7 +84,348 @@ namespace Hooking.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserDetails");
+                    b.ToTable("Cottage");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageOwnerReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageOwnerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Review")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("UserDetailsId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageOwnerReview");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageReservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PersonCount")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserDetailsId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageReservation");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageReservationReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("DidntShow")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReservationId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Review")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageReservationReview");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageReview", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Review")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("UserDetailsId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageReview");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageRoom", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AirCondition")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Balcony")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BedCount")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<bool>("TV")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageRoom");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageSpecialOffer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MaxPersonCount")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserDetailsId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageSpecialOffer");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottagesFacilities", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FacilitiesId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottagesFacilities");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottagesHouseRules", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HouseRulesId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottagesHouseRules");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottagesRooms", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CottageRoomId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottagesRooms");
+                });
+
+            modelBuilder.Entity("Hooking.Models.Facilities", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AirportShuttle")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("BarbecueFacilities")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Garden")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Heating")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IndoorPool")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Jacuzzi")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Kitchen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MountainView")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OnlineCheckin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OutdoorPool")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Parking")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<bool>("SeaView")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StockedBar")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("WashingMachine")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Wifi")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Facilities");
+                });
+
+            modelBuilder.Entity("Hooking.Models.HouseRules", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AgeRestriction")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CheckinTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CheckoutTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("NonSmoking")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PetFriendly")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HouseRules");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
