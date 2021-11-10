@@ -26,5 +26,32 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.HouseRules> HouseRules { get; set; }
         public DbSet<Hooking.Models.CottagesFacilities> CottagesFacilities { get; set; }
         public DbSet<Hooking.Models.CottagesHouseRules> CottagesHouseRules { get; set; }
+        public DbSet<Hooking.Models.Adventure> Adventure { get; set; }
+        public DbSet<Hooking.Models.AdventureFavorites> AdventureFavorites { get; set; }
+        public DbSet<Hooking.Models.AdventureFishingEquipment> AdventureFishingEquipment { get; set; }
+        public DbSet<Hooking.Models.AdventureFishingTechniques> AdventureFishingTechniques { get; set; }
+        public DbSet<Hooking.Models.AdventureRealisation> AdventureRealisation { get; set; }
+        public DbSet<Hooking.Models.AdventureReservation> AdventureReservation { get; set; }
+        public DbSet<Hooking.Models.AdventureReservationReview> AdventureReservationReview { get; set; }
+        public DbSet<Hooking.Models.AdventureReview> AdventureReview { get; set; }
+        public DbSet<Hooking.Models.AdventureRules> AdventureRules { get; set; }
+        public DbSet<Hooking.Models.AdventuresAdventureRules> AdventuresAdventureRules { get; set; }
+        public DbSet<Hooking.Models.AdventureSpecialOffer> AdventureSpecialOffer { get; set; }
+        public DbSet<Hooking.Models.Amenities> Amenities { get; set; }
+        public DbSet<Hooking.Models.Boat> Boat { get; set; }
+        public DbSet<Hooking.Models.BoatAmenities> BoatAmenities { get; set; }
+        public DbSet<Hooking.Models.BoatFavorites> BoatFavorites { get; set; }
+        public DbSet<Hooking.Models.BoatFishingEquipment> BoatFishingEquipment { get; set; }
+        public DbSet<Hooking.Models.BoatOwnerReview> BoatOwnerReview { get; set; }
+        public DbSet<Hooking.Models.BoatReservation> BoatReservation { get; set; }
+        public DbSet<Hooking.Models.BoatReservationReview> BoatReservationReview { get; set; }
+        public DbSet<Hooking.Models.BoatReview> BoatReview { get; set; }
+        public DbSet<Hooking.Models.BoatRules> BoatRules { get; set; }
+        public DbSet<Hooking.Models.BoatsBoatRules> BoatsBoatRules { get; set; }
+        public DbSet<Hooking.Models.BoatSpecialOffer> BoatSpecialOffer { get; set; }
+        public DbSet<Hooking.Models.FishingEquipment> FishingEquipment { get; set; }
+        public DbSet<Hooking.Models.FishingTechniques> FishingTechniques { get; set; }
+        public DbSet<Hooking.Models.UserDeleteRequest> UserDeleteRequest { get; set; }
+        public DbSet<Hooking.Models.InstructorReview> InstructorReview { get; set; }
     }
 }

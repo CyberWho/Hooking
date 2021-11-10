@@ -13,5 +13,6 @@ namespace Hooking.Models
         public DateTime EndDate { get; set; }
         public double Price { get; set; }
         public int MaxPersonCount { get; set; }
+        public string Description { get; set; } // max 300 char
     }
 }

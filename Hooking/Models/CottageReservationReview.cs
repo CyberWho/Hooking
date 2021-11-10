@@ -10,5 +10,6 @@ namespace Hooking.Models
         public string ReservationId { get; set; }
         public string Review { get; set; } // limited to 300 characters
         public bool DidntShow { get; set; }
+        public bool ReceivedPenalty { get; set; }
     }
 }

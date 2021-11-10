@@ -17,6 +17,8 @@ namespace Hooking.Models
         public double AverageGrade { get; set; }
         public int GradeCount { get; set; }
         public string CancelationPolicyId { get; set; }
+        public double RegularPrice { get; set; }
+        public double WeekendPrice { get; set; }
 
     }
 }

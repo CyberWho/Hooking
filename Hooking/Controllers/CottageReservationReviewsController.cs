@@ -54,7 +54,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,Review,DidntShow,Id,RowVersion")] CottageReservationReview cottageReservationReview)
+        public async Task<IActionResult> Create([Bind("ReservationId,Review,DidntShow,ReceivedPenalty,Id,RowVersion")] CottageReservationReview cottageReservationReview)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ReservationId,Review,DidntShow,Id,RowVersion")] CottageReservationReview cottageReservationReview)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ReservationId,Review,DidntShow,ReceivedPenalty,Id,RowVersion")] CottageReservationReview cottageReservationReview)
         {
             if (id != cottageReservationReview.Id)
             {
