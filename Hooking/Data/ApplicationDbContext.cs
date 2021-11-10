@@ -13,6 +13,9 @@ namespace Hooking.Data
             : base(options)
         {
         }
+        public DbSet<Hooking.Models.BoatOwner> BoatOwner { get; set; }
+        public DbSet<Hooking.Models.UserDetails> UserDetails { get; set; }
+        public DbSet<Hooking.Models.Instructor> Instructor { get; set; }
         public DbSet<Hooking.Models.CancelationPolicy> CancelationPolicy { get; set; }
         public DbSet<Hooking.Models.Cottage> Cottage { get; set; }
         public DbSet<Hooking.Models.CottageOwnerReview> CottageOwnerReview { get; set; }
@@ -53,5 +56,6 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.FishingTechniques> FishingTechniques { get; set; }
         public DbSet<Hooking.Models.UserDeleteRequest> UserDeleteRequest { get; set; }
         public DbSet<Hooking.Models.InstructorReview> InstructorReview { get; set; }
+        public DbSet<Hooking.Models.CottageOwner> CottageOwner { get; set; }
     }
 }
