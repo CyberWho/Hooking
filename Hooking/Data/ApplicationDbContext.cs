@@ -57,5 +57,6 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.UserDeleteRequest> UserDeleteRequest { get; set; }
         public DbSet<Hooking.Models.InstructorReview> InstructorReview { get; set; }
         public DbSet<Hooking.Models.CottageOwner> CottageOwner { get; set; }
+        public DbSet<Hooking.Models.PrivilegedUserRequest> PrivilegedUserRequest { get; set; }
     }
 }
