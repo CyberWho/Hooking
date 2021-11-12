@@ -85,6 +85,10 @@ namespace Hooking.Areas.Identity.Pages.Account
             [Display(Name = "Prezime")]
             public string LastName { get; set; }
 
+            [Required(ErrorMessage = "Polje 'Grad i država' je obavezno")]
+            [Display(Name = "Grad i država")]
+            public string Location { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -103,6 +107,8 @@ namespace Hooking.Areas.Identity.Pages.Account
                 var userDetails = new UserDetails();
                 userDetails.FirstName = Input.Name;
                 userDetails.LastName = Input.LastName;
+                userDetails.City = Input.Location.Split(",")[0];
+                userDetails.Country = Input.Location.Split(",")[1];
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -125,12 +131,15 @@ namespace Hooking.Areas.Identity.Pages.Account
                             $"Poštovani,<br><br>molimo Vas da potvrdite Vašu registraciju na Hooking klikom na <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
 
                         var userCount = _userManager.Users.Count();
+                        Console.WriteLine("Trenutni broj korisnika: " + userCount.ToString());
                         if (userCount == 1)
                         {
                             if (_roleManager.Roles.ToList().Count == 0)
                             {
-                                IdentityRole role = new IdentityRole();
-                                role.Name = "Admin";
+                                IdentityRole role = new IdentityRole
+                                {
+                                    Name = "Admin"
+                                };
                                 await _roleManager.CreateAsync(role);
                                 await _userManager.AddToRoleAsync(user, "Admin");
                             }
