@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Hooking.Data;
+using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,15 +15,19 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
+        [Display(Name = "Korisničko ime")]
         public string Username { get; set; }
 
         [TempData]
@@ -33,21 +39,30 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Broj telefona")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "Ime")]
+            public string FirstName { get; set; }
+            [Display(Name = "Prezime")]
+            public string LastName { get; set; }
+            [Display(Name = "Adresa")]
+            public string Address { get; set; }
+            [Display(Name = "Grad")]
+            public string City { get; set; }
+            [Display(Name = "Država")]
+            public string Country { get; set; }
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var userDetails = _context.UserDetails.Where(x => x.IdentityUserId == user.Id).FirstOrDefault();
 
+            Input = CreateInputFromUserDetails(userDetails);
+            Input.PhoneNumber = phoneNumber;
             Username = userName;
 
-            Input = new InputModel
-            {
-                PhoneNumber = phoneNumber
-            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -55,7 +70,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Nije moguće učitati korisnika čiji je ID '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -67,7 +82,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Nije moguće učitati korisnika čiji je ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -82,14 +97,69 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Neočekivana greška prilikom promene broja telefona.";
                     return RedirectToPage();
                 }
             }
+            var userDetails = _context.UserDetails.FirstOrDefault(x => x.IdentityUserId == user.Id);
+            bool UserDetailsChanged = CheckForChanges(userDetails);
+
+            if (UserDetailsChanged)
+            {
+                _context.SaveChanges();
+            }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Uspešno ažuriranje profila";
             return RedirectToPage();
+        }
+
+        public bool CheckForChanges(UserDetails userDetails)
+        {
+            bool UserDetailsChanged = false;
+            if (Input.FirstName != userDetails.FirstName)
+            {
+                userDetails.FirstName = Input.FirstName;
+                UserDetailsChanged = true;
+            }
+
+            if (Input.LastName!= userDetails.LastName)
+            {
+                userDetails.LastName= Input.LastName;
+                UserDetailsChanged = true;
+            }
+
+            if (Input.Address != userDetails.Address)
+            {
+                userDetails.Address = Input.Address;
+                UserDetailsChanged = true;
+            }
+
+            if (Input.City != userDetails.City)
+            {
+                userDetails.City = Input.City;
+                UserDetailsChanged = true;
+            }
+
+            if (Input.Country != userDetails.Country)
+            {
+                userDetails.Country = Input.Country;
+                UserDetailsChanged = true;
+            }
+
+            return UserDetailsChanged;
+        }
+
+        public InputModel CreateInputFromUserDetails(UserDetails userDetails)
+        {
+            return new InputModel
+            {
+                FirstName = userDetails.FirstName,
+                LastName = userDetails.LastName,
+                Address = userDetails.Address,
+                City = userDetails.City,
+                Country = userDetails.Country
+            };
         }
     }
 }

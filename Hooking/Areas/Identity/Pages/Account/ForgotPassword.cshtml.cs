@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.IO;
+using Hooking.Models;
+using Newtonsoft.Json;
 
 namespace Hooking.Areas.Identity.Pages.Account
 {
@@ -23,6 +26,12 @@ namespace Hooking.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
             _emailSender = emailSender;
+
+            using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
+            {
+                string json = reader.ReadToEnd();
+                _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
+            }
         }
 
         [BindProperty]
@@ -30,24 +39,28 @@ namespace Hooking.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Polje 'E-mail adresa' je obavezno")]
+            [EmailAddress(ErrorMessage = "E-mail adresa nije u validnom formatu")]
+            [Display(Name ="E-mail adresa")]
             public string Email { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Console.WriteLine("Usao gde treba 1");
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
+                    Console.WriteLine("Usao gde ne treba");
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                Console.WriteLine("Usao gde treba 2");
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -55,11 +68,12 @@ namespace Hooking.Areas.Identity.Pages.Account
                     pageHandler: null,
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
-
+                Console.WriteLine("Mejl: " + Input.Email);
+                Console.WriteLine("Ovo je link: " + callbackUrl);
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Resetovanje lozinke",
+                    $"Molimo Vas resetujte lozinku klikom na <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
