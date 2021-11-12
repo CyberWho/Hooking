@@ -23,11 +23,22 @@ namespace Hooking.Controllers
             return View();
         }
 
+        public IActionResult Cottages()
+        {
+            return Redirect("/Cottages");
+        }
+        public IActionResult Boats()
+        {
+            return Redirect("/Boats");
+        }
+        public IActionResult Adventures()
+        {
+            return Redirect("/Adventures");
+        }
         public IActionResult Privacy()
         {
             return View();
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
