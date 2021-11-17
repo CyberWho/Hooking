@@ -22,6 +22,7 @@ namespace Hooking.Models
         public double AverageGrade { get; set; }
         public double RegularPrice { get; set; }
         public double WeekendPrice { get; set; }
+        public string BoatOwnerId { get; set; }
 
     }
 }

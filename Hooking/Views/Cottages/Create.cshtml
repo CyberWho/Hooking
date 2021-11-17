@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Dodavanje nove vikendice u ponudu</h1>
 
-<h4>Cottage</h4>
+<h4>Nova vikendica</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -72,15 +72,20 @@
                 <input asp-for="WeekendPrice" class="form-control" />
                 <span asp-validation-for="WeekendPrice" class="text-danger"></span>
             </div>
+            <div class="form-group" hidden>
+                <label asp-for="CottageOwnerId" class="control-label"></label>
+                <input asp-for="CottageOwnerId" class="form-control" />
+                <span asp-validation-for="CottageOwnerId" class="text-danger"></span>
+            </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Potvrda" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Povratak na pregled vikendica</a>
 </div>
 
 @section Scripts {

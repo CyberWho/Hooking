@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Izmena podataka o vikendici</h1>
 
-<h4>Cottage</h4>
+<h4>Vikendica</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,21 +18,6 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
@@ -41,26 +26,6 @@
                 <label asp-for="RoomCount" class="control-label"></label>
                 <input asp-for="RoomCount" class="form-control" />
                 <span asp-validation-for="RoomCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Area" class="control-label"></label>
-                <input asp-for="Area" class="form-control" />
-                <span asp-validation-for="Area" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AverageGrade" class="control-label"></label>
-                <input asp-for="AverageGrade" class="form-control" />
-                <span asp-validation-for="AverageGrade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GradeCount" class="control-label"></label>
-                <input asp-for="GradeCount" class="form-control" />
-                <span asp-validation-for="GradeCount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CancelationPolicyId" class="control-label"></label>
-                <input asp-for="CancelationPolicyId" class="form-control" />
-                <span asp-validation-for="CancelationPolicyId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RegularPrice" class="control-label"></label>
@@ -81,7 +46,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Povratak na pregled svih vikendica</a>
 </div>
 
 @section Scripts {
