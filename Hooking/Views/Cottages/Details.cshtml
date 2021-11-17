@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Prikaz vikendice</h1>
 
 <div>
-    <h4>Cottage</h4>
+    <h4>Vikendica</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -64,10 +64,10 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.GradeCount)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2" hidden>
             @Html.DisplayNameFor(model => model.CancelationPolicyId)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" hidden>
             @Html.DisplayFor(model => model.CancelationPolicyId)
         </dd>
         <dt class="col-sm-2">
@@ -83,14 +83,20 @@
             @Html.DisplayFor(model => model.WeekendPrice)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RowVersion)
+            @Html.DisplayNameFor(model => model.CottageOwnerId)
         </dt>
         <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CottageOwnerId)
+        </dd>
+        <dt class="col-sm-2" hidden>
+            @Html.DisplayNameFor(model => model.RowVersion)
+        </dt>
+        <dd class="col-sm-10" hidden>
             @Html.DisplayFor(model => model.RowVersion)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o vikendici</a>
+    <a asp-action="Index">Povratak na pregled vikendica</a>
 </div>

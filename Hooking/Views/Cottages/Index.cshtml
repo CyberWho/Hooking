@@ -4,11 +4,8 @@
     ViewData["Title"] = "Vikendice";
 }
 
-<h1>Index</h1>
+<h1>Vikendice</h1>
 
-<p>
-    <a asp-action="Create">Dodaj novu vikendicu</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -24,7 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Country)
             </th>
-            <th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
@@ -39,16 +36,19 @@
             <th>
                 @Html.DisplayNameFor(model => model.GradeCount)
             </th>
-            <th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.CancelationPolicyId)
             </th>
-            <th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.RegularPrice)
             </th>
-            <th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.WeekendPrice)
             </th>
-            <th>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.CottageOwnerId)
+            </th>
+            <th hidden>
                 @Html.DisplayNameFor(model => model.RowVersion)
             </th>
             <th></th>
@@ -69,7 +69,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Country)
             </td>
-            <td>
+            <td hidden>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -84,16 +84,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.GradeCount)
             </td>
-            <td>
+            <th hidden>
                 @Html.DisplayFor(modelItem => item.CancelationPolicyId)
-            </td>
-            <td>
+            </th>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.RegularPrice)
+            </th>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.WeekendPrice)
+            </th>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.CottageOwnerId)
+            </th>
+            <td hidden>
                 @Html.DisplayFor(modelItem => item.RowVersion)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Izmeni informacije o vikendici</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Ukloni</a>
             </td>
         </tr>
 }
