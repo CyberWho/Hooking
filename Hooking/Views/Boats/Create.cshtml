@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Dodavanje novog broda u ponudu</h1>
 
-<h4>Boat</h4>
+<h4>Brod</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -62,7 +62,7 @@
                 <input asp-for="Country" class="form-control" />
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="CancelationPolicyId" class="control-label"></label>
                 <input asp-for="CancelationPolicyId" class="form-control" />
                 <span asp-validation-for="CancelationPolicyId" class="text-danger"></span>
@@ -71,11 +71,6 @@
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AverageGrade" class="control-label"></label>
-                <input asp-for="AverageGrade" class="form-control" />
-                <span asp-validation-for="AverageGrade" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RegularPrice" class="control-label"></label>
@@ -88,14 +83,14 @@
                 <span asp-validation-for="WeekendPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Potvrdi" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Povratak na pregled brodova</a>
 </div>
 
 @section Scripts {
