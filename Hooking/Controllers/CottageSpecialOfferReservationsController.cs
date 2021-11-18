@@ -10,22 +10,22 @@ using Hooking.Models;
 
 namespace Hooking.Controllers
 {
-    public class BoatSpecialOffersController : Controller
+    public class CottageSpecialOfferReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BoatSpecialOffersController(ApplicationDbContext context)
+        public CottageSpecialOfferReservationsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: BoatSpecialOffers
+        // GET: CottageSpecialOfferReservations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BoatSpecialOffer.ToListAsync());
+            return View(await _context.CottageSpecialOfferReservation.ToListAsync());
         }
 
-        // GET: BoatSpecialOffers/Details/5
+        // GET: CottageSpecialOfferReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,40 +33,40 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var boatSpecialOffer = await _context.BoatSpecialOffer
+            var cottageSpecialOfferReservation = await _context.CottageSpecialOfferReservation
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (boatSpecialOffer == null)
+            if (cottageSpecialOfferReservation == null)
             {
                 return NotFound();
             }
 
-            return View(boatSpecialOffer);
+            return View(cottageSpecialOfferReservation);
         }
 
-        // GET: BoatSpecialOffers/Create
+        // GET: CottageSpecialOfferReservations/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: BoatSpecialOffers/Create
+        // POST: CottageSpecialOfferReservations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Create([Bind("CottageSpecialOfferId,UserDetailsId,Id,RowVersion")] CottageSpecialOfferReservation cottageSpecialOfferReservation)
         {
             if (ModelState.IsValid)
             {
-                boatSpecialOffer.Id = Guid.NewGuid();
-                _context.Add(boatSpecialOffer);
+                cottageSpecialOfferReservation.Id = Guid.NewGuid();
+                _context.Add(cottageSpecialOfferReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(boatSpecialOffer);
+            return View(cottageSpecialOfferReservation);
         }
 
-        // GET: BoatSpecialOffers/Edit/5
+        // GET: CottageSpecialOfferReservations/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -74,22 +74,22 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var boatSpecialOffer = await _context.BoatSpecialOffer.FindAsync(id);
-            if (boatSpecialOffer == null)
+            var cottageSpecialOfferReservation = await _context.CottageSpecialOfferReservation.FindAsync(id);
+            if (cottageSpecialOfferReservation == null)
             {
                 return NotFound();
             }
-            return View(boatSpecialOffer);
+            return View(cottageSpecialOfferReservation);
         }
 
-        // POST: BoatSpecialOffers/Edit/5
+        // POST: CottageSpecialOfferReservations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CottageSpecialOfferId,UserDetailsId,Id,RowVersion")] CottageSpecialOfferReservation cottageSpecialOfferReservation)
         {
-            if (id != boatSpecialOffer.Id)
+            if (id != cottageSpecialOfferReservation.Id)
             {
                 return NotFound();
             }
@@ -98,12 +98,12 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(boatSpecialOffer);
+                    _context.Update(cottageSpecialOfferReservation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BoatSpecialOfferExists(boatSpecialOffer.Id))
+                    if (!CottageSpecialOfferReservationExists(cottageSpecialOfferReservation.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +114,10 @@ namespace Hooking.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(boatSpecialOffer);
+            return View(cottageSpecialOfferReservation);
         }
 
-        // GET: BoatSpecialOffers/Delete/5
+        // GET: CottageSpecialOfferReservations/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,30 +125,30 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var boatSpecialOffer = await _context.BoatSpecialOffer
+            var cottageSpecialOfferReservation = await _context.CottageSpecialOfferReservation
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (boatSpecialOffer == null)
+            if (cottageSpecialOfferReservation == null)
             {
                 return NotFound();
             }
 
-            return View(boatSpecialOffer);
+            return View(cottageSpecialOfferReservation);
         }
 
-        // POST: BoatSpecialOffers/Delete/5
+        // POST: CottageSpecialOfferReservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var boatSpecialOffer = await _context.BoatSpecialOffer.FindAsync(id);
-            _context.BoatSpecialOffer.Remove(boatSpecialOffer);
+            var cottageSpecialOfferReservation = await _context.CottageSpecialOfferReservation.FindAsync(id);
+            _context.CottageSpecialOfferReservation.Remove(cottageSpecialOfferReservation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BoatSpecialOfferExists(Guid id)
+        private bool CottageSpecialOfferReservationExists(Guid id)
         {
-            return _context.BoatSpecialOffer.Any(e => e.Id == id);
+            return _context.CottageSpecialOfferReservation.Any(e => e.Id == id);
         }
     }
 }

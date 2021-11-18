@@ -58,5 +58,7 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.InstructorReview> InstructorReview { get; set; }
         public DbSet<Hooking.Models.CottageOwner> CottageOwner { get; set; }
         public DbSet<Hooking.Models.PrivilegedUserRequest> PrivilegedUserRequest { get; set; }
+        public DbSet<Hooking.Models.CottageSpecialOfferReservation> CottageSpecialOfferReservation { get; set; }
+        public DbSet<Hooking.Models.BoatSpecialOfferReservation> BoatSpecialOfferReservation { get; set; }
     }
 }
