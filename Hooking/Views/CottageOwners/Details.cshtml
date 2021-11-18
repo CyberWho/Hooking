@@ -9,6 +9,7 @@
 <div>
     <h4>Vlasnik vikendice</h4>
     <hr />
+    <a asp-action="ShowMyCottages" asp-controller="Cottages">Prikaži moje vikendice</a>
     <dl class="row">
         <dt class = "col-sm-2" hidden>
             @Html.DisplayNameFor(model => model.UserDetailsId)
@@ -39,3 +40,4 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije</a> |
 </div>
+

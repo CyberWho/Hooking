@@ -7,22 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class CottagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CottagesController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+
         }
 
         // GET: Cottages
         public async Task<IActionResult> Index()
         {
             return View(await _context.Cottage.ToListAsync());
+        }
+
+        //GET : CottageOwner/Details/5/ShowMyCottages
+        public async Task<IActionResult> ShowMyCottages()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var cottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
+            return View(cottages);
         }
 
         // GET: Cottages/Details/5
