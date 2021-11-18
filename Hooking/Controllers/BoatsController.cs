@@ -48,6 +48,10 @@ namespace Hooking.Controllers
         {
             return View();
         }
+        public IActionResult BoatSpecialOffers()
+        {
+            return Redirect("/BoatSpecialOffers");
+        }
 
         // POST: Boats/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
