@@ -25,7 +25,7 @@ namespace Hooking.Controllers
         }
 
         // GET: Boats
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString = "")
         {
             return View(await _context.Boat.ToListAsync());
         }
