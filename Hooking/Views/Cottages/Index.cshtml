@@ -7,7 +7,28 @@
 <h1>Vikendice</h1>
 
 <a asp-controller="CottageSpecialOffers" asp-action="Index">Specijalne ponude</a> 
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <form asp-controller="Cottages" asp-action="Index" class="form-inline">
+            <p>
+                Pretraži po: <input type="text" name="searchString" />
 
+                <select name="filter" id="filter" style="background-color: transparent;">
+                    <option value="Name" class="option">Nazivu</option>
+                    <option value="City" class="option">Gradu</option>
+                    <option value="Country" class="option">Državi</option>
+                    <option value="RoomCount" class="option">Broju soba</option>
+                    <option value="AverageGrade" class="option">Prosečnoj oceni</option>
+                </select>
+               
+            </p>
+        </form>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
