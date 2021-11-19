@@ -60,5 +60,6 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.PrivilegedUserRequest> PrivilegedUserRequest { get; set; }
         public DbSet<Hooking.Models.CottageSpecialOfferReservation> CottageSpecialOfferReservation { get; set; }
         public DbSet<Hooking.Models.BoatSpecialOfferReservation> BoatSpecialOfferReservation { get; set; }
+        public DbSet<Hooking.Models.BaseModel> BaseModel { get; set; }
     }
 }
