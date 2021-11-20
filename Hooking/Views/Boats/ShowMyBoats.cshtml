@@ -1,36 +1,18 @@
 ﻿@model IEnumerable<Hooking.Models.Boat>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "View";
 }
 
-<h1>Brodovi</h1>
-<a asp-controller="BoatSpecialOffers" asp-action="Index">Specijalne ponude</a>
-<div class="row">
-    <div class="col-md-2">
-    </div>
-    <div class="col-md-8">
-        <form asp-controller="Boats" asp-action="Index" class="form-inline">
-            <p>
-                Pretraži po: <input type="text" name="searchString" />
+<h1>Moji brodovi</h1>
 
-                <select name="filter" id="filter" style="background-color: transparent;">
-                    <option value="Name" class="option">Nazivu</option>
-                    <option value="City" class="option">Gradu</option>
-                    <option value="Country" class="option">Državi</option>
-                    <option value="Capacity" class="option">Kapacitetu</option>
-                </select>
-                <input type="submit" value="Pretraži" />
-            </p>
-        </form>
-    </div>
-    <div class="col-md-2">
-    </div>
-</div>
+<p>
+    <a asp-action="Create">Dodaj novi brod</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th data-defaultsort="asc">
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -39,16 +21,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Length)
             </th>
-            <th data-defaultsort="asc">
+            <th>
                 @Html.DisplayNameFor(model => model.Capacity)
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.EngineNumber)
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.EnginePower)
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.MaxSpeed)
             </th>
             <th>
@@ -63,17 +45,23 @@
             <th hidden>
                 @Html.DisplayNameFor(model => model.CancelationPolicyId)
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th data-defaultsort="asc">
+            <th>
                 @Html.DisplayNameFor(model => model.AverageGrade)
             </th>
-            <th hidden>
+            <th>
+                @Html.DisplayNameFor(model => model.GradeCount)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.RegularPrice)
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.WeekendPrice)
+            </th>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.BoatOwnerId)
             </th>
             <th hidden>
                 @Html.DisplayNameFor(model => model.RowVersion)
@@ -96,13 +84,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Capacity)
             </td>
-            <td hidden>
+            <td>
                 @Html.DisplayFor(modelItem => item.EngineNumber)
             </td>
-            <td hidden>
+            <td>
                 @Html.DisplayFor(modelItem => item.EnginePower)
             </td>
-            <td hidden>
+            <td>
                 @Html.DisplayFor(modelItem => item.MaxSpeed)
             </td>
             <td>
@@ -117,23 +105,29 @@
             <td hidden>
                 @Html.DisplayFor(modelItem => item.CancelationPolicyId)
             </td>
-            <td hidden>
+            <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AverageGrade)
             </td>
-            <td hidden>
+            <td>
+                @Html.DisplayFor(modelItem => item.GradeCount)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.RegularPrice)
             </td>
-            <td hidden>
+            <td>
                 @Html.DisplayFor(modelItem => item.WeekendPrice)
+            </td>
+            <td hidden>
+                @Html.DisplayFor(modelItem => item.BoatOwnerId)
             </td>
             <td hidden>
                 @Html.DisplayFor(modelItem => item.RowVersion)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Izmeni informacije o brodu</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Izmeni informacije</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Ukloni</a>
             </td>
