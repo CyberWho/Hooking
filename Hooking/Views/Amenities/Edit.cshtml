@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Izmena pogodnosti dostupnih na brodu</h1>
+<h1>Edit</h1>
 
-<h4>Pogodnosti</h4>
+<h4>Amenities</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -44,10 +44,14 @@
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <input type="submit" value="Potvrdi" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -117,7 +117,6 @@ namespace Hooking.Areas.Identity.Pages.Account
 
                     if (resultUserDetails != null)
                     {
-                        _context.SaveChangesAsync();
                         _logger.LogInformation("User created a new account with password.");
                         _logger.LogInformation(resultUserDetails.GetType().ToString());
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

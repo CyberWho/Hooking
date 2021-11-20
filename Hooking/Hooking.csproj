@@ -8,8 +8,6 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20211105194554_CottageClasses.cs" />
     <Compile Remove="Data\Migrations\20211105194554_CottageClasses.Designer.cs" />
-    <Compile Remove="Data\Migrations\20211119135254_addedGeneration.cs" />
-    <Compile Remove="Data\Migrations\20211119135254_addedGeneration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
