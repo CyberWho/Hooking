@@ -1,14 +1,34 @@
 ﻿@model IEnumerable<Hooking.Models.Instructor>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Instruktori";
 }
 
-<h1>Index</h1>
+<h1>Instruktori</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <form asp-controller="Cottages" asp-action="Index" class="form-inline">
+            <p>
+                Pretraži po: <input type="text" name="searchString" />
+
+                             <select name="filter" id="filter" style="background-color: transparent;">
+                                 <option value="FirstName" class="option">Imenu</option>
+                                 <option value="LastName" class="option">Prezimenu</option>
+                                 <option value="AverageGrade" class="option">Prosecnoj oceni</option>
+                                 <option value="Country" class="option">Drzavi</option>
+                                 <option value="City" class="option">Gradu</option>
+                             </select>
+                <input type="submit" value="Pretraži" />
+            </p>
+        </form>
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
