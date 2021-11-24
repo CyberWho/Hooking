@@ -7,7 +7,7 @@
 <h4>@ViewData["Title"]</h4>
 
 <p>
-    <a asp-action="Create">Dodaj novu vikendicu</a>
+    <a href="@Url.Action("Create", "Cottages")">Dodaj novu vikendicu</a>
 </p>
 <table class="table">
     <thead>
@@ -104,9 +104,9 @@
                     @Html.DisplayFor(modelItem => item.RowVersion)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Izmeni informacije</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Ukloni iz ponude</a>
+                    <a href="@Url.Action("Edit", "Cottages", new { Id = @item.Id })">Izmeni informacije</a> |
+                    <a href="@Url.Action("Details", "Cottages", new { Id = @item.Id })">Prikaži još</a> |
+                    <a href="@Url.Action("Delete", "Cottages", new { Id = @item.Id })">Ukloni iz ponude</a>
                 </td>
             </tr>
         }
