@@ -76,6 +76,11 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 cottage.Id = Guid.NewGuid();
+                var user = await _userManager.GetUserAsync(User);
+                cottage.CottageOwnerId = user.Id;
+                cottage.CancelationPolicyId = "0";
+                cottage.AverageGrade = 0;
+                cottage.GradeCount = 0;
                 _context.Add(cottage);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

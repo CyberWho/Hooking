@@ -1,0 +1,114 @@
+﻿@page
+@model Hooking.Areas.Identity.Pages.Account.Manage.MyCottagesModel
+@{
+    ViewData["Title"] = "Moje vikendice";
+    ViewData["ActivePage"] = ManageNavPages.MyCottages;
+}
+<h4>@ViewData["Title"]</h4>
+
+<p>
+    <a asp-action="Create">Dodaj novu vikendicu</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Naziv
+            </th>
+            <th>
+                Adresa
+            </th>
+            <th>
+                Grad
+            </th>
+            <th>
+                Država
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Broj soba
+            </th>
+            <th>
+                Površina
+            </th>
+            <th>
+                Prosečna ocena
+            </th>
+            <th>
+                Broj ocena
+            </th>
+            <th hidden>
+                Uslovi otkaza
+            </th>
+            <th>
+                Regularna cena
+            </th>
+            <th>
+                Vikend cena
+            </th>
+            <th hidden>
+                CottageOwnerId
+            </th>
+            <th hidden>
+                RowVersion
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.myCottages)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoomCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GradeCount)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.CancelationPolicyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegularPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WeekendPrice)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.CottageOwnerId)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.RowVersion)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Izmeni informacije</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Ukloni iz ponude</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

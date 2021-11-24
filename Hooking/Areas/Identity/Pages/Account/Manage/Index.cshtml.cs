@@ -114,6 +114,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+
         public bool CheckForChanges(UserDetails userDetails)
         {
             bool UserDetailsChanged = false;
