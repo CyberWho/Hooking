@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using Hooking.Areas.Identity.Pages.Account.Manage;
 
 namespace Hooking.Controllers
 {
@@ -25,17 +27,46 @@ namespace Hooking.Controllers
         }
 
         // GET: Cottages
-        public async Task<IActionResult> Index(string searchString = "")
+        public async Task<IActionResult> Index(string searchString = "", string filter = "")
         {
-            return View(await _context.Cottage.ToListAsync());
-        }
+            List<Cottage> cottages = await _context.Cottage.ToListAsync();
+            List<Cottage> filteredCottages = new List<Cottage>();
 
-        //GET : CottageOwner/Details/5/ShowMyCottages
-        public async Task<IActionResult> ShowMyCottages()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var cottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
-            return View(cottages);
+            if (string.IsNullOrEmpty(searchString))
+            {
+                filteredCottages = cottages;
+            }
+            else foreach (var cottage in cottages)
+                {
+                    var json = JsonConvert.SerializeObject(cottage);
+                    var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+                    if (filter == "Name")
+                    {
+                        if (cottage.Name.ToString().ToUpper().Contains(searchString.ToUpper()))
+                        {
+                            filteredCottages.Add(cottage);
+                        }
+                    }
+                    if (filter == "City")
+                    {
+                        if (cottage.City.ToString().ToUpper().Contains(searchString.ToUpper()))
+                        {
+                            filteredCottages.Add(cottage);
+                        }
+                    }
+                    if (filter == "Country")
+                    {
+                        if (cottage.Country.ToString().ToUpper().Contains(searchString.ToUpper()))
+                        {
+                            filteredCottages.Add(cottage);
+                        }
+                    }
+
+                }
+
+
+            return View(filteredCottages);
         }
 
         // GET: Cottages/Details/5
@@ -76,11 +107,16 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 cottage.Id = Guid.NewGuid();
+                var user = await _userManager.GetUserAsync(User);
+                cottage.CottageOwnerId = user.Id;
+                cottage.CancelationPolicyId = "0";
+                cottage.AverageGrade = 0;
+                cottage.GradeCount = 0;
                 _context.Add(cottage);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
-            return View(cottage);
+            return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
 
         // GET: Cottages/Edit/5

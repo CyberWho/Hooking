@@ -114,11 +114,23 @@ namespace Hooking.Areas.Identity.Pages.Account
                 {
                     userDetails.IdentityUserId = user.Id;
                     var resultUserDetails = _context.Add(userDetails);
+                   
 
                     if (resultUserDetails != null)
                     {
                         _logger.LogInformation("User created a new account with password.");
                         _logger.LogInformation(resultUserDetails.GetType().ToString());
+                        await _context.SaveChangesAsync();
+                        await _userManager.AddToRoleAsync(user, "Korisnik");
+                        await _context.SaveChangesAsync();
+                        /* kod za vlasnika vikendice pri registraciji
+                        CottageOwner cottageOwner = new CottageOwner();
+                        cottageOwner.Id = Guid.NewGuid();
+                        cottageOwner.UserDetailsId = user.Id.ToString();
+                        cottageOwner.AverageGrade = 0;
+                        cottageOwner.GradeCount = 0;
+                        _context.Add(cottageOwner);
+                        await _context.SaveChangesAsync();*/
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
@@ -142,7 +154,8 @@ namespace Hooking.Areas.Identity.Pages.Account
                                 };
                                 await _roleManager.CreateAsync(role);
                                 await _userManager.AddToRoleAsync(user, "Admin");
-                            }
+                                await _context.SaveChangesAsync();
+                            } 
                         }
 
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)

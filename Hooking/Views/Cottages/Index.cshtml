@@ -19,7 +19,6 @@
                     <option value="Name" class="option">Nazivu</option>
                     <option value="City" class="option">Gradu</option>
                     <option value="Country" class="option">Državi</option>
-                    <option value="RoomCount" class="option">Broju soba</option>
                 </select>
                 <input type="submit" value="Pretraži" />
             </p>
@@ -121,11 +120,7 @@
             <td hidden>
                 @Html.DisplayFor(modelItem => item.RowVersion)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Izmeni informacije o vikendici</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Ukloni</a>
-            </td>
+            
         </tr>
 }
     </tbody>

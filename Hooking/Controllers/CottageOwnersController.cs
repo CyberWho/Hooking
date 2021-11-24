@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class CottageOwnersController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CottageOwnersController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public CottageOwnersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: CottageOwners
@@ -56,13 +60,20 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserDetailsId,AverageGrade,GradeCount,Id,RowVersion")] CottageOwner cottageOwner)
         {
+            
             if (ModelState.IsValid)
             {
+               
                 cottageOwner.Id = Guid.NewGuid();
+                var user = await _userManager.GetUserAsync(User);
+                cottageOwner.UserDetailsId = user.Id.ToString();
+                cottageOwner.AverageGrade = 0;
+                cottageOwner.GradeCount = 0;
                 _context.Add(cottageOwner);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(cottageOwner);
         }
 
