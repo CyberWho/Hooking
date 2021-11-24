@@ -25,6 +25,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
         public static string MyCottages => "MyCottages";
+        public static string MyBoats => "MyBoats";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
@@ -44,6 +45,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string MyCottagesNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyCottages);
 
+        public static string MyBoatsNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyBoats);
+        
         private static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string

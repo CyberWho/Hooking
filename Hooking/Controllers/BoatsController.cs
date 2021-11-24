@@ -75,9 +75,14 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 boat.Id = Guid.NewGuid();
+                var user = await _userManager.GetUserAsync(User);
+                boat.BoatOwnerId = user.Id;
+                boat.CancelationPolicyId = "0";
+                boat.AverageGrade = 0;
+                boat.GradeCount = 0;
                 _context.Add(boat);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
             }
             return View(boat);
         }
