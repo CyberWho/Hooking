@@ -114,9 +114,9 @@ namespace Hooking.Controllers
                 cottage.GradeCount = 0;
                 _context.Add(cottage);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Identity/Account/Manage/MyCottages");
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
-            return RedirectToPage("/Identity/Account/Manage/MyCottages");
+            return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
 
         // GET: Cottages/Edit/5
