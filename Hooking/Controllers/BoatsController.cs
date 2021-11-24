@@ -75,9 +75,14 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 boat.Id = Guid.NewGuid();
+                var user = await _userManager.GetUserAsync(User);
+                boat.BoatOwnerId = user.Id;
+                boat.CancelationPolicyId = "0";
+                boat.AverageGrade = 0;
+                boat.GradeCount = 0;
                 _context.Add(boat);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
             }
             return View(boat);
         }
@@ -91,6 +96,7 @@ namespace Hooking.Controllers
             }
 
             var boat = await _context.Boat.FindAsync(id);
+
             if (boat == null)
             {
                 return NotFound();
@@ -103,7 +109,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Type,Length,Capacity,EngineNumber,EnginePower,MaxSpeed,Address,City,Country,CancelationPolicyId,Description,AverageGrade,GradeCount,RegularPrice,WeekendPrice,BoatOwnerId,Id,RowVersion")] Boat boat)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Address,City,Country,Description,RegularPrice,WeekendPrice,Id,RowVersion")] Boat boat)
         {
             if (id != boat.Id)
             {
@@ -114,7 +120,15 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(boat);
+                    var boatTmp = await _context.Boat.FindAsync(id);
+                    boatTmp.Name = boat.Name;
+                    boatTmp.Address = boat.Address;
+                    boatTmp.City = boat.City;
+                    boatTmp.Country = boat.Country;
+                    boatTmp.Description = boat.Description;
+                    boatTmp.RegularPrice = boat.RegularPrice;
+                    boatTmp.WeekendPrice = boat.WeekendPrice;
+                    _context.Update(boatTmp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -128,7 +142,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
             }
             return View(boat);
         }

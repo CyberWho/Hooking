@@ -25,4 +25,11 @@
             <li class="nav-item"><a class="nav-link @ManageNavPages.MyCottagesNavClass(ViewContext)" id="my-cottages" asp-page="./MyCottages">Moje vikendice</a></li>
         }
     }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Vlasnik broda"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.MyBoatsNavClass(ViewContext)" id="my-boats" asp-page="./MyBoats">Moji brodovi</a></li>
+        }
+    }
 </ul>

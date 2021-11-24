@@ -131,6 +131,15 @@ namespace Hooking.Areas.Identity.Pages.Account
                         cottageOwner.GradeCount = 0;
                         _context.Add(cottageOwner);
                         await _context.SaveChangesAsync();*/
+                       /* BoatOwner boatOwner = new BoatOwner();
+                        boatOwner.Id = Guid.NewGuid();
+                        boatOwner.UserDetailsId = user.Id.ToString();
+                        boatOwner.AverageGrade = 0;
+                        boatOwner.GradeCount = 0;
+                        boatOwner.IsCaptain = false;
+                        boatOwner.IsFirstOfficer = false;
+                        _context.Add(boatOwner);
+                        await _context.SaveChangesAsync();*/
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
