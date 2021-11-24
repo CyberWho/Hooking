@@ -121,7 +121,7 @@ namespace Hooking.Areas.Identity.Pages.Account
                         _logger.LogInformation("User created a new account with password.");
                         _logger.LogInformation(resultUserDetails.GetType().ToString());
                         await _context.SaveChangesAsync();
-                        await _userManager.AddToRoleAsync(user, "Vlasnik broda");
+                        await _userManager.AddToRoleAsync(user, "Korisnik");
                         await _context.SaveChangesAsync();
                         /* kod za vlasnika vikendice pri registraciji
                         CottageOwner cottageOwner = new CottageOwner();
@@ -131,7 +131,7 @@ namespace Hooking.Areas.Identity.Pages.Account
                         cottageOwner.GradeCount = 0;
                         _context.Add(cottageOwner);
                         await _context.SaveChangesAsync();*/
-                        BoatOwner boatOwner = new BoatOwner();
+                       /* BoatOwner boatOwner = new BoatOwner();
                         boatOwner.Id = Guid.NewGuid();
                         boatOwner.UserDetailsId = user.Id.ToString();
                         boatOwner.AverageGrade = 0;
@@ -139,7 +139,7 @@ namespace Hooking.Areas.Identity.Pages.Account
                         boatOwner.IsCaptain = false;
                         boatOwner.IsFirstOfficer = false;
                         _context.Add(boatOwner);
-                        await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();*/
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
