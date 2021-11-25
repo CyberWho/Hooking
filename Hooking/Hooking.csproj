@@ -15,6 +15,10 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20211105194554_CottageClasses.cs" />
     <Compile Remove="Data\Migrations\20211105194554_CottageClasses.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211125161630_houseRules.cs" />
+    <Compile Remove="Data\Migrations\20211125161630_houseRules.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211125162744_houseRules1.cs" />
+    <Compile Remove="Data\Migrations\20211125162744_houseRules1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

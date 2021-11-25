@@ -4,14 +4,16 @@ using Hooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hooking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211125164327_houseRulesRemoval")]
+    partial class houseRulesRemoval
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1228,37 +1230,6 @@ namespace Hooking.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FishingTechniques");
-                });
-
-            modelBuilder.Entity("Hooking.Models.HouseRules", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AgeRestriction")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CheckInTime")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CheckOutTime")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("NonSmoking")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PetFriendly")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HouseRules");
                 });
 
             modelBuilder.Entity("Hooking.Models.Instructor", b =>

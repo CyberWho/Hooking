@@ -26,6 +26,26 @@ namespace Hooking.Controllers
             _roleManager = roleManager;
 
         }
+       [HttpGet("/Cottages/Details/{id}/AddHouseRules")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddHouseRules(Guid id, [Bind("PetFriendly,NonSmoking,CheckInTime,CheckOutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
+        {
+            if (ModelState.IsValid)
+            {
+                houseRules.Id = Guid.NewGuid();
+                _context.Add(houseRules);
+                await _context.SaveChangesAsync();
+                CottagesHouseRules cottagesHouseRules = new CottagesHouseRules();
+                cottagesHouseRules.Id = Guid.NewGuid();
+                cottagesHouseRules.CottageId = id.ToString();
+                cottagesHouseRules.HouseRulesId = houseRules.Id.ToString();
+                _context.Add(cottagesHouseRules);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+            }
+            return View(houseRules);
+        }
+       
 
         // GET: Cottages
         public async Task<IActionResult> Index(string searchString = "", string filter = "")
@@ -179,7 +199,7 @@ namespace Hooking.Controllers
             }
             return View(cottage);
         }
-
+        
         // GET: Cottages/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -213,5 +233,6 @@ namespace Hooking.Controllers
         {
             return _context.Cottage.Any(e => e.Id == id);
         }
+
     }
 }
