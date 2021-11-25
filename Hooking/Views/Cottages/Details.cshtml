@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Details";
 }
+@{
+    var cottageOwner = (UserDetails)ViewData["CottageOwner"];
+}
+
 
 <h1>Prikaz vikendice</h1>
 
@@ -83,10 +87,10 @@
             @Html.DisplayFor(model => model.WeekendPrice)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CottageOwnerId)
+            Vlasnik
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CottageOwnerId)
+            @cottageOwner.FirstName @cottageOwner.LastName  
         </dd>
         <dt class="col-sm-2" hidden>
             @Html.DisplayNameFor(model => model.RowVersion)

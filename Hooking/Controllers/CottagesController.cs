@@ -18,6 +18,7 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        public UserDetails cottageOwner;
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -79,11 +80,15 @@ namespace Hooking.Controllers
 
             var cottage = await _context.Cottage
                 .FirstOrDefaultAsync(m => m.Id == id);
+            Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
+            var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
+           
+            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
             if (cottage == null)
             {
                 return NotFound();
             }
-
+            ViewData["CottageOwner"] = cottageOwner;
             return View(cottage);
         }
 
