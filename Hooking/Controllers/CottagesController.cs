@@ -27,46 +27,77 @@ namespace Hooking.Controllers
         }
 
         // GET: Cottages
-        public async Task<IActionResult> Index(string searchString = "", string filter = "")
+        public async Task<IActionResult> Index(string searchString = "", string filter = "", string sortOrder = "")
         {
             List<Cottage> cottages = await _context.Cottage.ToListAsync();
             List<Cottage> filteredCottages = new List<Cottage>();
 
-            if (string.IsNullOrEmpty(searchString))
+            ViewData["Name"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
+            ViewData["Address"] = String.IsNullOrEmpty(sortOrder) ? "Address" : "";
+            ViewData["City"] = String.IsNullOrEmpty(sortOrder) ? "City" : "";
+            ViewData["Country"] = String.IsNullOrEmpty(sortOrder) ? "Country" : "";
+            ViewData["AverageGrade"] = String.IsNullOrEmpty(sortOrder) ? "AverageGrade" : "";
+            var ctg = from b in _context.Cottage
+                      select b;
+            switch (sortOrder)
             {
-                filteredCottages = cottages;
+                case "Name":
+                    ctg = ctg.OrderBy(b => b.Name);
+                    break;
+                case "Address":
+                    ctg = ctg.OrderBy(b => b.Address);
+                    break;
+                case "City":
+                    ctg = ctg.OrderBy(b => b.City);
+                    break;
+                case "Country":
+                    ctg = ctg.OrderBy(b => b.Country);
+                    break;
+                case "AverageGrade":
+                    ctg = ctg.OrderBy(b => b.AverageGrade);
+                    break;
+
+
             }
-            else foreach (var cottage in cottages)
-                {
-                    var json = JsonConvert.SerializeObject(cottage);
-                    var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                ctg = ctg.Where(s => s.Name.Contains(searchString)
+                                       || s.City.Contains(searchString) || s.Country.Contains(searchString));
+            }
 
-                    if (filter == "Name")
-                    {
-                        if (cottage.Name.ToString().ToUpper().Contains(searchString.ToUpper()))
-                        {
-                            filteredCottages.Add(cottage);
-                        }
-                    }
-                    if (filter == "City")
-                    {
-                        if (cottage.City.ToString().ToUpper().Contains(searchString.ToUpper()))
-                        {
-                            filteredCottages.Add(cottage);
-                        }
-                    }
-                    if (filter == "Country")
-                    {
-                        if (cottage.Country.ToString().ToUpper().Contains(searchString.ToUpper()))
-                        {
-                            filteredCottages.Add(cottage);
-                        }
-                    }
+            /*   if (string.IsNullOrEmpty(searchString))
+               {
+                   filteredCottages = cottages;
+               }
+               else foreach (var cottage in cottages)
+                   {
+                       var json = JsonConvert.SerializeObject(cottage);
+                       var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
 
-                }
+                       if (filter == "Name")
+                       {
+                           if (cottage.Name.ToString().ToUpper().Contains(searchString.ToUpper()))
+                           {
+                               filteredCottages.Add(cottage);
+                           }
+                       }
+                       if (filter == "City")
+                       {
+                           if (cottage.City.ToString().ToUpper().Contains(searchString.ToUpper()))
+                           {
+                               filteredCottages.Add(cottage);
+                           }
+                       }
+                       if (filter == "Country")
+                       {
+                           if (cottage.Country.ToString().ToUpper().Contains(searchString.ToUpper()))
+                           {
+                               filteredCottages.Add(cottage);
+                           }
+                       }
 
-
-            return View(filteredCottages);
+                   }*/
+            return View(ctg.ToList());
         }
 
         // GET: Cottages/Details/5
@@ -140,7 +171,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,RoomCount,RegularPrice,WeekendPrice,Id,RowVersion")] Cottage cottage)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Address,City,Country,Description,RoomCount,Area,AverageGrade,GradeCount,CancelationPolicyId,RegularPrice,WeekendPrice,CottageOwnerId,Id,RowVersion")] Cottage cottage)
         {
             if (id != cottage.Id)
             {
@@ -151,12 +182,7 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var cottageTmp = await _context.Cottage.FindAsync(id);
-                    cottageTmp.Name = cottage.Name;
-                    cottageTmp.Description = cottage.Description;
-                    cottageTmp.RegularPrice = cottage.RegularPrice;
-                    cottageTmp.WeekendPrice = cottage.WeekendPrice;
-                    _context.Update(cottageTmp);
+                    _context.Update(cottage);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -170,7 +196,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction(nameof(Index));
             }
             return View(cottage);
         }
