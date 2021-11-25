@@ -49,6 +49,18 @@
                                 </li>
                             }
                         }
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            @if (User.IsInRole("Korisnik"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Index">Istorija rezervacija</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>

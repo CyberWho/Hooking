@@ -7,21 +7,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class CottageReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CottageReservationsController(ApplicationDbContext context)
+
+        public CottageReservationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: CottageReservations
         public async Task<IActionResult> Index()
         {
+
+        //    var user = await _userManager.GetUserAsync(User);
+         //   var boats = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+            // var loggedInUser = await _userManager.GetUserAsync(User);
+
+            //   Console.WriteLine(loggedInUser.Id.ToString());
+
+            /*  return View(await _context.CottageReservation
+              .Include(x => x.StartDate)
+              .Include(x => x.EndDate)
+              .Include(x => x.Price)
+              .Include(x => x.MaxPersonCount)
+              .Where(x => x.UserDetailsId == loggedInUser.Id)
+              .ToListAsync());*/
             return View(await _context.CottageReservation.ToListAsync());
         }
 

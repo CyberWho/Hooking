@@ -25,9 +25,44 @@ namespace Hooking.Controllers
         }
 
         // GET: Boats
-        public async Task<IActionResult> Index(string searchString = "")
+        public async Task<IActionResult> Index(string searchString = "",string sortOrder="")
         {
-            return View(await _context.Boat.ToListAsync());
+            List<Boat> boats = await _context.Boat.ToListAsync();
+            ViewData["Name"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
+            ViewData["Address"] = String.IsNullOrEmpty(sortOrder) ? "Address" : "";
+            ViewData["City"] = String.IsNullOrEmpty(sortOrder) ? "City" : "";
+            ViewData["Country"] = String.IsNullOrEmpty(sortOrder) ? "Country" : "";
+            ViewData["AverageGrade"] = String.IsNullOrEmpty(sortOrder) ? "AverageGrade" : "";
+            var bts = from b in _context.Boat
+                      select b;
+            switch (sortOrder)
+            {
+                case "Name":
+                    bts = bts.OrderBy(b => b.Name);
+                    break;
+                case "Address":
+                    bts = bts.OrderBy(b => b.Address);
+                    break;
+                case "City":
+                    bts = bts.OrderBy(b => b.City);
+                    break;
+                case "Country":
+                    bts = bts.OrderBy(b => b.Country);
+                    break;
+                case "AverageGrade":
+                    bts = bts.OrderBy(b => b.AverageGrade);
+                    break;
+
+                default:
+                    bts = bts.OrderByDescending(b => b.Name);
+                    break;
+            }
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                bts = bts.Where(s => s.Name.Contains(searchString)
+                                       || s.City.Contains(searchString) || s.Country.Contains(searchString));
+            }
+            return View(bts.ToList());
         }
         //GET : BoatOwner/Details/5/ShowMyBoats
         public async Task<IActionResult> ShowMyBoats()
