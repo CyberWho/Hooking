@@ -19,6 +19,8 @@ namespace Hooking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         public UserDetails cottageOwner;
+        public CancelationPolicy cancelationPolicy;
+        public HouseRules houseRules;
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -26,7 +28,7 @@ namespace Hooking.Controllers
             _roleManager = roleManager;
 
         }
-       [HttpGet("/Cottages/Details/{id}/AddHouseRules")]
+        [HttpGet("/Cottages/Details/{id}/AddHouseRules")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddHouseRules(Guid id, [Bind("PetFriendly,NonSmoking,CheckInTime,CheckOutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
         {
@@ -104,11 +106,16 @@ namespace Hooking.Controllers
             var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
            
             cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            var cottageId = cottage.Id.ToString();
+            CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
+            Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
+            houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
             if (cottage == null)
             {
                 return NotFound();
             }
             ViewData["CottageOwner"] = cottageOwner;
+            ViewData["HouseRules"] = houseRules;
             return View(cottage);
         }
 
@@ -159,7 +166,7 @@ namespace Hooking.Controllers
             }
             return View(cottage);
         }
-
+       
         // POST: Cottages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
