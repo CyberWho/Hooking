@@ -110,12 +110,15 @@ namespace Hooking.Controllers
             CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
             Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
             houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
+            Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
+            cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
             if (cottage == null)
             {
                 return NotFound();
             }
             ViewData["CottageOwner"] = cottageOwner;
             ViewData["HouseRules"] = houseRules;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
             return View(cottage);
         }
 

@@ -6,6 +6,7 @@
 @{
     var cottageOwner = (UserDetails)ViewData["CottageOwner"];
     var houseRules = (HouseRules)ViewData["HouseRules"];
+    var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
 }
 
 
@@ -153,6 +154,24 @@
             }
         </dd>
         
+    </dl>
+</div>
+<div>
+    <h4>Uslovi otkazivanja</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Besplatno otkazivanje do (broj dana)
+        </dt>
+        <dd class="col-sm-10">
+            @cancelationPolicy.FreeUntil
+        </dd>
+        <dt class="col-sm-2">
+            Procenat od uplate koji se zadržava u slučaju otkaza
+        </dt>
+        <dd class="col-sm-10">
+            @cancelationPolicy.PenaltyPercentage
+        </dd>
     </dl>
 </div>
 <div>
