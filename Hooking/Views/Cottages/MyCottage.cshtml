@@ -393,13 +393,14 @@
                 @cottageRoom.BedCount
             </dd>
             <dt class="col-sm-2">
-               Klima uređaj
+                Klima uređaj
             </dt>
             <dd class="col-sm-10">
-                @if(cottageRoom.AirCondition)
+                @if (cottageRoom.AirCondition)
                 {
                     @Html.Raw("Da");
-                } else
+                }
+                else
                 {
                     @Html.Raw("Ne");
                 }
@@ -433,4 +434,10 @@
         </dl>
     </div>
 }
-
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o vikendici</a>
+    <a asp-action="Create" asp-controller="HouseRules" asp-route-id="@Model.Id">Dodaj pravila ponašanja</a>
+    <a asp-action="Create" asp-controller="CancelationPolicies" asp-route-id="@Model.Id">Dodaj pravila otkazivanja</a>
+    <a asp-action="Create" asp-controller="Facilities" asp-route-id="@Model.Id">Dodaj pogodnosti</a>
+    <a asp-action="Create" asp-controller="CottageRooms" asp-route-id="@Model.Id">Dodaj sobe</a>
+</div>
