@@ -32,4 +32,11 @@
             <li class="nav-item"><a class="nav-link @ManageNavPages.MyBoatsNavClass(ViewContext)" id="my-boats" asp-page="./MyBoats">Moji brodovi</a></li>
         }
     }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Korisnik"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.CottageReservatiosHistoryNavClass(ViewContext)" id="my-cottageReservationsHistory" asp-page="./CottageReservationsHistory">Moje rezervacije</a></li>
+        }
+    }
 </ul>

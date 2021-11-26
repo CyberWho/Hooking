@@ -54,10 +54,16 @@
                             @if (User.IsInRole("Korisnik"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju vikendice</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Index">Istorija rezervacija</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="CottageReservationsHistory">Istorija rezervacija vikendica</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="Create">Unesi rezervaciju broda</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="BoatReservationsHistory">Istorija rezervacija brodova</a>
                                 </li>
                             }
                         }

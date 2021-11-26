@@ -29,7 +29,7 @@ namespace Hooking.Controllers
         // GET: Cottages
         public async Task<IActionResult> Index(string searchString = "", string filter = "", string sortOrder = "")
         {
-            List<Cottage> cottages = await _context.Cottage.ToListAsync();
+           List<Cottage> cottages = await _context.Cottage.ToListAsync();
             List<Cottage> filteredCottages = new List<Cottage>();
 
             ViewData["Name"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
