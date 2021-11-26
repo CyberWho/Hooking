@@ -52,16 +52,20 @@ namespace Hooking.Controllers
         // POST: CancelationPolicies/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("CancelationPolicies/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FreeUntil,PenaltyPercentage,Id,RowVersion")] CancelationPolicy cancelationPolicy)
+        public async Task<IActionResult> Create(Guid id, [Bind("FreeUntil,PenaltyPercentage,Id,RowVersion")] CancelationPolicy cancelationPolicy)
         {
             if (ModelState.IsValid)
             {
                 cancelationPolicy.Id = Guid.NewGuid();
                 _context.Add(cancelationPolicy);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault<Cottage>();
+                cottage.CancelationPolicyId = cancelationPolicy.Id.ToString();
+                _context.Update(cottage);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
             return View(cancelationPolicy);
         }
@@ -85,7 +89,7 @@ namespace Hooking.Controllers
         // POST: CancelationPolicies/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CancelationPolicies/Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("FreeUntil,PenaltyPercentage,Id,RowVersion")] CancelationPolicy cancelationPolicy)
         {
@@ -98,7 +102,14 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(cancelationPolicy);
+                    var cancelationPolicyTmp = await _context.CancelationPolicy.FindAsync(id);
+                    cancelationPolicyTmp.FreeUntil = cancelationPolicy.FreeUntil;
+                    cancelationPolicyTmp.PenaltyPercentage = cancelationPolicy.PenaltyPercentage;
+                    _context.Update(cancelationPolicyTmp);
+                    await _context.SaveChangesAsync();
+                    var cancelationPolicyId = cancelationPolicy.Id.ToString();
+                    var cottage = _context.Cottage.Where(m => m.CancelationPolicyId == cancelationPolicyId).FirstOrDefault<Cottage>();
+                    return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id });
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

@@ -18,6 +18,11 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        public UserDetails cottageOwner;
+        public CancelationPolicy cancelationPolicy;
+        public HouseRules houseRules;
+        public Facilities facilities;
+        public List<CottageRoom> cottageRooms = new List<CottageRoom>();
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -25,6 +30,7 @@ namespace Hooking.Controllers
             _roleManager = roleManager;
 
         }
+       
 
         // GET: Cottages
         public async Task<IActionResult> Index(string searchString = "", string filter = "", string sortOrder = "")
@@ -110,11 +116,76 @@ namespace Hooking.Controllers
 
             var cottage = await _context.Cottage
                 .FirstOrDefaultAsync(m => m.Id == id);
+            Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
+            var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
+           
+            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            var cottageId = cottage.Id.ToString();
+            CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
+            Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
+            houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
+            Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
+            cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
+            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
+            facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
+            List<CottagesRooms> cottagesRooms = await _context.CottagesRooms.Where(m => m.CottageId == cottageId).ToListAsync<CottagesRooms>();
+            foreach(var cottagesRoom in cottagesRooms)
+            {
+                Guid cottageRoomId = Guid.Parse(cottagesRoom.CottageRoomId);
+                var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
+                cottageRooms.Add(cottageRoom);
+            }
             if (cottage == null)
             {
                 return NotFound();
             }
+            ViewData["CottageOwner"] = cottageOwner;
+            ViewData["HouseRules"] = houseRules;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["Facilities"] = facilities;
+            ViewData["CottageRooms"] = cottageRooms;
+            return View(cottage);
+        }
+        [HttpGet("/Cottages/MyCottage/{id}")]
+        public async Task<IActionResult> MyCottage(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var cottage = await _context.Cottage
+                .FirstOrDefaultAsync(m => m.Id == id);
+            Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
+            var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
+
+            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            var cottageId = cottage.Id.ToString();
+            CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
+            Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
+            houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
+            Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
+            cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
+            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
+            facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
+            List<CottagesRooms> cottagesRooms = await _context.CottagesRooms.Where(m => m.CottageId == cottageId).ToListAsync<CottagesRooms>();
+            foreach (var cottagesRoom in cottagesRooms)
+            {
+                Guid cottageRoomId = Guid.Parse(cottagesRoom.CottageRoomId);
+                var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
+                cottageRooms.Add(cottageRoom);
+            }
+            if (cottage == null)
+            {
+                return NotFound();
+            }
+            ViewData["CottageOwner"] = cottageOwner;
+            ViewData["HouseRules"] = houseRules;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["Facilities"] = facilities;
+            ViewData["CottageRooms"] = cottageRooms;
             return View(cottage);
         }
 
@@ -165,7 +236,7 @@ namespace Hooking.Controllers
             }
             return View(cottage);
         }
-
+       
         // POST: Cottages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -200,7 +271,7 @@ namespace Hooking.Controllers
             }
             return View(cottage);
         }
-
+        
         // GET: Cottages/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
@@ -234,5 +305,6 @@ namespace Hooking.Controllers
         {
             return _context.Cottage.Any(e => e.Id == id);
         }
+
     }
 }

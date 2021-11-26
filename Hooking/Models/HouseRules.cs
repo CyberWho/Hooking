@@ -13,9 +13,9 @@ namespace Hooking.Models
         [DisplayName("Zabranjeno pušenje")]
         public bool NonSmoking { get; set; }
         [DisplayName("Vreme prijave u smeštaj")]
-        public DateTime CheckinTime { get; set; }
+        public int CheckInTime { get; set; }
         [DisplayName("Vreme odjave iz smeštaja")]
-        public DateTime CheckoutTime { get; set; }
+        public int CheckOutTime { get; set; }
         [DisplayName("Limit za broj godina")]
         public int AgeRestriction { get; set; }
     }

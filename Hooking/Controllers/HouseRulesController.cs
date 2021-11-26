@@ -52,21 +52,28 @@ namespace Hooking.Controllers
         // POST: HouseRules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("HouseRules/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PetFriendly,NonSmoking,CheckinTime,CheckoutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
+        public async Task<IActionResult> Create(Guid id,[Bind("PetFriendly,NonSmoking,CheckInTime,CheckOutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
         {
             if (ModelState.IsValid)
             {
                 houseRules.Id = Guid.NewGuid();
                 _context.Add(houseRules);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                CottagesHouseRules cottagesHouseRules = new CottagesHouseRules();
+                cottagesHouseRules.Id = Guid.NewGuid();
+                cottagesHouseRules.CottageId = id.ToString();
+                cottagesHouseRules.HouseRulesId = houseRules.Id.ToString();
+                _context.Add(cottagesHouseRules);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
             return View(houseRules);
         }
 
         // GET: HouseRules/Edit/5
+        
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -85,9 +92,9 @@ namespace Hooking.Controllers
         // POST: HouseRules/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/HouseRules/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PetFriendly,NonSmoking,CheckinTime,CheckoutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
+        public async Task<IActionResult> Edit(Guid id, [Bind("PetFriendly,NonSmoking,CheckInTime,CheckOutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
         {
             if (id != houseRules.Id)
             {
@@ -98,8 +105,19 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(houseRules);
+                    var houseRulesTmp = await _context.HouseRules.FindAsync(id);
+                    houseRulesTmp.PetFriendly = houseRules.PetFriendly;
+                    houseRulesTmp.NonSmoking = houseRules.NonSmoking;
+                    houseRulesTmp.CheckInTime = houseRules.CheckInTime;
+                    houseRulesTmp.CheckOutTime = houseRules.CheckOutTime;
+                    houseRulesTmp.AgeRestriction = houseRules.AgeRestriction;
+                    _context.Update(houseRulesTmp);
                     await _context.SaveChangesAsync();
+                    var houseRulesId = houseRulesTmp.Id.ToString();
+                    var cottageHouseRules = _context.CottagesHouseRules.Where(m => m.HouseRulesId == houseRulesId).FirstOrDefault<CottagesHouseRules>();
+                    Guid cottageId = Guid.Parse(cottageHouseRules.CottageId);
+                    var cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+                    return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id});
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -112,7 +130,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+               
             }
             return View(houseRules);
         }
