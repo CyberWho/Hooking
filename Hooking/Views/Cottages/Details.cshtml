@@ -8,6 +8,7 @@
     var houseRules = (HouseRules)ViewData["HouseRules"];
     var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
     var facilites = (Facilities)ViewData["Facilities"];
+    List<CottageRoom> cottageRooms = (List<CottageRoom>)ViewData["CottageRooms"];
 }
 
 
@@ -92,7 +93,7 @@
             Vlasnik
         </dt>
         <dd class="col-sm-10">
-            @cottageOwner.FirstName @cottageOwner.LastName  
+            @cottageOwner.FirstName @cottageOwner.LastName
         </dd>
         <dt class="col-sm-2" hidden>
             @Html.DisplayNameFor(model => model.RowVersion)
@@ -110,10 +111,11 @@
             Kućni ljubimci
         </dt>
         <dd class="col-sm-10">
-           @if(houseRules.PetFriendly)
+            @if (houseRules.PetFriendly)
             {
                 @Html.Raw("Dozvoljeno");
-            } else
+            }
+            else
             {
                 @Html.Raw("Nije dozvoljeno");
             }
@@ -122,10 +124,11 @@
             Zabranjeno pušenje
         </dt>
         <dd class="col-sm-10">
-            @if(houseRules.NonSmoking)
+            @if (houseRules.NonSmoking)
             {
                 @Html.Raw("Dozvoljeno");
-            } else
+            }
+            else
             {
                 @Html.Raw("Nije dozvoljeno");
             }
@@ -146,15 +149,16 @@
             Limit za broj godina
         </dt>
         <dd class="col-sm-10">
-            @if(houseRules.AgeRestriction == 0)
+            @if (houseRules.AgeRestriction == 0)
             {
                 @Html.Raw("Nema limita");
-            } else
+            }
+            else
             {
                 @Html.Raw(houseRules.AgeRestriction);
             }
         </dd>
-        
+
     </dl>
 </div>
 <div>
@@ -183,10 +187,11 @@
             Parking
         </dt>
         <dd class="col-sm-10">
-            @if(facilites.Parking)
+            @if (facilites.Parking)
             {
                 @Html.Raw("Da");
-            } else
+            }
+            else
             {
                 @Html.Raw("Ne");
             }
@@ -322,7 +327,7 @@
             }
         </dd>
         <dt class="col-sm-2">
-           Zatvoreni bazen
+            Zatvoreni bazen
         </dt>
         <dd class="col-sm-10">
             @if (facilites.IndoorPool)
@@ -375,9 +380,63 @@
         </dd>
     </dl>
 </div>
+<h4>Sobe</h4>
+@foreach (var cottageRoom in cottageRooms)
+{
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                Broj kreveta
+            </dt>
+            <dd class="col-sm-10">
+                @cottageRoom.BedCount
+            </dd>
+            <dt class="col-sm-2">
+               Klima uređaj
+            </dt>
+            <dd class="col-sm-10">
+                @if(cottageRoom.AirCondition)
+                {
+                    @Html.Raw("Da");
+                } else
+                {
+                    @Html.Raw("Ne");
+                }
+            </dd>
+            <dt class="col-sm-2">
+                TV
+            </dt>
+            <dd class="col-sm-10">
+                @if (cottageRoom.TV)
+                {
+                    @Html.Raw("Da");
+                }
+                else
+                {
+                    @Html.Raw("Ne");
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Terasa
+            </dt>
+            <dd class="col-sm-10">
+                @if (cottageRoom.Balcony)
+                {
+                    @Html.Raw("Da");
+                }
+                else
+                {
+                    @Html.Raw("Ne");
+                }
+            </dd>
+        </dl>
+    </div>
+}
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o vikendici</a>
     <a asp-action="Create" asp-controller="HouseRules" asp-route-id="@Model.Id">Dodaj pravila ponašanja</a>
     <a asp-action="Create" asp-controller="CancelationPolicies" asp-route-id="@Model.Id">Dodaj pravila otkazivanja</a>
     <a asp-action="Create" asp-controller="Facilities" asp-route-id="@Model.Id">Dodaj pogodnosti</a>
+    <a asp-action="Create" asp-controller="CottageRooms" asp-route-id="@Model.Id">Dodaj sobe</a>
 </div>

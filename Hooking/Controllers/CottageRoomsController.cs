@@ -52,16 +52,23 @@ namespace Hooking.Controllers
         // POST: CottageRooms/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("CottageRooms/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BedCount,AirCondition,TV,Balcony,Id,RowVersion")] CottageRoom cottageRoom)
+        public async Task<IActionResult> Create(Guid id, [Bind("BedCount,AirCondition,TV,Balcony,Id,RowVersion")] CottageRoom cottageRoom)
         {
             if (ModelState.IsValid)
             {
                 cottageRoom.Id = Guid.NewGuid();
                 _context.Add(cottageRoom);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Cottage cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault<Cottage>();
+                CottagesRooms cottagesRooms = new CottagesRooms();
+                cottagesRooms.Id = Guid.NewGuid();
+                cottagesRooms.CottageRoomId = cottageRoom.Id.ToString();
+                cottagesRooms.CottageId = cottage.Id.ToString();
+                _context.Add(cottagesRooms);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
             return View(cottageRoom);
         }
