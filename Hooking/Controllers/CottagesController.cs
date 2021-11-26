@@ -21,6 +21,7 @@ namespace Hooking.Controllers
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
         public HouseRules houseRules;
+        public Facilities facilities;
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -112,6 +113,9 @@ namespace Hooking.Controllers
             houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
             Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
             cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
+            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
+            facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
             if (cottage == null)
             {
                 return NotFound();
@@ -119,6 +123,7 @@ namespace Hooking.Controllers
             ViewData["CottageOwner"] = cottageOwner;
             ViewData["HouseRules"] = houseRules;
             ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["Facilities"] = facilities;
             return View(cottage);
         }
 

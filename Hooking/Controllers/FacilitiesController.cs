@@ -52,16 +52,22 @@ namespace Hooking.Controllers
         // POST: Facilities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("Facilities/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Parking,Wifi,Heating,BarbecueFacilities,OnlineCheckin,Jacuzzi,SeaView,MountainView,Kitchen,WashingMachine,AirportShuttle,IndoorPool,OutdoorPool,StockedBar,Garden,Id,RowVersion")] Facilities facilities)
+        public async Task<IActionResult> Create(Guid id,[Bind("Parking,Wifi,Heating,BarbecueFacilities,OnlineCheckin,Jacuzzi,SeaView,MountainView,Kitchen,WashingMachine,AirportShuttle,IndoorPool,OutdoorPool,StockedBar,Garden,Id,RowVersion")] Facilities facilities)
         {
             if (ModelState.IsValid)
             {
                 facilities.Id = Guid.NewGuid();
                 _context.Add(facilities);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                CottagesFacilities cottagesFacilities = new CottagesFacilities();
+                cottagesFacilities.Id = Guid.NewGuid();
+                cottagesFacilities.CottageId = id.ToString();
+                cottagesFacilities.FacilitiesId = facilities.Id.ToString();
+                _context.Add(cottagesFacilities);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
             return View(facilities);
         }

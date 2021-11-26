@@ -7,6 +7,7 @@
     var cottageOwner = (UserDetails)ViewData["CottageOwner"];
     var houseRules = (HouseRules)ViewData["HouseRules"];
     var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
+    var facilites = (Facilities)ViewData["Facilities"];
 }
 
 
@@ -175,7 +176,208 @@
     </dl>
 </div>
 <div>
+    <h4>Pogodnosti</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Parking
+        </dt>
+        <dd class="col-sm-10">
+            @if(facilites.Parking)
+            {
+                @Html.Raw("Da");
+            } else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            WiFi
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.Wifi)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Grejanje
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.Heating)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Roštilj
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.BarbecueFacilities)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Online prijavljivanje u smeštaj
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.OnlineCheckin)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Đakuzi
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.Jacuzzi)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Pogled na more
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.SeaView)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Pogled na planinu
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.MountainView)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Kuhinja
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.Kitchen)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Veš mašina
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.Parking)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Aerodromski transfer
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.AirportShuttle)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+           Zatvoreni bazen
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.IndoorPool)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Otvoreni bazen
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.OutdoorPool)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Mini-bar
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.StockedBar)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Dvorište
+        </dt>
+        <dd class="col-sm-10">
+            @if (facilites.Garden)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
+        </dd>
+    </dl>
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o vikendici</a>
     <a asp-action="Create" asp-controller="HouseRules" asp-route-id="@Model.Id">Dodaj pravila ponašanja</a>
     <a asp-action="Create" asp-controller="CancelationPolicies" asp-route-id="@Model.Id">Dodaj pravila otkazivanja</a>
+    <a asp-action="Create" asp-controller="Facilities" asp-route-id="@Model.Id">Dodaj pogodnosti</a>
 </div>
