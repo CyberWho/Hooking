@@ -67,7 +67,7 @@ namespace Hooking.Controllers
                 cottagesFacilities.FacilitiesId = facilities.Id.ToString();
                 _context.Add(cottagesFacilities);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction("AddRooms" , "CottageRooms" , new { id = Guid.Parse(cottagesFacilities.CottageId)});
             }
             return View(facilities);
         }

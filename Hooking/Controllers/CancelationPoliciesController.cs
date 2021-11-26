@@ -65,7 +65,7 @@ namespace Hooking.Controllers
                 cottage.CancelationPolicyId = cancelationPolicy.Id.ToString();
                 _context.Update(cottage);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction("Create", "Facilities", new { id = cottage.Id});
             }
             return View(cancelationPolicy);
         }

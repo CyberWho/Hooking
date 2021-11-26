@@ -67,7 +67,7 @@ namespace Hooking.Controllers
                 cottagesHouseRules.HouseRulesId = houseRules.Id.ToString();
                 _context.Add(cottagesHouseRules);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction("Create", "CancelationPolicies", new { id = cottagesHouseRules.CottageId});
             }
             return View(houseRules);
         }

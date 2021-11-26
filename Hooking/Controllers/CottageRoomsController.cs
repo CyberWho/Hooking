@@ -13,7 +13,7 @@ namespace Hooking.Controllers
     public class CottageRoomsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        public Cottage cottage;
         public CottageRoomsController(ApplicationDbContext context)
         {
             _context = context;
@@ -68,11 +68,17 @@ namespace Hooking.Controllers
                 cottagesRooms.CottageId = cottage.Id.ToString();
                 _context.Add(cottagesRooms);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction("AddRooms", "CottageRooms", new { id = cottage.Id});
             }
             return View(cottageRoom);
         }
-
+        [HttpGet("/CottageRooms/AddRooms/{id}")]
+        public async Task<IActionResult> AddRooms(Guid? id)
+        {
+            cottage = await _context.Cottage.FindAsync(id);
+            ViewData["Cottage"] = cottage;
+            return View();
+        }
         // GET: CottageRooms/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {

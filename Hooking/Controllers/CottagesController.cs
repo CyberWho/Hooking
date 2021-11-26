@@ -71,38 +71,7 @@ namespace Hooking.Controllers
                                        || s.City.Contains(searchString) || s.Country.Contains(searchString));
             }
 
-            /*   if (string.IsNullOrEmpty(searchString))
-               {
-                   filteredCottages = cottages;
-               }
-               else foreach (var cottage in cottages)
-                   {
-                       var json = JsonConvert.SerializeObject(cottage);
-                       var dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-
-                       if (filter == "Name")
-                       {
-                           if (cottage.Name.ToString().ToUpper().Contains(searchString.ToUpper()))
-                           {
-                               filteredCottages.Add(cottage);
-                           }
-                       }
-                       if (filter == "City")
-                       {
-                           if (cottage.City.ToString().ToUpper().Contains(searchString.ToUpper()))
-                           {
-                               filteredCottages.Add(cottage);
-                           }
-                       }
-                       if (filter == "Country")
-                       {
-                           if (cottage.Country.ToString().ToUpper().Contains(searchString.ToUpper()))
-                           {
-                               filteredCottages.Add(cottage);
-                           }
-                       }
-
-                   }*/
+          
             return View(ctg.ToList());
         }
 
@@ -216,7 +185,7 @@ namespace Hooking.Controllers
                 cottage.GradeCount = 0;
                 _context.Add(cottage);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction("Create", "HouseRules", new { id = cottage.Id});
             }
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
