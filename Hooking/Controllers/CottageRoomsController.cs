@@ -92,7 +92,7 @@ namespace Hooking.Controllers
         // POST: CottageRooms/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CottageRooms/Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("BedCount,AirCondition,TV,Balcony,Id,RowVersion")] CottageRoom cottageRoom)
         {
@@ -105,8 +105,18 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(cottageRoom);
+                    var cottageRoomTmp = await _context.CottageRoom.FindAsync(id);
+                    cottageRoomTmp.BedCount = cottageRoom.BedCount;
+                    cottageRoomTmp.AirCondition = cottageRoom.AirCondition;
+                    cottageRoomTmp.TV = cottageRoom.TV;
+                    cottageRoomTmp.Balcony = cottageRoom.Balcony;
+                    _context.Update(cottageRoomTmp);
                     await _context.SaveChangesAsync();
+                    var cottageRoomId = cottageRoom.Id.ToString();
+                    CottagesRooms cottagesRooms = _context.CottagesRooms.Where(m => m.CottageRoomId == cottageRoomId).FirstOrDefault<CottagesRooms>();
+                    Guid cottageId = Guid.Parse(cottagesRooms.CottageId);
+                    var cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+                    return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
