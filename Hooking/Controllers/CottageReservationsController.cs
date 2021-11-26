@@ -27,22 +27,46 @@ namespace Hooking.Controllers
         public async Task<IActionResult> Index()
         {
 
-        //    var user = await _userManager.GetUserAsync(User);
-         //   var boats = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
-            // var loggedInUser = await _userManager.GetUserAsync(User);
-
-            //   Console.WriteLine(loggedInUser.Id.ToString());
-
-            /*  return View(await _context.CottageReservation
-              .Include(x => x.StartDate)
-              .Include(x => x.EndDate)
-              .Include(x => x.Price)
-              .Include(x => x.MaxPersonCount)
-              .Where(x => x.UserDetailsId == loggedInUser.Id)
-              .ToListAsync());*/
-            return View(await _context.CottageReservation.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            var reservations = await _context.CottageReservation.Where(m => m.UserDetailsId==user.Id).ToListAsync();
+           
+           // return View(await _context.CottageReservation.ToListAsync());
+           return View(reservations);
         }
 
+        // GET: CottageReservationsHistory
+        public async Task<IActionResult> CottageReservationsHistory(string sortOrder="")
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            var reservations = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+
+            List<CottageReservation> cottageReservations = await _context.CottageReservation.ToListAsync();
+            
+
+            ViewData["StartDate"] = String.IsNullOrEmpty(sortOrder) ? "StartDate" : "";
+            ViewData["EndDate"] = String.IsNullOrEmpty(sortOrder) ? "EndDate" : "";
+            ViewData["Price"] = String.IsNullOrEmpty(sortOrder) ? "Price" : "";
+   
+            var ctg = from b in cottageReservations
+                      select b;
+            switch (sortOrder)
+            {
+                case "StartDate":
+                    ctg = ctg.OrderBy(b => b.StartDate);
+                    break;
+                case "Address":
+                    ctg = ctg.OrderBy(b => b.EndDate);
+                    break;
+                case "City":
+                    ctg = ctg.OrderBy(b => b.Price);
+                    break;
+            }
+          
+
+            // return View(await _context.CottageReservation.ToListAsync());
+            return View(ctg);
+        }
         // GET: CottageReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

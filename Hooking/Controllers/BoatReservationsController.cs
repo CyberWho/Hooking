@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class BoatReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BoatReservationsController(ApplicationDbContext context)
+        public BoatReservationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: BoatReservations
@@ -24,7 +27,35 @@ namespace Hooking.Controllers
         {
             return View(await _context.BoatReservation.ToListAsync());
         }
+        public async Task<IActionResult> BoatReservationsHistory(string sortOrder = "")
+        {
 
+            var user = await _userManager.GetUserAsync(User);
+            var reservations = await _context.BoatReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+
+            List<BoatReservation> boatReservations = await _context.BoatReservation.ToListAsync();
+
+
+            ViewData["StartDate"] = String.IsNullOrEmpty(sortOrder) ? "StartDate" : "";
+            ViewData["EndDate"] = String.IsNullOrEmpty(sortOrder) ? "EndDate" : "";
+            ViewData["Price"] = String.IsNullOrEmpty(sortOrder) ? "Price" : "";
+
+            var bt = from b in boatReservations
+                      select b;
+            switch (sortOrder)
+            {
+                case "StartDate":
+                    bt = bt.OrderBy(b => b.StartDate);
+                    break;
+                case "Address":
+                    bt = bt.OrderBy(b => b.EndDate);
+                    break;
+                case "City":
+                    bt = bt.OrderBy(b => b.Price);
+                    break;
+            }
+            return View(bt);
+        }
         // GET: BoatReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

@@ -27,6 +27,10 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public static string MyCottages => "MyCottages";
         public static string MyBoats => "MyBoats";
 
+        public static string MyCottageReservations => "MyCottageReservations";
+
+        public static string CottageReservationHistory => "CottageReservationHistory";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -46,7 +50,13 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public static string MyCottagesNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyCottages);
 
         public static string MyBoatsNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyBoats);
-        
+
+        public static string MyCottageReservationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyCottageReservations);
+
+        public static string CottageReservatiosHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, CottageReservationHistory);
+
+
+
         private static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
