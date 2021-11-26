@@ -22,32 +22,13 @@ namespace Hooking.Controllers
         public CancelationPolicy cancelationPolicy;
         public HouseRules houseRules;
         public Facilities facilities;
-        public List<CottageRoom> cottageRooms = new List<CottageRoom>(); 
+        public List<CottageRoom> cottageRooms = new List<CottageRoom>();
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
 
-        }
-        [HttpGet("/Cottages/Details/{id}/AddHouseRules")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddHouseRules(Guid id, [Bind("PetFriendly,NonSmoking,CheckInTime,CheckOutTime,AgeRestriction,Id,RowVersion")] HouseRules houseRules)
-        {
-            if (ModelState.IsValid)
-            {
-                houseRules.Id = Guid.NewGuid();
-                _context.Add(houseRules);
-                await _context.SaveChangesAsync();
-                CottagesHouseRules cottagesHouseRules = new CottagesHouseRules();
-                cottagesHouseRules.Id = Guid.NewGuid();
-                cottagesHouseRules.CottageId = id.ToString();
-                cottagesHouseRules.HouseRulesId = houseRules.Id.ToString();
-                _context.Add(cottagesHouseRules);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
-            }
-            return View(houseRules);
         }
        
 
