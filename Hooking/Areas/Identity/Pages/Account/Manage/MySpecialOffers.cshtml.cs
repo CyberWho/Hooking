@@ -20,6 +20,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         private readonly IEmailSender _emailSender;
         [BindProperty]
         public List<CottageSpecialOffer> cottageSpecialOffers { get; set; }
+        public List<Cottage> cottages = new List<Cottage>();
         public MySpecialOffersModel(UserManager<IdentityUser> userManager,
                                     RoleManager<IdentityRole> roleManager,
                                     SignInManager<IdentityUser> signInManager,
@@ -45,10 +46,17 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 foreach(var specialOffer in specialOffers)
                 {
                     if(specialOffer.StartDate >= DateTime.Now)
+                    {
                         cottageSpecialOffers.Add(specialOffer);
+                        Guid cottageGuid = Guid.Parse(specialOffer.CottageId);
+                        var cottageSpec = _context.Cottage.Where(m => m.Id == cottageGuid).FirstOrDefault<Cottage>();
+                        cottages.Add(cottageSpec);
+                    }
+                        
                     
                 }
             }
+            ViewData["cottages"] = cottages;
             return Page();
         }
     }
