@@ -109,7 +109,16 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(cottageSpecialOffer);
+                    var cottageSpecialOfferTmp = await _context.CottageSpecialOffer.FindAsync(id);
+                    cottageSpecialOfferTmp.Id = id;
+                    cottageSpecialOfferTmp.CottageId = cottageSpecialOffer.CottageId;
+                    cottageSpecialOfferTmp.StartDate = cottageSpecialOffer.StartDate;
+                    cottageSpecialOfferTmp.EndDate = cottageSpecialOffer.EndDate;
+                    cottageSpecialOfferTmp.Price = cottageSpecialOffer.Price;
+                    cottageSpecialOfferTmp.MaxPersonCount = cottageSpecialOffer.MaxPersonCount;
+                    cottageSpecialOfferTmp.Description = cottageSpecialOffer.Description;
+                    cottageSpecialOfferTmp.IsReserved = cottageSpecialOffer.IsReserved;
+                    _context.Update(cottageSpecialOfferTmp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -123,7 +132,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/MySpecialOffers", new { area = "Identity" });
             }
             return View(cottageSpecialOffer);
         }
