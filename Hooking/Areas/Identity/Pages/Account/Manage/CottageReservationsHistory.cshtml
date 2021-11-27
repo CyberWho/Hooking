@@ -1,0 +1,71 @@
+﻿@page
+@model Hooking.Areas.Identity.Pages.Account.Manage.CottageReservationsHistoryModel
+@{
+    ViewData["Title"] = "Istorija rezervacija vikendica";
+    ViewData["ActivePage"] = ManageNavPages.CottageReservationHistory;
+
+}
+<h4>@ViewData["Title"]</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id vikendice
+            </th>
+            <th>
+                Id korisnika
+            </th>
+            <th>
+                Pocetni datum
+            </th>
+            <th>
+                Krajnji datum
+            </th>
+            <th>
+                Cena
+            </th>
+            <th>
+                Max broj osoba
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.myCottageReservations)
+        {
+            @if (DateTime.Compare(item.StartDate, DateTime.Now) < 0)
+            {
+                <tr>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CottageId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserDetailsId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxPersonCount)
+                    </td>
+                
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
