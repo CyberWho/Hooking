@@ -1,0 +1,56 @@
+﻿@page
+@model Hooking.Areas.Identity.Pages.Account.Manage.MyCottageReservationsModel
+@{
+    ViewData["Title"] = "Istorija rezervacija";
+    ViewData["ActivePage"] = ManageNavPages.MyCottageReservations;
+}
+
+<h4>Istorija rezervacija</h4>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+           
+            
+            <th>
+               Od
+            </th>
+            <th>
+                Do
+            </th>
+            <th>
+               Cena
+            </th>
+            <th>
+                Broj osoba
+            </th>
+          
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.cottageReservations)
+        {
+            <tr>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxPersonCount)
+                </td>
+               
+               
+            </tr>
+        }
+    </tbody>
+</table>

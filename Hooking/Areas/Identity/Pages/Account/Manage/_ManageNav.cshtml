@@ -48,4 +48,11 @@
             <li class="nav-item"><a class="nav-link @ManageNavPages.MySpecialOffersNavClass(ViewContext)" id="my-special-offers" asp-page="./MySpecialOffers">Moje specijalne ponude</a></li>
         }
     }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Vlasnik vikendice"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.MyCottageReservationsNavClass(ViewContext)" id="my-cottage-reservations" asp-page="./MyCottageReservations">Pregled rezervacija</a></li>
+        }
+    }
 </ul>

@@ -35,7 +35,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string BoatReservationHistory => "BoatReservationHistory";
 
-
+        
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
