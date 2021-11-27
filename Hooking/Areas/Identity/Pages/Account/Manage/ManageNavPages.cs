@@ -31,6 +31,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string CottageReservationHistory => "CottageReservationHistory";
 
+        public static string MySpecialOffers => "MySpecialOffers";
+
         public static string BoatReservationHistory => "BoatReservationHistory";
 
 
