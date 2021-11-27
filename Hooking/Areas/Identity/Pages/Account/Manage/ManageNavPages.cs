@@ -60,6 +60,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string CottageReservatiosHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, CottageReservationHistory);
 
+        public static string MySpecialOffersNavClass(ViewContext viewContext) => PageNavClass(viewContext, MySpecialOffers);
+
         public static string BoatReservatiosHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, BoatReservationHistory);
 
 
