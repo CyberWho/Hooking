@@ -78,51 +78,55 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Country)
-                </td>
-                <td hidden>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Area)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AverageGrade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GradeCount)
-                </td>
-                <th hidden>
-                    @Html.DisplayFor(modelItem => item.CancelationPolicyId)
-                </th>
-                <th hidden>
-                    @Html.DisplayFor(modelItem => item.RegularPrice)
-                </th>
-                <th hidden>
-                    @Html.DisplayFor(modelItem => item.WeekendPrice)
-                </th>
-                <th hidden>
-                    @Html.DisplayFor(modelItem => item.CottageOwnerId)
-                </th>
-                <td hidden>
-                    @Html.DisplayFor(modelItem => item.RowVersion)
-                </td>
-
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td hidden>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Area)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageGrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GradeCount)
+            </td>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.CancelationPolicyId)
+            </th>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.RegularPrice)
+            </th>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.WeekendPrice)
+            </th>
+            <th hidden>
+                @Html.DisplayFor(modelItem => item.CottageOwnerId)
+            </th>
+            <td hidden>
+                @Html.DisplayFor(modelItem => item.RowVersion)
+            </td>
+            <td>
+                
+                <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a> 
+                
+            </td>
+        </tr>
         }
     </tbody>
 </table>

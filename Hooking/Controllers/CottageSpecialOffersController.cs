@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class CottageSpecialOffersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CottageSpecialOffersController(ApplicationDbContext context)
+        public CottageSpecialOffersController(ApplicationDbContext context,
+                                              UserManager<IdentityUser> userManager,
+                                              RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: CottageSpecialOffers
@@ -52,16 +59,20 @@ namespace Hooking.Controllers
         // POST: CottageSpecialOffers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CottageSpecialOffers/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CottageId,StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
+        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
         {
             if (ModelState.IsValid)
             {
                 cottageSpecialOffer.Id = Guid.NewGuid();
+                cottageSpecialOffer.CottageId = id.ToString();
+                cottageSpecialOffer.StartDate = cottageSpecialOffer.StartDate.Date;
+                cottageSpecialOffer.EndDate = cottageSpecialOffer.EndDate.Date;
+                cottageSpecialOffer.IsReserved = false;
                 _context.Add(cottageSpecialOffer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/MySpecialOffers", new { area = "Identity"});
             }
             return View(cottageSpecialOffer);
         }
@@ -87,7 +98,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CottageId,StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CottageId,StartDate,EndDate,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
         {
             if (id != cottageSpecialOffer.Id)
             {
