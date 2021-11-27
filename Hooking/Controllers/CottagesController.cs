@@ -74,6 +74,7 @@ namespace Hooking.Controllers
           
             return View(ctg.ToList());
         }
+        
 
         // GET: Cottages/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -163,9 +164,12 @@ namespace Hooking.Controllers
         {
             return View();
         }
-        public IActionResult CottageSpecialOffers()
+        [HttpGet("/Cottages/CottagesForSpecialOffer")]
+        public async Task<IActionResult> CottagesForSpecialOffer()
         {
-            return Redirect("/CottageSpecialOffers");
+            var user = await _userManager.GetUserAsync(User);
+            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
+            return View(myCottages);
         }
 
         // POST: Cottages/Create

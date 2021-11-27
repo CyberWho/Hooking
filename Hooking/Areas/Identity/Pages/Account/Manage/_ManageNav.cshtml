@@ -39,4 +39,11 @@
             <li class="nav-item"><a class="nav-link @ManageNavPages.CottageReservatiosHistoryNavClass(ViewContext)" id="my-cottageReservationsHistory" asp-page="./CottageReservationsHistory">Moje rezervacije</a></li>
         }
     }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Vlasnik vikendice"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.MySpecialOffersNavClass(ViewContext)" id="my-special-offers" asp-page="./MySpecialOffers">Moje specijalne ponude</a></li>
+        }
+    }
 </ul>
