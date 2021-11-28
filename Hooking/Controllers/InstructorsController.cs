@@ -13,6 +13,7 @@ namespace Hooking.Controllers
     public class InstructorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+               public UserDetails user;
 
         public InstructorsController(ApplicationDbContext context)
         {
