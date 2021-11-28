@@ -21,7 +21,7 @@ namespace Hooking.Controllers
         }
 
         // GET: Instructors
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString="",string sortOrder="")
         {
             var instructors = await _context.Instructor.ToListAsync();
             List<UserDetails> users = new List<UserDetails>();
@@ -31,6 +31,35 @@ namespace Hooking.Controllers
                 users.Add(user);
             }
             ViewData["UserInstructors"] = users;
+            var ins = from b in _context.UserDetails
+                      select b;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                ins = ins.Where(s => s.FirstName.Contains(searchString)
+                                       || s.City.Contains(searchString) || s.Country.Contains(searchString) || s.LastName.Contains(searchString)
+                                       || s.Address.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "FirstName":
+                    ins = ins.OrderBy(b => b.FirstName);
+                    break;
+                case "Address":
+                    ins = ins.OrderBy(b => b.Address);
+                    break;
+                case "City":
+                    ins = ins.OrderBy(b => b.City);
+                    break;
+                case "Country":
+                    ins = ins.OrderBy(b => b.Country);
+                    break;
+                case "LastName":
+                    ins = ins.OrderBy(b => b.FirstName);
+                    break;
+
+
+            }
             return View(await _context.Instructor.ToListAsync());
         }
 

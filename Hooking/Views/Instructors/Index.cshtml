@@ -14,9 +14,9 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-8">
-        <form asp-controller="Cottages" asp-action="Index" class="form-inline">
+        <form asp-controller="Instructors" asp-action="Index" class="form-inline">
             <p>
-                Pretraži po: <input type="text" name="searchString" />
+                 Pretraži po: @Html.TextBox("SearchString") 
 
                              <select name="filter" id="filter" style="background-color: transparent;">
                                  <option value="FirstName" class="option">Imenu</option>
@@ -39,19 +39,19 @@
                 @Html.DisplayNameFor(model => model.UserDetailsId)
             </th>
             <th>
-                Ime
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Name"]">Ime</a>
             </th>
             <th>
-                Prezime
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LastName"]">Prezime</a>
             </th>
             <th>
-               Adresa
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Address"]">Adresa</a>
             </th>
             <th>
-                Grad
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["City"]">Grad</a>
             </th>
             <th>
-                Drzava
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Country"]">Drzava</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AverageGrade)
