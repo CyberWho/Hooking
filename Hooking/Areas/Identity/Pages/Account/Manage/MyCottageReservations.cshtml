@@ -34,23 +34,25 @@
     <tbody>
         @foreach (var item in Model.cottageReservations)
         {
-            <tr>
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaxPersonCount)
-                </td>
-               
-               
-            </tr>
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
+            </td>
+            <td>
+                <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikaži još</a> 
+            </td>
+
+        </tr>
         }
     </tbody>
 </table>

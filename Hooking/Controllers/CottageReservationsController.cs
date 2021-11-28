@@ -15,12 +15,17 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public Cottage cottage;
+        public UserDetails userDetails;
 
-
-        public CottageReservationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public CottageReservationsController(ApplicationDbContext context, 
+                                             UserManager<IdentityUser> userManager,
+                                             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: CottageReservations
@@ -77,11 +82,21 @@ namespace Hooking.Controllers
 
             var cottageReservation = await _context.CottageReservation
                 .FirstOrDefaultAsync(m => m.Id == id);
+            Guid cottageId = Guid.Parse(cottageReservation.CottageId);
+            cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+            userDetails = _context.UserDetails.Where(m => m.IdentityUserId == cottageReservation.UserDetailsId).FirstOrDefault<UserDetails>();
+            Guid identityUserId = Guid.Parse(userDetails.IdentityUserId);
+            var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
+            string email = identityUser.Email;
+            string phoneNumber = identityUser.PhoneNumber;
             if (cottageReservation == null)
             {
                 return NotFound();
             }
-
+            ViewData["Cottage"] = cottage;
+            ViewData["UserDetails"] = userDetails;
+            ViewData["Email"] = email;
+            ViewData["PhoneNumber"] = phoneNumber;
             return View(cottageReservation);
         }
 

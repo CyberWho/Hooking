@@ -3,58 +3,70 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
+@{ 
+    var cottage = (Cottage)ViewData["Cottage"];
+    var userDetails = (UserDetails)ViewData["UserDetails"];
+    var email = (string)ViewData["Email"];
+    var phoneNumber = (string)ViewData["PhoneNumber"];
+}
+<h4>Detalji rezervacije</h4>
 
 <div>
-    <h4>CottageReservation</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CottageId)
+        <dt class="col-sm-2">
+            Naziv vikendice
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CottageId)
+        <dd class="col-sm-10">
+            @cottage.Name
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserDetailsId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserDetailsId)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxPersonCount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxPersonCount)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RowVersion)
+    </dl>
+    <h5>Detalji o klijentu</h5>
+    <dl>
+        <dt class="col-sm-2">
+            Ime i prezime klijenta
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RowVersion)
+        <dd class="col-sm-10">
+            @userDetails.FirstName @userDetails.LastName
+        </dd>
+        <dt class="col-sm-2">
+            Email adresa
+        </dt>
+        <dd class="col-sm-10">
+            @email
+        </dd>
+        <dt class="col-sm-2">
+            Broj telefona
+        </dt>
+        <dd class="col-sm-10">
+            @phoneNumber
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a href='@Url.Page("/Account/Manage/MyCottages", new { area = "Identity" })'>Back to List</a>
 </div>
