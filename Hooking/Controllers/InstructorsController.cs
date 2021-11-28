@@ -23,6 +23,14 @@ namespace Hooking.Controllers
         // GET: Instructors
         public async Task<IActionResult> Index()
         {
+            var instructors = await _context.Instructor.ToListAsync();
+            List<UserDetails> users = new List<UserDetails>();
+            foreach (Instructor instructor in instructors)
+            {
+                UserDetails user = _context.UserDetails.Where(m => m.IdentityUserId == instructor.UserDetailsId).FirstOrDefault<UserDetails>();
+                users.Add(user);
+            }
+            ViewData["UserInstructors"] = users;
             return View(await _context.Instructor.ToListAsync());
         }
 
