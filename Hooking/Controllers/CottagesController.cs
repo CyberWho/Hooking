@@ -23,6 +23,7 @@ namespace Hooking.Controllers
         public HouseRules houseRules;
         public Facilities facilities;
         public List<CottageRoom> cottageRooms = new List<CottageRoom>();
+        public string cottageId;
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -74,7 +75,15 @@ namespace Hooking.Controllers
           
             return View(ctg.ToList());
         }
-        
+        [HttpGet("/Cottages/ShowAllUsers/{id}")]
+        public async Task<IActionResult> ShowAllUsers(Guid id)
+        {
+            cottageId = id.ToString();
+            ViewData["CottageId"] = cottageId;
+            var allUsers = _context.UserDetails.ToListAsync();
+            return View(allUsers);
+        }
+
 
         // GET: Cottages/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -261,6 +270,13 @@ namespace Hooking.Controllers
             }
 
             return View(cottage);
+        }
+        [HttpGet("/Cottages/CottagesForReservation")]
+        public async Task<IActionResult> CottagesForReservation()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
+            return View(myCottages);
         }
 
         // POST: Cottages/Delete/5

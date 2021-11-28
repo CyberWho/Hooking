@@ -4,17 +4,19 @@
     ViewData["Title"] = "Istorija rezervacija";
     ViewData["ActivePage"] = ManageNavPages.MyCottageReservations;
 }
+@{ 
+    var cottageName = (string)ViewData["CottageName"];
+}
 
 <h4>Istorija rezervacija</h4>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a href="@Url.Action("CottagesForReservation", "Cottages")">Napravi novu rezervaciju</a>
 <table class="table">
     <thead>
         <tr>
            
-            
+            <th>
+                Naziv vikendice
+            </th>
             <th>
                Od
             </th>
@@ -35,7 +37,9 @@
         @foreach (var item in Model.cottageReservations)
         {
         <tr>
-
+            <th>
+                @cottageName
+            </th>
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>

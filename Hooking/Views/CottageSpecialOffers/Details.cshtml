@@ -3,20 +3,39 @@
 @{
     ViewData["Title"] = "Details";
 }
+@{ 
+    var cottage = (Cottage)ViewData["Cottage"];
+}
 
-<h1>Details</h1>
+<h4>Specijalna ponuda</h4>
 
 <div>
-    <h4>CottageSpecialOffer</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CottageId)
+            Naziv vikendice
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CottageId)
+            @cottage.Name
         </dd>
-       
+        <dt class="col-sm-2">
+            Država
+        </dt>
+        <dd class="col-sm-10">
+            @cottage.Country
+        </dd>
+        <dt class="col-sm-2">
+            Grad
+        </dt>
+        <dd class="col-sm-10">
+            @cottage.City
+        </dd>
+        <dt class="col-sm-2">
+            Adresa
+        </dt>
+        <dd class="col-sm-10">
+            @cottage.Address
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
@@ -48,14 +67,17 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RowVersion)
+            @Html.DisplayNameFor(model => model.IsReserved)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RowVersion)
+            @if (Model.IsReserved)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>

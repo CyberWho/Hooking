@@ -20,6 +20,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         private readonly IEmailSender _emailSender;
         [BindProperty]
         public List<CottageReservation> cottageReservations { get; set; }
+        public string cottageName;
         public MyCottageReservationsModel(ApplicationDbContext context,
                                           UserManager<IdentityUser> userManager,
                                           RoleManager<IdentityRole> roleManager,
@@ -45,6 +46,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 if(myCottageReservations.Count != 0)
                 {
                     cottageReservations.AddRange(myCottageReservations);
+                    cottageName = cottage.Name;
+                    ViewData["CottageName"] = cottageName;
                 }
                     
             }

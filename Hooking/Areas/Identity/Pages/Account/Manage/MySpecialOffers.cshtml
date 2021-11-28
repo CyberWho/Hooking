@@ -4,6 +4,9 @@
     ViewData["Title"] = "Moje specijalne ponude";
     ViewData["ActivePage"] = ManageNavPages.MySpecialOffers;
 }
+@{ 
+    var cottageName = (string)ViewData["CottageName"];
+}
 <h4>Moje aktivne specijalne ponude</h4>
 
 <p>
@@ -12,6 +15,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                Naziv vikendice
+            </th>
             <th>
                 Od
             </th>
@@ -34,6 +40,9 @@
         @foreach (var item in Model.cottageSpecialOffers)
         {
             <tr>
+                <td>
+                    @cottageName
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>

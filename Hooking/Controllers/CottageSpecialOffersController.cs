@@ -16,6 +16,7 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        public Cottage cottage;
 
         public CottageSpecialOffersController(ApplicationDbContext context,
                                               UserManager<IdentityUser> userManager,
@@ -42,11 +43,14 @@ namespace Hooking.Controllers
 
             var cottageSpecialOffer = await _context.CottageSpecialOffer
                 .FirstOrDefaultAsync(m => m.Id == id);
+            Guid cottageId = Guid.Parse(cottageSpecialOffer.CottageId);
+            cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+            
             if (cottageSpecialOffer == null)
             {
                 return NotFound();
             }
-
+            ViewData["Cottage"] = cottage; 
             return View(cottageSpecialOffer);
         }
 
