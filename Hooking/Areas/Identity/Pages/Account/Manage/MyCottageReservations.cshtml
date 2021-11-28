@@ -1,0 +1,68 @@
+﻿@page
+@model Hooking.Areas.Identity.Pages.Account.Manage.MyCottageReservationsModel
+@{
+    ViewData["Title"] = "Moje rezervacije vikendica";
+    ViewData["ActivePage"] = ManageNavPages.MyCottageReservations;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id vikendice
+            </th>
+            <th>
+                Id korisnika
+            </th>
+            <th>
+                Pocetni datum
+            </th>
+            <th>
+                Krajnji datum
+            </th>
+            <th>
+                Cena
+            </th>
+            <th>
+                Max broj osoba
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.myCottageReservations)
+        {
+            @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
+            {
+                <tr>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CottageId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserDetailsId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxPersonCount)
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a href="@Url.Action("Delete", "CottageReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
+                    </td>
+
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

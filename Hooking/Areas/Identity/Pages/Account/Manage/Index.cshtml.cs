@@ -51,6 +51,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             public string City { get; set; }
             [Display(Name = "Država")]
             public string Country { get; set; }
+
+            [Display(Name = "Broj kaznenih poena")]
+            public int PenaltyCount { get; set; }
         }
 
         private async Task LoadAsync(IdentityUser user)

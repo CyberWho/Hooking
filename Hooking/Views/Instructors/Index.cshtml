@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Instruktori";
+    List<UserDetails> userInstructors = (List<UserDetails>)ViewData["UserInstructors"];
+    int i = 0;
+
 }
 
 <h1>Instruktori</h1>
@@ -11,9 +14,9 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-8">
-        <form asp-controller="Cottages" asp-action="Index" class="form-inline">
+        <form asp-controller="Instructors" asp-action="Index" class="form-inline">
             <p>
-                Pretraži po: <input type="text" name="searchString" />
+                 Pretraži po: @Html.TextBox("SearchString") 
 
                              <select name="filter" id="filter" style="background-color: transparent;">
                                  <option value="FirstName" class="option">Imenu</option>
@@ -36,6 +39,21 @@
                 @Html.DisplayNameFor(model => model.UserDetailsId)
             </th>
             <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Name"]">Ime</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["LastName"]">Prezime</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Address"]">Adresa</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["City"]">Grad</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Country"]">Drzava</a>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.AverageGrade)
             </th>
             <th>
@@ -44,17 +62,31 @@
             <th>
                 @Html.DisplayNameFor(model => model.Biography)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
+
 @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserDetailsId)
+            </td>
+            <td>
+                @userInstructors[i].FirstName
+            </td>
+            <td>
+                @userInstructors[i].LastName
+            </td>
+            <td>
+                @userInstructors[i].Address
+            </td>
+            <td>
+                @userInstructors[i].City
+            </td>
+            <td>
+                @userInstructors[i].Country
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AverageGrade)
@@ -65,15 +97,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Biography)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
-            </td>
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
+    i++;
 }
     </tbody>
 </table>
