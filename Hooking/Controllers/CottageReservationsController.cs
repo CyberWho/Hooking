@@ -72,14 +72,8 @@ namespace Hooking.Controllers
             // return View(await _context.CottageReservation.ToListAsync());
             return View(ctg);
         }
-        public IActionResult CreateReservation()
-        {
-            return View();
-        }
-
-        [HttpPost("/CottageReservations/CreateReservation/{id}/{cId}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReservation(Guid id, Guid cId, [Bind("StartDate,EndDate,PersonCount,Id,RowVersion")] CottageReservation cottageReservation)
+        // GET : CottageReservations/CreateReservation/5/3
+        public IActionResult CreateReservation(Guid? id, Guid? cId)
         {
             if (id == null)
             {
@@ -89,13 +83,26 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
-            cottageReservation.Id = Guid.NewGuid();
-            cottageReservation.Price = 1000;
-            cottageReservation.UserDetailsId = id.ToString();
-            cottageReservation.CottageId = cId.ToString();
-            _context.Add(cottageReservation);
-            await _context.SaveChangesAsync();
+
+            return View();
+        }
+
+        [HttpPost("/CottageReservations/CreateReservation/{id}/{cId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateReservation(Guid id, Guid cId, [Bind("StartDate,EndDate,PersonCount,Id,RowVersion")] CottageReservation cottageReservation)
+        {
+            if (ModelState.IsValid)
+            {
+                cottageReservation.Id = Guid.NewGuid();
+                cottageReservation.Price = 1000;
+                cottageReservation.UserDetailsId = id.ToString();
+                cottageReservation.CottageId = cId.ToString();
+                _context.Add(cottageReservation);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
+            }
             return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
+
         }
         // GET: CottageReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
