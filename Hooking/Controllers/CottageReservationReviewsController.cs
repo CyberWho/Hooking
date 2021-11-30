@@ -54,7 +54,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("/CottageReservationReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("Review,DidntShow,Id,RowVersion")] CottageReservationReview cottageReservationReview)
+        public async Task<IActionResult> Create(Guid id, [Bind("Review,DidntShow,ReceivedPenalty,Id,RowVersion")] CottageReservationReview cottageReservationReview)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +70,13 @@ namespace Hooking.Controllers
                     _context.Update(userDetails);
                     await _context.SaveChangesAsync();
 
+                }
+                if(cottageReservationReview.ReceivedPenalty)
+                {
+                    cottageReservationReview.IsReviewedByAdmin = false;
+                } else
+                {
+                    cottageReservationReview.IsReviewedByAdmin = true;
                 }
                 _context.Add(cottageReservationReview);
                 await _context.SaveChangesAsync();

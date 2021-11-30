@@ -15,5 +15,6 @@ namespace Hooking.Models
         public bool DidntShow { get; set; }
         [DisplayName("Da li želite da prijavite gosta?")]
         public bool ReceivedPenalty { get; set; }
+        public bool IsReviewedByAdmin { get; set; }
     }
 }
