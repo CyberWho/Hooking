@@ -7,16 +7,38 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Hooking.Controllers
 {
     public class UserDeleteRequestsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public UserDeleteRequestsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IEmailSender _emailSender;
+        [TempData]
+        public string StatusMessage { get; set; }
+        public UserDeleteRequestsController(ApplicationDbContext context,
+                                            UserManager<IdentityUser> userManager,
+                                            RoleManager<IdentityRole> roleManager,
+                                            SignInManager<IdentityUser> signInManager,
+                                            IEmailSender emailSender)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+            _emailSender = emailSender;
+            using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
+            {
+                string json = reader.ReadToEnd();
+                _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
+            }
         }
 
         // GET: UserDeleteRequests
@@ -54,14 +76,51 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserDetailsId,Description,IsApproved,Type,Id,RowVersion")] UserDeleteRequest userDeleteRequest)
+        public async Task<IActionResult> Create([Bind("Description,Id,RowVersion")] UserDeleteRequest userDeleteRequest)
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                List<UserDeleteRequest> userDeleteRequests = _context.UserDeleteRequest.Where(m => m.UserDetailsId == user.Id).ToList();
+                foreach(var userDeleteRequestTemp in userDeleteRequests)
+                {
+                    if(!userDeleteRequestTemp.isReviewed)
+                    {
+                        StatusMessage = "Ne možete poslati više od jednog zahteva za brisanje profila.";
+                        return RedirectToPage("/Account/Manage/UserDeleteRequest", new { area = "Identity" });
+                    }
+                }
                 userDeleteRequest.Id = Guid.NewGuid();
+                userDeleteRequest.IsApproved = false;
+                userDeleteRequest.UserDetailsId = user.Id;
+                userDeleteRequest.isReviewed = false;
+                IList<string> rolenames = await _signInManager.UserManager.GetRolesAsync(user);
+                switch (rolenames[0])
+                {
+                    case "Vlasnik vikendice":
+                        userDeleteRequest.Type = DeletionType.COTTAGEOWNER;
+                        break;
+                    case "Korisnik":
+                        userDeleteRequest.Type = DeletionType.USER;
+                        break;
+                    case "Instruktor":
+                        userDeleteRequest.Type = DeletionType.INSTRUCTOR;
+                        break;
+                    case "Vlasnik broda":
+                        userDeleteRequest.Type = DeletionType.BOATOWNER;
+                        break;
+                    case "Admin":
+                        userDeleteRequest.Type = DeletionType.ADMIN;
+                        break;
+                }
+                
                 _context.Add(userDeleteRequest);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                System.Diagnostics.Debug.WriteLine(user.Email);
+                await _emailSender.SendEmailAsync(user.Email, "Potvrda poslatog zahteva za brisanje profila",
+                            $"Poštovani, Obaveštavamo Vas da smo primili Vaš zahtev za brisanje naloga. U narednom periodu ćete biti obavešteni o odluci admin tima. Hvala na strpljenju!");
+
+                return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
             }
             return View(userDeleteRequest);
         }
