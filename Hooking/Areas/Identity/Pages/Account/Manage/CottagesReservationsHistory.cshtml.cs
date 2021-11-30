@@ -11,7 +11,7 @@ using Hooking.Models;
 
 namespace Hooking.Areas.Identity.Pages.Account.Manage
 {
-    public class MyCottageReservationsModel : PageModel
+    public class CottagesReservationsHistoryModel : PageModel
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
@@ -21,7 +21,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public List<CottageReservation> cottageReservations { get; set; }
         public string cottageName;
-        public MyCottageReservationsModel(ApplicationDbContext context,
+        public CottagesReservationsHistoryModel(ApplicationDbContext context,
                                           UserManager<IdentityUser> userManager,
                                           RoleManager<IdentityRole> roleManager,
                                           SignInManager<IdentityUser> signInManager,
@@ -38,16 +38,16 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             List<Cottage> myCottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
             cottageReservations = new List<CottageReservation>();
-            foreach(var cottage in myCottages)
+            foreach (var cottage in myCottages)
             {
                 var cottageId = cottage.Id.ToString();
                 List<CottageReservation> myCottageReservations = new List<CottageReservation>();
                 myCottageReservations = _context.CottageReservation.Where(m => m.CottageId == cottageId).ToList();
-                if(myCottageReservations.Count != 0)
+                if (myCottageReservations.Count != 0)
                 {
-                    foreach(CottageReservation cottageReservation in myCottageReservations)
+                    foreach (CottageReservation cottageReservation in myCottageReservations)
                     {
-                        if(cottageReservation.StartDate >= DateTime.Now)
+                        if (cottageReservation.StartDate <= DateTime.Now)
                         {
                             cottageReservations.Add(cottageReservation);
                             cottageName = cottage.Name;
@@ -55,7 +55,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                         }
                     }
                 }
-                    
+
             }
             return Page();
         }

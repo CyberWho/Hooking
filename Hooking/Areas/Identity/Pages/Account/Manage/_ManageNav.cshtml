@@ -55,4 +55,11 @@
             <li class="nav-item"><a class="nav-link @ManageNavPages.MyCottageReservationsNavClass(ViewContext)" id="my-cottage-reservations" asp-page="./MyCottageReservations">Pregled rezervacija</a></li>
         }
     }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Vlasnik vikendice"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.CottagesReservationsHistoryNavClass(ViewContext)" id="cottages-reservations-history" asp-page="./CottagesReservationsHistory">Istorija rezervacija</a></li>
+        }
+    }
 </ul>

@@ -97,6 +97,7 @@ namespace Hooking.Controllers
                 cottageReservation.Price = 1000;
                 cottageReservation.UserDetailsId = id.ToString();
                 cottageReservation.CottageId = cId.ToString();
+                cottageReservation.IsReviewed = false;
                 _context.Add(cottageReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
@@ -148,6 +149,7 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 cottageReservation.Id = Guid.NewGuid();
+                cottageReservation.IsReviewed = false;
                 _context.Add(cottageReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
