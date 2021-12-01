@@ -45,7 +45,17 @@
                 <input asp-for="Input.Country" class="form-control" />
                 <span asp-validation-for="Input.Country" class="text-danger"></span>
             </div>
+            @if (User.IsInRole("Korisnik"))
+            {
+                <div class="form-group">
+                    <label asp-for="Input.PenaltyCount"></label>
+                    <input asp-for="Input.PenaltyCount" class="form-control" disabled />
+                </div>
+            }
+
             <button id="update-profile-button" type="submit" class="btn btn-primary">Potvrdi</button>
+
+
         </form>
     </div>
     

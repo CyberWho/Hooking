@@ -1,14 +1,14 @@
 ﻿@page
-@model Hooking.Areas.Identity.Pages.Account.Manage.MyCottageReservationsModel
+@model Hooking.Areas.Identity.Pages.Account.Manage.MyBoatReservationsModel
 @{
-    ViewData["Title"] = "Moje rezervacije vikendica";
-    ViewData["ActivePage"] = ManageNavPages.MyCottageReservations;
+    ViewData["Title"] = "Moje rezervacije brodova";
+    ViewData["ActivePage"] = ManageNavPages.MyBoatReservations;
 }
 <table class="table">
     <thead>
         <tr>
             <th>
-                Id vikendice
+                Id broda
             </th>
             <th>
                 Id korisnika
@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.myCottageReservations)
+        @foreach (var item in Model.myBoatReservations)
         {
             @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
             {
@@ -36,7 +36,7 @@
 
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.CottageId)
+                        @Html.DisplayFor(modelItem => item.BoatId)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.UserDetailsId)
@@ -51,13 +51,13 @@
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.MaxPersonCount)
+                        @Html.DisplayFor(modelItem => item.PersonCount)
                     </td>
 
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a href="@Url.Action("Delete", "CottageReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
+                        <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
                     </td>
 
 
