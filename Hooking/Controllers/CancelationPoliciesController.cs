@@ -110,7 +110,7 @@ namespace Hooking.Controllers
                     var cancelationPolicyId = cancelationPolicy.Id.ToString();
                     var cottage = _context.Cottage.Where(m => m.CancelationPolicyId == cancelationPolicyId).FirstOrDefault<Cottage>();
                     return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id });
-                    await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +123,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+               
             }
             return View(cancelationPolicy);
         }

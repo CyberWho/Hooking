@@ -116,7 +116,7 @@ namespace Hooking.Controllers
                 
                 _context.Add(userDeleteRequest);
                 await _context.SaveChangesAsync();
-                System.Diagnostics.Debug.WriteLine(user.Email);
+                
                 await _emailSender.SendEmailAsync(user.Email, "Potvrda poslatog zahteva za brisanje profila",
                             $"Poštovani, Obaveštavamo Vas da smo primili Vaš zahtev za brisanje naloga. U narednom periodu ćete biti obavešteni o odluci admin tima. Hvala na strpljenju!");
 

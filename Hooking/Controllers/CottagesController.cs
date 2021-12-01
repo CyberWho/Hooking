@@ -308,7 +308,7 @@ namespace Hooking.Controllers
                 return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
             
-            return RedirectToAction(nameof(Index));
+            
         }
 
         private bool CottageExists(Guid id)

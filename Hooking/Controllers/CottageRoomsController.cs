@@ -135,7 +135,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
             return View(cottageRoom);
         }
