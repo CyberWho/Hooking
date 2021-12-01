@@ -14,6 +14,8 @@ using System.IO;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hooking.Controllers
 {
@@ -332,13 +334,32 @@ namespace Hooking.Controllers
                 string fileName = Path.GetFileName(file.FileName);
                 using (var fileStream = file.OpenReadStream())
                 {
-                    var result = utility.UploadBlob(fileName,ContainerName,fileStream);
-                    CottageImage cottageImage = new CottageImage();
-                    cottageImage.Id = Guid.NewGuid();
-                    cottageImage.CottageId = id.ToString();
-                    cottageImage.ImageUrl = result.Uri.ToString();
-                    _context.CottageImages.Add(cottageImage);
-                    await _context.SaveChangesAsync();
+                    string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=hookingstorage;AccountKey=+v8L5XkQZ7Z2CTfdTd03pngWlA4xu02caFJDGUkvGlo/rv8uZnM9CQQYleH3lpb+3Z8sefUOlC0EaoXWIquyDg==;EndpointSuffix=core.windows.net");
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(UserConnectionString);
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference(ContainerName.ToLower());
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                    try
+                    {
+                        await blockBlob.UploadFromStreamAsync(fileStream);
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        var r = e.Message;
+                        return null;
+                    }
+                    
+                    if(blockBlob != null)
+                    {
+                        CottageImage cottageImage = new CottageImage();
+                        cottageImage.Id = Guid.NewGuid();
+                        cottageImage.CottageId = id.ToString();
+                        cottageImage.ImageUrl = blockBlob.Uri.ToString();
+                        _context.CottageImages.Add(cottageImage);
+                        await _context.SaveChangesAsync();
+                    }
+                   
                 }
                 return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
