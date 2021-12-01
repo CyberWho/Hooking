@@ -19,6 +19,8 @@
     <Compile Remove="Data\Migrations\20211125161630_houseRules.Designer.cs" />
     <Compile Remove="Data\Migrations\20211125162744_houseRules1.cs" />
     <Compile Remove="Data\Migrations\20211125162744_houseRules1.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211201082417_cottageImages.cs" />
+    <Compile Remove="Data\Migrations\20211201082417_cottageImages.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +34,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
 </Project>
