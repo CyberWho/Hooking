@@ -115,6 +115,13 @@ namespace Hooking.Controllers
                 cottageReservation.IsReviewed = false;
                 _context.Add(cottageReservation);
                 await _context.SaveChangesAsync();
+                CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
+                cottageNotAvailablePeriod.Id = Guid.NewGuid();
+                cottageNotAvailablePeriod.CottageId = cottageReservation.CottageId;
+                cottageNotAvailablePeriod.StartTime = cottageReservation.StartDate;
+                cottageNotAvailablePeriod.EndTime = cottageReservation.EndDate;
+                _context.Add(cottageNotAvailablePeriod);
+                await _context.SaveChangesAsync();
                 return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
             }
             return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
@@ -166,6 +173,13 @@ namespace Hooking.Controllers
                 cottageReservation.Id = Guid.NewGuid();
                 cottageReservation.IsReviewed = false;
                 _context.Add(cottageReservation);
+                await _context.SaveChangesAsync();
+                CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
+                cottageNotAvailablePeriod.Id = Guid.NewGuid();
+                cottageNotAvailablePeriod.CottageId = cottageReservation.CottageId;
+                cottageNotAvailablePeriod.StartTime = cottageReservation.StartDate;
+                cottageNotAvailablePeriod.EndTime = cottageReservation.EndDate;
+                _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

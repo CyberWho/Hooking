@@ -451,7 +451,7 @@
                 <a class="thumbnail" href="@item.ImageUrl">
                     <img class="img-responsive" src="@item.ImageUrl" style="height: 100%;width: 100%" alt="">
                 </a>
-              
+
 
             </div>
 
@@ -482,5 +482,43 @@
     </div>
 
 </div>
+<h5>Mapa</h5>
+<div id="map" style="width:100%; height:100%;"></div>
+
+<script>
+    function initialize() {
+        
+        var options =
+        {
+            /*zoom: 3,
+            center: new google.maps.LatLng(37.09, -95.71),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: true,
+            mapTypeControlOptions:
+            {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                poistion: google.maps.ControlPosition.TOP_RIGHT,
+                mapTypeIds: google.maps.mapTypeId.ROADMAP
+            },
+            navigationControl: true,
+            navigationControlOptions:
+            {
+                style: google.maps.NavigationControlStyle.ZOOM_PAN
+            },
+            scaleControl: true,
+            disableDoubleClickZoom: true,
+            draggable: false,
+            streetViewControl: true,
+            draggableCursor: 'move'
+            */
+            center: new google.maps.LatLng(51.5, -0.12),
+            zoom: 10,
+            mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+        var map = new google.maps.Map(document.getElementById("map"), options);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFyDb4sQJ5p8BIkNML5Ai_d4tR2eMXYfc&libraries=places&callback=initAutocomplete" async defer></script>
+
 
 
