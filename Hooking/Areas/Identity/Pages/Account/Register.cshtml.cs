@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,10 @@ using Newtonsoft.Json;
 
 namespace Hooking.Areas.Identity.Pages.Account
 {
+    public enum RegistrationType { REGULAR, COTTAGE_OWNER, BOAT_OWNER, INSTRUCTOR }
+
     [AllowAnonymous]
-    public class RegisterModel : PageModel
+    public partial class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -61,12 +64,12 @@ namespace Hooking.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required(ErrorMessage = "Polje 'E-mail adresa' je obavezno")]
-            [EmailAddress(ErrorMessage = "E-mail adresa nije u validnom formatu")]
+            [Required(ErrorMessage = "Polje 'E-mail adresa' je obavezno.")]
+            [EmailAddress(ErrorMessage = "E-mail adresa nije u validnom formatu.")]
             [Display(Name = "E-mail adresa")]
             public string Email { get; set; }
 
-            [Required(ErrorMessage = "Polje 'Lozinka' je obavezno")]
+            [Required(ErrorMessage = "Polje 'Lozinka' je obavezno.")]
             [StringLength(100, ErrorMessage = "{0} mora biti dugačka bar {2} i najviše {1} karaktera.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Lozinka")]
@@ -77,17 +80,25 @@ namespace Hooking.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "Unete lozinke se ne poklapaju.")]
             public string ConfirmPassword { get; set; }
 
-            [Required(ErrorMessage = "Polje 'Ime' je obavezno")]
+            [Required(ErrorMessage = "Polje 'Ime' je obavezno.")]
             [Display(Name = "Ime")]
             public string Name { get; set; }
 
-            [Required(ErrorMessage = "Polje 'Prezime' je obavezno")]
+            [Required(ErrorMessage = "Polje 'Prezime' je obavezno.")]
             [Display(Name = "Prezime")]
             public string LastName { get; set; }
 
-            [Required(ErrorMessage = "Polje 'Grad i država' je obavezno")]
+            [Required(ErrorMessage = "Polje 'Grad i država' je obavezno.")]
             [Display(Name = "Grad i država")]
             public string Location { get; set; }
+
+            [Required(ErrorMessage = "Odaberite jedan tip registracije.")]
+            [Display(Name = "Tip registracije")]
+            public RegistrationType Type { get; set; }
+
+            [Required(ErrorMessage = "Polje 'Obrazloženje' je obavezno.")]
+            [Display(Name = "Obrazloženje")]
+            public string Explanation { get; set; }
 
         }
 
@@ -99,6 +110,7 @@ namespace Hooking.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            Debug.WriteLine(returnUrl);
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
