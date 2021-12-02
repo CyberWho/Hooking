@@ -21,6 +21,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public List<CottageSpecialOffer> cottageSpecialOffers { get; set; }
         public List<Cottage> cottages = new List<Cottage>();
+        [BindProperty]
+        public List<string> cottageNames { get; set; }
         public MySpecialOffersModel(UserManager<IdentityUser> userManager,
                                     RoleManager<IdentityRole> roleManager,
                                     SignInManager<IdentityUser> signInManager,
@@ -39,6 +41,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             List<Cottage> myCottages = new List<Cottage>();
             myCottages =   _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
             cottageSpecialOffers = new List<CottageSpecialOffer>();
+            cottageNames = new List<string>();
             foreach(var cottage in myCottages)
             {
                 var cottageId = cottage.Id.ToString();
@@ -51,13 +54,13 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                         Guid cottageGuid = Guid.Parse(specialOffer.CottageId);
                         var cottageSpec = _context.Cottage.Where(m => m.Id == cottageGuid).FirstOrDefault<Cottage>();
                         cottages.Add(cottageSpec);
-                        ViewData["CottageName"] = cottage.Name;
+                        cottageNames.Add(cottage.Name);
                     }
                         
                     
                 }
             }
-            ViewData["cottages"] = cottages;
+            ViewData["CottageNames"] = cottageNames;
             return Page();
         }
     }
