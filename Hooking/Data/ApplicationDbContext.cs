@@ -63,5 +63,6 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.RegistrationRequest> RegistrationRequest { get; set; 
         public DbSet<Hooking.Models.CottageFavorites> CottageFavorites { get; set; }
         public DbSet<Hooking.Models.CottageImage> CottageImages { get; set; }
+        public DbSet<Hooking.Models.CottageNotAvailablePeriod> CottageNotAvailablePeriod { get; set; }
     }
 }

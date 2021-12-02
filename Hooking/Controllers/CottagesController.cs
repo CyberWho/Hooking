@@ -13,9 +13,10 @@ using Hooking.Areas.Identity.Pages.Account.Manage;
 using System.IO;
 using System.Web;
 using Microsoft.AspNetCore.Http;
-using static System.Net.Mime.MediaTypeNames;
+using System.Runtime.Serialization.Json;  
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using GoogleMaps.LocationServices;
 
 namespace Hooking.Controllers
 {
@@ -32,6 +33,7 @@ namespace Hooking.Controllers
         public List<CottageRoom> cottageRooms = new List<CottageRoom>();
         public string cottageId;
         public List<CottageImage> cottageImages = new List<CottageImage>();
+       
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -128,6 +130,9 @@ namespace Hooking.Controllers
                 var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
                 cottageRooms.Add(cottageRoom);
             }
+            
+            var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
+          
             cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
             ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
@@ -136,6 +141,7 @@ namespace Hooking.Controllers
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
             ViewData["CottageImages"] = cottageImages;
+            ViewData["FullAddress"] = fullAddress;
             return View(cottage);
         }
         [HttpGet("/Cottages/MyCottage/{id}")]
@@ -172,6 +178,8 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
+            var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
+           
             cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
             ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
@@ -180,6 +188,7 @@ namespace Hooking.Controllers
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
             ViewData["CottageImages"] = cottageImages;
+            ViewData["FullAddress"] = fullAddress;
             return View(cottage);
         }
 
