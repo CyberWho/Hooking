@@ -13,9 +13,10 @@ using Hooking.Areas.Identity.Pages.Account.Manage;
 using System.IO;
 using System.Web;
 using Microsoft.AspNetCore.Http;
-using static System.Net.Mime.MediaTypeNames;
+using System.Runtime.Serialization.Json;  
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using GoogleMaps.LocationServices;
 
 namespace Hooking.Controllers
 {
@@ -32,6 +33,8 @@ namespace Hooking.Controllers
         public List<CottageRoom> cottageRooms = new List<CottageRoom>();
         public string cottageId;
         public List<CottageImage> cottageImages = new List<CottageImage>();
+        public double longitude;
+        public double latitude;
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -128,6 +131,14 @@ namespace Hooking.Controllers
                 var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
                 cottageRooms.Add(cottageRoom);
             }
+            
+            var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
+           // var locationService = new GoogleLocationService();
+           // var point = locationService.GetLatLongFromAddress(fullAddress);
+
+          //  latitude = point.Latitude;
+           // longitude = point.Longitude;
+           // System.Diagnostics.Debug.WriteLine(longitude.ToString() + latitude.ToString());
             cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
             ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
@@ -136,6 +147,9 @@ namespace Hooking.Controllers
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
             ViewData["CottageImages"] = cottageImages;
+            //ViewData["Latitude"] = latitude;
+            //ViewData["Longitude"] = longitude;
+            ViewData["FullAddress"] = fullAddress;
             return View(cottage);
         }
         [HttpGet("/Cottages/MyCottage/{id}")]
@@ -172,6 +186,22 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
+            var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
+            /*  AddressHelper addressHelper = new AddressHelper();
+              addressHelper.Description = fullAddress;
+              addressHelper.FullAddress = fullAddress;
+              var locationService = new GoogleLocationService();
+              var point = locationService.GetLatLongFromAddress(fullAddress);*/
+
+            //  addressHelper.Latitude = point.Latitude;
+            // addressHelper.Longitude = point.Longitude;
+            /* string jsonString = JsonSerializer<AddressHelper>(addressHelper);
+             ScriptManager.RegisterArrayDeclaration(Page, "markers", jsonString);
+             ScriptManager.RegisterStartupScript(Page, Page.GetType(), Guid.NewGuid().ToString(), "GoogleMap();", true);*/
+            // latitude = point.Latitude;
+            // longitude = point.Longitude;
+            latitude = 0;
+            longitude = 0;
             cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
             ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
@@ -180,6 +210,9 @@ namespace Hooking.Controllers
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
             ViewData["CottageImages"] = cottageImages;
+             ViewData["Latitude"] = latitude;
+            ViewData["Longitude"] = longitude;
+            ViewData["FullAddress"] = fullAddress;
             return View(cottage);
         }
 

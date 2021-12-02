@@ -8,10 +8,13 @@
     var houseRules = (HouseRules)ViewData["HouseRules"];
     var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
     var facilites = (Facilities)ViewData["Facilities"];
+    var longitude = (double)ViewData["Longitude"];
+    var latitude = (double)ViewData["Latitude"];
+    var fullAddress = (string)ViewData["FullAddress"];
     List<CottageRoom> cottageRooms = (List<CottageRoom>)ViewData["CottageRooms"];
     List<CottageImage> cottageImages = (List<CottageImage>)ViewData["CottageImages"];
 }
-
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
 
 <h1>Vikendica @Model.Name</h1>
 
@@ -482,43 +485,65 @@
     </div>
 
 </div>
+<br />
 <h5>Mapa</h5>
-<div id="map" style="width:100%; height:100%;"></div>
+<!--<div id="canvasMap" style="border-top: none; width: 100%; margin-top: -1px; height: 250px; background-color: #FAFAFA; margin-top: 0px;">
+</div> -->
+<div name="GoogleMap">
 
-<script>
-    function initialize() {
-        
-        var options =
-        {
-            /*zoom: 3,
-            center: new google.maps.LatLng(37.09, -95.71),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            mapTypeControl: true,
-            mapTypeControlOptions:
-            {
-                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-                poistion: google.maps.ControlPosition.TOP_RIGHT,
-                mapTypeIds: google.maps.mapTypeId.ROADMAP
-            },
-            navigationControl: true,
-            navigationControlOptions:
-            {
-                style: google.maps.NavigationControlStyle.ZOOM_PAN
-            },
-            scaleControl: true,
-            disableDoubleClickZoom: true,
-            draggable: false,
-            streetViewControl: true,
-            draggableCursor: 'move'
-            */
-            center: new google.maps.LatLng(51.5, -0.12),
-            zoom: 10,
-            mapTypeId: google.maps.MapTypeId.HYBRID
-        };
-        var map = new google.maps.Map(document.getElementById("map"), options);
+    <div class="mapouter">
+        <div class="gmap_canvas">
+            <iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=@fullAddress&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.online-timer.net">timer</a><br>
+            <style>
+                .mapouter {
+                    position: relative;
+                    text-align: right;
+                    height: 500px;
+                    width: 600px;
+                }
+            </style><a href="https://www.embedgooglemap.net">embedded google maps in website</a>
+            <style>
+                .gmap_canvas {
+                    overflow: hidden;
+                    background: none !important;
+                    height: 500px;
+                    width: 600px;
+                }
+            </style>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var geocoder = new google.maps.Geocoder();
+    var map;
+    function LoadGoogleMAP() {
+        geocoder.geocode({ 'address': @fullAddress }, function (results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+                @latitude = results[0].geometry.location.lat();
+                @longitude = results[0].geometry.location.lng();
+                alert(@latitude);
+            }
+        });
+    
+            var SetmapOptions = {
+                 zoom: 10,
+                 center: new google.maps.LatLng(@latitude, @longitude),
+                 mapTypeId: google.maps.MapTypeId.HYBRID
+            };
+            map = new google.maps.Map(document.getElementById('canvasMap'), SetmapOptions);
     }
+    google.maps.event.addDomListener(window, 'load', LoadGoogleMAP);
+
+    window.onload = LoadGoogleMAP;
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFyDb4sQJ5p8BIkNML5Ai_d4tR2eMXYfc&libraries=places&callback=initAutocomplete" async defer></script>
 
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfp55orTG_Zdfj54iIeN6VlJiIxoQtpRk&callback=initMap"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfp55orTG_Zdfj54iIeN6VlJiIxoQtpRk&libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfp55orTG_Zdfj54iIeN6VlJiIxoQtpRk"></script>
+<script type="/text/javascript" src="https://maps.googleapis.com/maps/api/geocode/json?address=@fullAddress&sensor=true"></script>
 
-
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

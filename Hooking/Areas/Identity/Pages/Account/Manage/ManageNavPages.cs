@@ -38,6 +38,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string CottagesReservationsHistory => "CottagesReservationHistory";
         public static string UserDeleteRequest => "UserDeleteRequest";
+        public static string CottagesReservations => "CottagesReservations";
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
@@ -69,6 +70,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public static string MyBoatReservationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyBoatReservations);
         public static string CottagesReservationsHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, CottagesReservationsHistory);
         public static string UserDeleteRequestNavClass(ViewContext viewContext) => PageNavClass(viewContext, UserDeleteRequest);
+        public static string CottagesReservationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, CottagesReservations);
         private static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string
