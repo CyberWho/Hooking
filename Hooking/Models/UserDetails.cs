@@ -23,5 +23,7 @@ namespace Hooking.Models
         public string Country { get; set; }
         [DisplayName("Broj kaznenih poena")]
         public int PenaltyCount { get; set; }
+        [DisplayName("Odobren")]
+        public bool Approved { get; set; }
     }
 }
