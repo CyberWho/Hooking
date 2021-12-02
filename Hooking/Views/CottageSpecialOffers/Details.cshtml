@@ -16,7 +16,7 @@
             Naziv vikendice
         </dt>
         <dd class="col-sm-10">
-            @cottage.Name
+            <a href ="@Url.Action("Details","Cottages",new { id = @cottage.Id })">@cottage.Name</a>
         </dd>
         <dt class="col-sm-2">
             Država
