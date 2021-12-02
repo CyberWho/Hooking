@@ -21,7 +21,17 @@ using Newtonsoft.Json;
 
 namespace Hooking.Areas.Identity.Pages.Account
 {
-    public enum RegistrationType { REGULAR, COTTAGE_OWNER, BOAT_OWNER, INSTRUCTOR }
+    public enum RegistrationType
+    {
+        [Display(Name = "Običan korisnik")]
+        REGULAR,
+        [Display(Name = "Vlasnik vikendice")]
+        COTTAGE_OWNER,
+        [Display(Name = "Vlasnik broda")]
+        BOAT_OWNER,
+        [Display(Name = "Instruktor")]
+        INSTRUCTOR
+    }
 
     [AllowAnonymous]
     public partial class RegisterModel : PageModel

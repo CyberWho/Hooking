@@ -28,18 +28,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Početna</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cottages" asp-action="Index">Vikendice</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Boats" asp-action="Index">Brodovi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Adventures" asp-action="Index">Avanture</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Instructors" asp-action="Index">Instruktori</a>
-                        </li>
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cottages" asp-action="Index">Vikendice</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Boats" asp-action="Index">Brodovi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Adventures" asp-action="Index">Avanture</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Instructors" asp-action="Index">Instruktori</a>
+                            </li>
+                        }
                         @if (_signInManager.IsSignedIn(User))
                         {
                             @if (User.IsInRole("Admin"))
@@ -47,27 +50,30 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Uloge</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="RegistrationRequests" asp-action="Index">Zahtevi</a>
+                                </li>
                             }
                         }
                         @if (_signInManager.IsSignedIn(User))
                         {
                             @if (User.IsInRole("Korisnik"))
                             {
-                             //   <li class="nav-item">
-                              //      <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju vikendice</a>
-                            //    </li>
+                                //   <li class="nav-item">
+                                //      <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju vikendice</a>
+                                //    </li>
                                 //   <li class="nav-item">
                                 //        <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="CottageReservationsHistory">Istorija rezervacija vikendica</a>
                                 //     </li>
-                           //     <li class="nav-item">
-                            //        <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="Create">Unesi rezervaciju broda</a>
-                             //   </li>
+                                //     <li class="nav-item">
+                                //        <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="Create">Unesi rezervaciju broda</a>
+                                //   </li>
                                 //    <li class="nav-item">
                                 //     <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="BoatReservationsHistory">Istorija rezervacija brodova</a>
                                 //   </li>
-                               // <li class="nav-item">
-                               //     <a class="nav-link text-dark" asp-area="" asp-controller="Instructors" asp-action="Create">Unesi instruktora</a>
-                              //  </li>
+                                // <li class="nav-item">
+                                //     <a class="nav-link text-dark" asp-area="" asp-controller="Instructors" asp-action="Create">Unesi instruktora</a>
+                                //  </li>
                             }
                         }
                     </ul>

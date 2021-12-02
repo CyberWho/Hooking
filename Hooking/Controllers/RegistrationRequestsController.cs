@@ -7,15 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Hooking.Controllers
 {
     public class RegistrationRequestsController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public RegistrationRequestsController(ApplicationDbContext context)
+        public RegistrationRequestsController(
+            UserManager<IdentityUser> userManager,
+            ApplicationDbContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -146,6 +152,45 @@ namespace Hooking.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Approve(Guid id)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Reject(Guid id)
+        {
+            //var request = DeleteRegistrationRequest(id);
+            var request = await _context.RegistrationRequest.FindAsync(id);
+            _context.RegistrationRequest.Remove(request);
+            await _context.SaveChangesAsync();
+
+
+            //DeleteUserDetails(request);
+            UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
+            _context.UserDetails.Remove(userDetails);
+            IdentityUser user = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+            await _userManager.DeleteAsync(user);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<RegistrationRequest> DeleteRegistrationRequest(Guid id)
+        {
+            var request = await _context.RegistrationRequest.FindAsync(id);
+            _context.RegistrationRequest.Remove(request);
+            await _context.SaveChangesAsync();
+            return request;
+        }
+
+        private async void DeleteUserDetails(RegistrationRequest request)
+        {
+            UserDetails userDetails = new UserDetails { Id = Guid.Parse(request.UserDetailsId) };
+            _context.UserDetails.Attach(userDetails);
+            _context.UserDetails.Remove(userDetails);
+            await _context.SaveChangesAsync();
+        }
         private bool RegistrationRequestExists(Guid id)
         {
             return _context.RegistrationRequest.Any(e => e.Id == id);
