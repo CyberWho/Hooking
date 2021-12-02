@@ -97,8 +97,9 @@ namespace Hooking.Areas.Identity.Pages.Account
             public RegistrationType Type { get; set; }
 
             [Required(ErrorMessage = "Polje 'Obrazloženje' je obavezno.")]
+            [StringLength(100, MinimumLength = 10, ErrorMessage = "Obrazloženje mora sadržati bar 10, a najviše 100 karaktera.")]
             [Display(Name = "Obrazloženje")]
-            public string Explanation { get; set; }
+            public string Description { get; set; }
 
         }
 
@@ -108,33 +109,53 @@ namespace Hooking.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
+
+        private RegistrationRequest CreateRegistrationRequest(UserDetails userDetails)
+        {
+            RegistrationRequest request = new RegistrationRequest
+            {
+                UserDetailsId = userDetails.Id.ToString(),
+                Type = Input.Type,
+                Description = Input.Description
+            };
+
+            return request;
+        }
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+
             Debug.WriteLine(returnUrl);
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
-                var userDetails = new UserDetails();
-                userDetails.FirstName = Input.Name;
-                userDetails.LastName = Input.LastName;
-                userDetails.City = Input.Location.Split(",")[0];
-                userDetails.Country = Input.Location.Split(",")[1];
+                var user = GetIdentityUserFromInput();
+                var userDetails = GetUserDetailsFromInput();
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
                     userDetails.IdentityUserId = user.Id;
                     var resultUserDetails = _context.Add(userDetails);
-                   
 
                     if (resultUserDetails != null)
                     {
                         _logger.LogInformation("User created a new account with password.");
                         _logger.LogInformation(resultUserDetails.GetType().ToString());
                         await _context.SaveChangesAsync();
-                        await _userManager.AddToRoleAsync(user, "Korisnik");
+
+                        var roleName = GetInputType();
+                        await _userManager.AddToRoleAsync(user, roleName);
                         await _context.SaveChangesAsync();
+
+                        if (Input.Type != RegistrationType.REGULAR)
+                        {
+                            RegistrationRequest request = CreateRegistrationRequest(userDetails);
+                             _context.Add(request);
+                             await _context.SaveChangesAsync();
+                             return RedirectToPage("AwaitsApproval");
+                        }
+                        
                         /* kod za vlasnika vikendice pri registraciji
                         CottageOwner cottageOwner = new CottageOwner();
                         cottageOwner.Id = Guid.NewGuid();
@@ -152,7 +173,7 @@ namespace Hooking.Areas.Identity.Pages.Account
                         boatOwner.IsFirstOfficer = false;
                         _context.Add(boatOwner);
                         await _context.SaveChangesAsync();*/
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var code =  await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
                             "/Account/ConfirmEmail",
@@ -164,7 +185,7 @@ namespace Hooking.Areas.Identity.Pages.Account
                             $"Poštovani,<br><br>molimo Vas da potvrdite Vašu registraciju na Hooking klikom na <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
 
                         var userCount = _userManager.Users.Count();
-                        Console.WriteLine("Trenutni broj korisnika: " + userCount.ToString());
+                        Console.WriteLine("Trenutni broj korisnika: " + userCount);
                         if (userCount == 1)
                         {
                             if (_roleManager.Roles.ToList().Count == 0)
@@ -183,11 +204,9 @@ namespace Hooking.Areas.Identity.Pages.Account
                         {
                             return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         }
-                        else
-                        {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
-                        }
+
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
                     }
                 }
 
@@ -199,6 +218,46 @@ namespace Hooking.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private UserDetails GetUserDetailsFromInput()
+        {
+            UserDetails userDetails = new UserDetails
+            {
+                FirstName = Input.Name,
+                LastName = Input.LastName,
+                City = Input.Location.Split(",")[0],
+                Country = Input.Location.Split(",")[1],
+                Approved = Input.Type == RegistrationType.REGULAR
+            };
+
+            return userDetails;
+        }
+
+        private IdentityUser GetIdentityUserFromInput()
+        {
+            if (Input.Type != RegistrationType.REGULAR)
+            {
+                return new IdentityUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true};
+            }
+            return new IdentityUser { UserName = Input.Email, Email = Input.Email};
+        }
+        private string GetInputType()
+        {
+            var roleName = "Korisnik";
+            switch (Input.Type)
+            {
+                case RegistrationType.BOAT_OWNER:
+                    roleName = "Vlasnik broda";
+                    break;
+                case RegistrationType.COTTAGE_OWNER:
+                    roleName = "Vlasnik vikendice";
+                    break;
+                case RegistrationType.INSTRUCTOR:
+                    roleName = "Instruktor";
+                    break;
+            }
+
+            return roleName;
         }
     }
 }
