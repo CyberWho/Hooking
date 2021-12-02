@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hooking.Areas.Identity.Pages.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -152,20 +153,87 @@ namespace Hooking.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        private CottageOwner CreateCottageOwner(UserDetails userDetails)
+        {
+            CottageOwner cottageOwner = new CottageOwner
+            {
+                Id = Guid.NewGuid(), UserDetailsId = userDetails.Id.ToString(), AverageGrade = 0, GradeCount = 0
+            };
+            return cottageOwner;
+        }
+
+        private BoatOwner createBoatOwner(UserDetails userDetails)
+        {
+            BoatOwner boatOwner = new BoatOwner
+            {
+                Id = Guid.NewGuid(),
+                UserDetailsId = userDetails.Id.ToString(),
+                AverageGrade = 0,
+                GradeCount = 0,
+                IsCaptain = false,
+                IsFirstOfficer = false
+            };
+            return boatOwner;
+        }
+
+        private Instructor CreateInstructor(UserDetails userDetails)
+        {
+            Instructor instructor = new Instructor
+            {
+                Id = Guid.NewGuid(),
+                UserDetailsId = userDetails.Id.ToString(),
+                AverageGrade = 0,
+                Biography = "",
+                GradeCount = 0
+            };
+            return instructor;
+        }
+
         public async Task<IActionResult> Approve(Guid id)
         {
+            var request = await _context.RegistrationRequest.FindAsync(id);
+            _context.RegistrationRequest.Remove(request);
+            await _context.SaveChangesAsync();
+
+            UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
+            userDetails.Approved = true;
+
+            switch (request.Type)
+            {
+                case RegistrationType.COTTAGE_OWNER:
+                {
+                    CottageOwner cottageOwner = CreateCottageOwner(userDetails);
+                    _context.Add(cottageOwner);
+                    await _context.SaveChangesAsync();
+                    break;
+                }
+                case RegistrationType.BOAT_OWNER:
+                {
+                    BoatOwner boatOwner = createBoatOwner(userDetails);
+                    _context.Add(boatOwner);
+                    await _context.SaveChangesAsync();
+                    break;
+                }
+                case RegistrationType.INSTRUCTOR:
+                {
+                    Instructor instructor = CreateInstructor(userDetails);
+                    _context.Add(instructor);
+                    await _context.SaveChangesAsync();
+                    break;
+                }
+            }
+            
+
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Reject(Guid id)
         {
-            //var request = DeleteRegistrationRequest(id);
             var request = await _context.RegistrationRequest.FindAsync(id);
             _context.RegistrationRequest.Remove(request);
             await _context.SaveChangesAsync();
 
-
-            //DeleteUserDetails(request);
             UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
             _context.UserDetails.Remove(userDetails);
             IdentityUser user = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
@@ -176,21 +244,6 @@ namespace Hooking.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<RegistrationRequest> DeleteRegistrationRequest(Guid id)
-        {
-            var request = await _context.RegistrationRequest.FindAsync(id);
-            _context.RegistrationRequest.Remove(request);
-            await _context.SaveChangesAsync();
-            return request;
-        }
-
-        private async void DeleteUserDetails(RegistrationRequest request)
-        {
-            UserDetails userDetails = new UserDetails { Id = Guid.Parse(request.UserDetailsId) };
-            _context.UserDetails.Attach(userDetails);
-            _context.UserDetails.Remove(userDetails);
-            await _context.SaveChangesAsync();
-        }
         private bool RegistrationRequestExists(Guid id)
         {
             return _context.RegistrationRequest.Any(e => e.Id == id);
