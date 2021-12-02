@@ -4,14 +4,16 @@ using Hooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hooking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211130155532_cottageReservationAddedField")]
+    partial class cottageReservationAddedField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -817,45 +819,6 @@ namespace Hooking.Data.Migrations
                     b.ToTable("Cottage");
                 });
 
-            modelBuilder.Entity("Hooking.Models.CottageFavorites", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CottageId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("UserDetailsId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CottageFavorites");
-                });
-
-            modelBuilder.Entity("Hooking.Models.CottageImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CottageId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CottageImages");
-                });
-
             modelBuilder.Entity("Hooking.Models.CottageOwner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -956,9 +919,6 @@ namespace Hooking.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("DidntShow")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReviewedByAdmin")
                         .HasColumnType("bit");
 
                     b.Property<bool>("ReceivedPenalty")
@@ -1396,31 +1356,6 @@ namespace Hooking.Data.Migrations
                     b.ToTable("PrivilegedUserRequest");
                 });
 
-            modelBuilder.Entity("Hooking.Models.RegistrationRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserDetailsId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RegistrationRequest");
-                });
-
             modelBuilder.Entity("Hooking.Models.UserDeleteRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1444,9 +1379,6 @@ namespace Hooking.Data.Migrations
                     b.Property<string>("UserDetailsId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isReviewed")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("UserDeleteRequest");
@@ -1460,9 +1392,6 @@ namespace Hooking.Data.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("bit");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");

@@ -11,28 +11,27 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
-    public class UserDetailsController : Controller
+    public class CottageFavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public string cottageId;
-        public UserDetailsController(ApplicationDbContext context,
-                                     UserManager<IdentityUser> userManager,
-                                     RoleManager<IdentityRole> roleManager)
+        public CottageFavoritesController(ApplicationDbContext context,
+                                            UserManager<IdentityUser> userManager,
+                                            RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        // GET: UserDetails
+        // GET: CottageFavorites
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserDetails.ToListAsync());
+            return View(await _context.CottageFavorites.ToListAsync());
         }
 
-        // GET: UserDetails/Details/5
+        // GET: CottageFavorites/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -40,40 +39,45 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var userDetails = await _context.UserDetails
+            var cottageFavorites = await _context.CottageFavorites
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userDetails == null)
+            if (cottageFavorites == null)
             {
                 return NotFound();
             }
 
-            return View(userDetails);
+            return View(cottageFavorites);
         }
 
-        // GET: UserDetails/Create
+        // GET: CottageFavorites/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: UserDetails/Create
+        // POST: CottageFavorites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CottageFavorites/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdentityUserId,FirstName,LastName,Address,City,Country,PenaltyCount,Id,RowVersion")] UserDetails userDetails)
+        public async Task<IActionResult> Create(Guid id,[Bind("Id,RowVersion")] CottageFavorites cottageFavorites)
         {
             if (ModelState.IsValid)
             {
-                userDetails.Id = Guid.NewGuid();
-                _context.Add(userDetails);
+                System.Diagnostics.Debug.WriteLine(id);
+                cottageFavorites.Id = Guid.NewGuid();
+                cottageFavorites.CottageId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                System.Diagnostics.Debug.WriteLine(user.Id);
+                cottageFavorites.UserDetailsId = user.Id.ToString();
+                _context.Add(cottageFavorites);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(userDetails);
+            return View(cottageFavorites);
         }
 
-        // GET: UserDetails/Edit/5
+        // GET: CottageFavorites/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -81,29 +85,22 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var userDetails = await _context.UserDetails.FindAsync(id);
-            if (userDetails == null)
+            var cottageFavorites = await _context.CottageFavorites.FindAsync(id);
+            if (cottageFavorites == null)
             {
                 return NotFound();
             }
-            return View(userDetails);
+            return View(cottageFavorites);
         }
-        [HttpGet("/Users/ShowAllUsers/{id}")]
-        public async Task<IActionResult> ShowAllUsers(Guid id)
-        {
-            cottageId = id.ToString();
-            ViewData["CottageId"] = cottageId;
-            var allUsers = await _context.UserDetails.ToListAsync();
-            return View(allUsers);
-        }
-        // POST: UserDetails/Edit/5
+
+        // POST: CottageFavorites/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("IdentityUserId,FirstName,LastName,Address,City,Country,PenaltyCount,Id,RowVersion")] UserDetails userDetails)
+        public async Task<IActionResult> Edit(Guid id, [Bind("UserDetailsId,CottageId,Id,RowVersion")] CottageFavorites cottageFavorites)
         {
-            if (id != userDetails.Id)
+            if (id != cottageFavorites.Id)
             {
                 return NotFound();
             }
@@ -112,12 +109,12 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(userDetails);
+                    _context.Update(cottageFavorites);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserDetailsExists(userDetails.Id))
+                    if (!CottageFavoritesExists(cottageFavorites.Id))
                     {
                         return NotFound();
                     }
@@ -128,10 +125,10 @@ namespace Hooking.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userDetails);
+            return View(cottageFavorites);
         }
 
-        // GET: UserDetails/Delete/5
+        // GET: CottageFavorites/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -139,30 +136,30 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var userDetails = await _context.UserDetails
+            var cottageFavorites = await _context.CottageFavorites
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userDetails == null)
+            if (cottageFavorites == null)
             {
                 return NotFound();
             }
 
-            return View(userDetails);
+            return View(cottageFavorites);
         }
 
-        // POST: UserDetails/Delete/5
+        // POST: CottageFavorites/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var userDetails = await _context.UserDetails.FindAsync(id);
-            _context.UserDetails.Remove(userDetails);
+            var cottageFavorites = await _context.CottageFavorites.FindAsync(id);
+            _context.CottageFavorites.Remove(cottageFavorites);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserDetailsExists(Guid id)
+        private bool CottageFavoritesExists(Guid id)
         {
-            return _context.UserDetails.Any(e => e.Id == id);
+            return _context.CottageFavorites.Any(e => e.Id == id);
         }
     }
 }

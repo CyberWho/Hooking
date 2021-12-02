@@ -51,6 +51,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                         Guid cottageGuid = Guid.Parse(specialOffer.CottageId);
                         var cottageSpec = _context.Cottage.Where(m => m.Id == cottageGuid).FirstOrDefault<Cottage>();
                         cottages.Add(cottageSpec);
+                        ViewData["CottageName"] = cottage.Name;
                     }
                         
                     

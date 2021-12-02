@@ -52,16 +52,35 @@ namespace Hooking.Controllers
         // POST: CottageReservationReviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CottageReservationReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,Review,DidntShow,ReceivedPenalty,Id,RowVersion")] CottageReservationReview cottageReservationReview)
+        public async Task<IActionResult> Create(Guid id, [Bind("Review,DidntShow,ReceivedPenalty,Id,RowVersion")] CottageReservationReview cottageReservationReview)
         {
             if (ModelState.IsValid)
             {
                 cottageReservationReview.Id = Guid.NewGuid();
+                cottageReservationReview.ReservationId = id.ToString();
+                CottageReservation cottageReservation = _context.CottageReservation.Where(m => m.Id == id).FirstOrDefault<CottageReservation>();
+                cottageReservation.IsReviewed = true;
+                if (!cottageReservationReview.DidntShow)
+                {
+                    Guid userId = Guid.Parse(cottageReservation.UserDetailsId);
+                    UserDetails userDetails = _context.UserDetails.Where(m => m.Id == userId).FirstOrDefault<UserDetails>();
+                    userDetails.PenaltyCount++;
+                    _context.Update(userDetails);
+                    await _context.SaveChangesAsync();
+
+                }
+                if(cottageReservationReview.ReceivedPenalty)
+                {
+                    cottageReservationReview.IsReviewedByAdmin = false;
+                } else
+                {
+                    cottageReservationReview.IsReviewedByAdmin = true;
+                }
                 _context.Add(cottageReservationReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/CottagesReservationsHistory", new { area = "Identity" });
             }
             return View(cottageReservationReview);
         }

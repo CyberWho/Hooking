@@ -10,6 +10,12 @@ using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using Hooking.Areas.Identity.Pages.Account.Manage;
+using System.IO;
+using System.Web;
+using Microsoft.AspNetCore.Http;
+using static System.Net.Mime.MediaTypeNames;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hooking.Controllers
 {
@@ -18,16 +24,20 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly BlobUtility utility;
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
         public HouseRules houseRules;
         public Facilities facilities;
         public List<CottageRoom> cottageRooms = new List<CottageRoom>();
+        public string cottageId;
+        public List<CottageImage> cottageImages = new List<CottageImage>();
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            utility = new BlobUtility();
 
         }
        
@@ -74,7 +84,15 @@ namespace Hooking.Controllers
           
             return View(ctg.ToList());
         }
-        
+        [HttpGet("/Cottages/ShowAllUsers/{id}")]
+        public async Task<IActionResult> ShowAllUsers(Guid id)
+        {
+            cottageId = id.ToString();
+            ViewData["CottageId"] = cottageId;
+            var allUsers = _context.UserDetails.ToListAsync();
+            return View(allUsers);
+        }
+
 
         // GET: Cottages/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -86,6 +104,10 @@ namespace Hooking.Controllers
 
             var cottage = await _context.Cottage
                 .FirstOrDefaultAsync(m => m.Id == id);
+            if (cottage == null)
+            {
+                return NotFound();
+            }
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
             var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
            
@@ -106,15 +128,14 @@ namespace Hooking.Controllers
                 var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
                 cottageRooms.Add(cottageRoom);
             }
-            if (cottage == null)
-            {
-                return NotFound();
-            }
+            cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
+            ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
             ViewData["HouseRules"] = houseRules;
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
+            ViewData["CottageImages"] = cottageImages;
             return View(cottage);
         }
         [HttpGet("/Cottages/MyCottage/{id}")]
@@ -151,11 +172,14 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
+            cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
+            ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
             ViewData["HouseRules"] = houseRules;
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
+            ViewData["CottageImages"] = cottageImages;
             return View(cottage);
         }
 
@@ -262,6 +286,13 @@ namespace Hooking.Controllers
 
             return View(cottage);
         }
+        [HttpGet("/Cottages/CottagesForReservation")]
+        public async Task<IActionResult> CottagesForReservation()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
+            return View(myCottages);
+        }
 
         // POST: Cottages/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -269,11 +300,76 @@ namespace Hooking.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var cottage = await _context.Cottage.FindAsync(id);
-            _context.Cottage.Remove(cottage);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var cottageId = cottage.Id.ToString();
+            List<CottageSpecialOfferReservation> cottageSpecialOfferReservationsFull = new List<CottageSpecialOfferReservation>();
+            List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageId).ToListAsync<CottageReservation>();
+            List<CottageSpecialOfferReservation> cottageSpecialOfferReservations = await _context.CottageSpecialOfferReservation.ToListAsync<CottageSpecialOfferReservation>();
+            foreach(var cottageSpecialOfferReservation in cottageSpecialOfferReservations)
+            {
+                Guid csId = Guid.Parse(cottageSpecialOfferReservation.CottageSpecialOfferId);
+                var cottageSpecialOffer = _context.CottageSpecialOffer.Where(m => m.Id == csId).FirstOrDefault<CottageSpecialOffer>();
+                if(cottageSpecialOffer.CottageId == cottageId)
+                {
+                    cottageSpecialOfferReservationsFull.Add(cottageSpecialOfferReservation);
+                }
+            }
+            if(cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
+            {
+                _context.Cottage.Remove(cottage);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+            } else
+            {
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+            }
+            
+            
         }
+        [HttpPost("/Cottages/UploadImage/{id}")]
+        public async Task<ActionResult> UploadImage(Guid id,IFormFile file)
+        {
+            if (file != null)
+            {
+                string ContainerName = "cottage"; //hardcoded container name
+                string fileName = Path.GetFileName(file.FileName);
+                using (var fileStream = file.OpenReadStream())
+                {
+                    string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=hookingstorage;AccountKey=+v8L5XkQZ7Z2CTfdTd03pngWlA4xu02caFJDGUkvGlo/rv8uZnM9CQQYleH3lpb+3Z8sefUOlC0EaoXWIquyDg==;EndpointSuffix=core.windows.net");
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(UserConnectionString);
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference(ContainerName.ToLower());
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                    try
+                    {
+                        await blockBlob.UploadFromStreamAsync(fileStream);
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        var r = e.Message;
+                        return null;
+                    }
+                    
+                    if(blockBlob != null)
+                    {
+                        CottageImage cottageImage = new CottageImage();
+                        cottageImage.Id = Guid.NewGuid();
+                        cottageImage.CottageId = id.ToString();
+                        cottageImage.ImageUrl = blockBlob.Uri.ToString();
+                        _context.CottageImages.Add(cottageImage);
+                        await _context.SaveChangesAsync();
+                    }
+                   
+                }
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+            }
+            else
+            {
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+            }
 
+
+        }
         private bool CottageExists(Guid id)
         {
             return _context.Cottage.Any(e => e.Id == id);
