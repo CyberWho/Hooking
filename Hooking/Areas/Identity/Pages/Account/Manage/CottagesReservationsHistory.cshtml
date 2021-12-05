@@ -5,7 +5,8 @@
     ViewData["ActivePage"] = ManageNavPages.CottagesReservationsHistory;
 }
 @{
-    var cottageName = (string)ViewData["CottageName"];
+    var cottageNames = (List<string>)ViewData["CottageNames"];
+    var index = 0;
 }
 
 <h4>Istorija rezervacija</h4>
@@ -37,7 +38,7 @@
         {
             <tr>
                 <th>
-                    @cottageName
+                    @cottageNames[index]
                 </th>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
@@ -58,7 +59,9 @@
                     }
                     <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikaži još</a>
                 </td>
-
+                @{
+                    index++;
+                }
             </tr>
         }
     </tbody>

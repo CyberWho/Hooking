@@ -5,7 +5,8 @@
     ViewData["ActivePage"] = ManageNavPages.MySpecialOffers;
 }
 @{ 
-    var cottageName = (string)ViewData["CottageName"];
+    List<string> cottageNames = (List<string>)ViewData["CottageNames"];
+    var index = 0;
 }
 <h4>Moje aktivne specijalne ponude</h4>
 
@@ -39,37 +40,41 @@
     <tbody>
         @foreach (var item in Model.cottageSpecialOffers)
         {
-            <tr>
-                <td>
-                    @cottageName
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaxPersonCount)
-                </td>
-                <td>
-                    @if(item.IsReserved)
+        <tr>
+            <td>
+                @cottageNames[index]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
+            </td>
+            <td>
+                @if (item.IsReserved)
                 {
                     @Html.Raw("Da");
-                } else
+                }
+                else
                 {
                     @Html.Raw("Ne");
                 }
-                </td>
-                <td>
-                    <a href="@Url.Action("Edit", "CottageSpecialOffers", new { Id = @item.Id })">Izmeni</a> |
-                    <a href="@Url.Action("Details", "CottageSpecialOffers", new { Id = @item.Id })">Prikaži još</a> |
-                    <a href="@Url.Action("Delete", "CottageSpecialOffers", new { Id = @item.Id })">Ukloni</a>
-                </td>
-            </tr>
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "CottageSpecialOffers", new { Id = @item.Id })">Izmeni</a> |
+                <a href="@Url.Action("Details", "CottageSpecialOffers", new { Id = @item.Id })">Prikaži još</a> |
+                <a href="@Url.Action("Delete", "CottageSpecialOffers", new { Id = @item.Id })">Ukloni</a>
+            </td>
+            @{
+                index++;
+            }
+        </tr>
         }
     </tbody>
 </table>
