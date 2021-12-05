@@ -1,0 +1,64 @@
+﻿@page
+@model Hooking.Areas.Identity.Pages.Account.Manage.UserBoatFavoritesModel
+@using Hooking.Models
+
+@{
+    ViewData["Title"] = "Omiljeni brodovi";
+    ViewData["ActivePage"] = ManageNavPages.UserBoatFavorites;
+    List<Boat> boatData = (List<Boat>)ViewData["BoatData"];
+
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Naziv
+            </th>
+            <th>
+                Adresa
+            </th>
+            <th>
+                Grad
+            </th>
+            <th>
+                Država
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Broj soba
+            </th>
+            <th>
+                Površina
+            </th>
+            <th>
+                Prosečna ocena
+            </th>
+    </thead>
+    <tbody>
+        @foreach (var item in boatData)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
