@@ -10,16 +10,10 @@
     <thead>
         <tr>
             <th>
-                Id vikendice
+                Od
             </th>
             <th>
-                Id korisnika
-            </th>
-            <th>
-                Pocetni datum
-            </th>
-            <th>
-                Krajnji datum
+                Do
             </th>
             <th>
                 Cena
@@ -35,14 +29,6 @@
             @if (DateTime.Compare(item.StartDate, DateTime.Now) < 0)
             {
                 <tr>
-
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CottageId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserDetailsId)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
                     </td>
@@ -57,7 +43,9 @@
                     </td>
                 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Prilozi zalbu</a> |
+                        <a asp-action="Edit" asp-route-id="@item.Id">Prilozi zalbu</a>
+                        <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikazi vise</a>
+
                     </td>
 
 

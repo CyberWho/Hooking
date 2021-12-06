@@ -8,16 +8,10 @@
     <thead>
         <tr>
             <th>
-                Id broda
+                Od
             </th>
             <th>
-                Id korisnika
-            </th>
-            <th>
-                Pocetni datum
-            </th>
-            <th>
-                Krajnji datum
+                Do
             </th>
             <th>
                 Cena
@@ -33,14 +27,6 @@
             @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
             {
                 <tr>
-
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BoatId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserDetailsId)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
                     </td>
@@ -55,8 +41,7 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikazi vise</a>
                         <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
                     </td>
 
