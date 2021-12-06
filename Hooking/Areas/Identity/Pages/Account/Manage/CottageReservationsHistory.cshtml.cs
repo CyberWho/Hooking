@@ -29,32 +29,15 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             myCottageReservations = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
-          //  List<CottageReservations> filteredCottages = new List<Cottage>();
-
-      /*      ViewData["StartDate"] = String.IsNullOrEmpty(sortOrder) ? "StartDate" : "";
-            ViewData["EndDate"] = String.IsNullOrEmpty(sortOrder) ? "EndDate" : "";
-            ViewData["Price"] = String.IsNullOrEmpty(sortOrder) ? "Address" : "";
-            ViewData["MaxPersonCount"] = String.IsNullOrEmpty(sortOrder) ? "MaxPersonCount" : "";
-            var ctg = from b in _context.CottageReservation
-                      select b;
-            switch (sortOrder)
+            List<Cottage> myCottages = new List<Cottage>();
+            foreach(var myCottageReservation in myCottageReservations )
             {
-                case "StartDate":
-                    ctg = ctg.OrderBy(b => b.StartDate);
-                    break;
-                case "EndDate":
-                    ctg = ctg.OrderBy(b => b.EndDate);
-                    break;
-                case "Price":
-                    ctg = ctg.OrderBy(b => b.Price);
-                    break;
-                case "MaxPersonCount":
-                    ctg = ctg.OrderBy(b => b.MaxPersonCount);
-                    break;
-     
+               
+                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(myCottageReservation.CottageId)).FirstOrDefault<Cottage>();
+                myCottages.Add(ctg);
 
-
-            }*/
+            }
+            ViewData["Cottage"] = myCottages;
             return Page();
         }
     }
