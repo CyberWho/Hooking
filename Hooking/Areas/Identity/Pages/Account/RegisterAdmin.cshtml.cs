@@ -46,6 +46,9 @@ namespace Hooking.Areas.Identity.Pages.Account
             
         }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         [BindProperty]
         public InputModel Input { get; set; }
         
@@ -57,7 +60,7 @@ namespace Hooking.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Polje 'Lozinka' je obavezno.")]
-            [StringLength(100, ErrorMessage = "{0} mora biti dugačka bar {2} i najviše {1} karaktera.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} mora biti dugačka bar {2} i najviše {1} karaktera.", MinimumLength = 6)] 
             [DataType(DataType.Password)]
             [Display(Name = "Lozinka")]
             public string Password { get; set; }
@@ -91,7 +94,7 @@ namespace Hooking.Areas.Identity.Pages.Account
         }
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            treba da registrujes admina (iako bi ovo trebalo da je sad vec otkucano, proveri)
+            //treba da registrujes admina (iako bi ovo trebalo da je sad vec otkucano, proveri)
             if(ModelState.IsValid)
             {
                 var user = GetIdentityUserFromInput();
@@ -111,11 +114,18 @@ namespace Hooking.Areas.Identity.Pages.Account
 
                         var roleName = "Admin";
                         await _userManager.AddToRoleAsync(user, roleName);
+                        await _userManager.ConfirmEmailAsync(user, await _userManager.GenerateEmailConfirmationTokenAsync(user)); // confirm email by default
+
+                        _context.Add(new FirstLoginAdmins()
+                        {
+                            AdminId = user.Id,
+                            FirstLogin = true
+                        });
+
                         await _context.SaveChangesAsync();
 
-
-
-                        return RedirectToPage("RegisterAdmin");
+                        StatusMessage = "Uspešno kreiranje administratora.";
+                        return RedirectToPage();
                     }
                 }
 
