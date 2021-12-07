@@ -4,20 +4,27 @@
     ViewData["Title"] = "Moje rezervacije brodova";
     ViewData["ActivePage"] = ManageNavPages.MyBoatReservations;
 }
+@using Hooking.Models;
+
+@{
+    ViewData["Title"] = "Istorija rezervacija brodova";
+    ViewData["ActivePage"] = ManageNavPages.MyBoatReservations;
+}
+@{
+    List<Boat> boats = (List<Boat>)ViewData["Boat"];
+    int i = 0;
+}
 <table class="table">
     <thead>
         <tr>
             <th>
-                Id broda
+                Naziv broda
             </th>
             <th>
-                Id korisnika
+                Od
             </th>
             <th>
-                Pocetni datum
-            </th>
-            <th>
-                Krajnji datum
+                Do
             </th>
             <th>
                 Cena
@@ -32,37 +39,33 @@
         {
             @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
             {
-                <tr>
+        <tr>
+            <td>
+                @boats[i].Name
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonCount)
+            </td>
+
+            <td>
+                <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikazi vise</a>
+                <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
+            </td>
 
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BoatId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserDetailsId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PersonCount)
-                    </td>
-
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
-                    </td>
-
-
-                </tr>
+        </tr>
+        
             }
+            i++;
         }
     </tbody>
 </table>

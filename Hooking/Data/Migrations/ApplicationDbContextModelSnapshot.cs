@@ -817,6 +817,70 @@ namespace Hooking.Data.Migrations
                     b.ToTable("Cottage");
                 });
 
+            modelBuilder.Entity("Hooking.Models.CottageFavorites", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("UserDetailsId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageFavorites");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageImages");
+                });
+
+            modelBuilder.Entity("Hooking.Models.CottageNotAvailablePeriod", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CottageNotAvailablePeriod");
+                });
+
             modelBuilder.Entity("Hooking.Models.CottageOwner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -885,6 +949,9 @@ namespace Hooking.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsReviewed")
+                        .HasColumnType("bit");
+
                     b.Property<int>("MaxPersonCount")
                         .HasColumnType("int");
 
@@ -914,6 +981,9 @@ namespace Hooking.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("DidntShow")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReviewedByAdmin")
                         .HasColumnType("bit");
 
                     b.Property<bool>("ReceivedPenalty")
@@ -1439,6 +1509,9 @@ namespace Hooking.Data.Migrations
 
                     b.Property<string>("UserDetailsId")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isReviewed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

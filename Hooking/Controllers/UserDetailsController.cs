@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class UserDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public UserDetailsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public string cottageId;
+        public UserDetailsController(ApplicationDbContext context,
+                                     UserManager<IdentityUser> userManager,
+                                     RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: UserDetails
@@ -81,7 +88,14 @@ namespace Hooking.Controllers
             }
             return View(userDetails);
         }
-
+        [HttpGet("/Users/ShowAllUsers/{id}")]
+        public async Task<IActionResult> ShowAllUsers(Guid id)
+        {
+            cottageId = id.ToString();
+            ViewData["CottageId"] = cottageId;
+            var allUsers = await _context.UserDetails.ToListAsync();
+            return View(allUsers);
+        }
         // POST: UserDetails/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

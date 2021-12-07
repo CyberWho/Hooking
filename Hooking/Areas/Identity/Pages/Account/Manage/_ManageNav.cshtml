@@ -14,10 +14,9 @@
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Lozinka</a></li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">Prijavljivanje pomoću drugih servisa</a></li>
+        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">Eksterno logovanje</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Dvofaktorska autentifikacija</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Lični podaci</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.UserDeleteRequestNavClass(ViewContext)" id="change-password" asp-page="./UserDeleteRequest">Zahtev za brisanje profila</a></li>
     @if (SignInManager.IsSignedIn(User))
     {
         @if (User.IsInRole("Vlasnik vikendice"))
@@ -38,8 +37,15 @@
         {
             <li class="nav-item"><a class="nav-link @ManageNavPages.CottageReservatiosHistoryNavClass(ViewContext)" id="my-cottageReservationsHistory" asp-page="./CottageReservationsHistory">Istorija rezervacija vikendica</a></li>
             <li class="nav-item"><a class="nav-link @ManageNavPages.BoatReservatiosHistoryNavClass(ViewContext)" id="my-boateservationsHistory" asp-page="./BoatReservationsHistory">Istorija rezervacija brodova</a></li>
+            <li class="nav-item"><a class="nav-link @ManageNavPages.AdventureReservationsHistoryNavClass(ViewContext)" id="my-adventureReservationsHistory" asp-page="./AdventureReservationsHistory">Istorija rezervacija usluga instruktora</a></li>
+
             <li class="nav-item"><a class="nav-link @ManageNavPages.MyCottageReservationsNavClass(ViewContext)" id="my-cottageReservations" asp-page="./MyCottageReservations">Moje rezervacije vikendica</a></li>
             <li class="nav-item"><a class="nav-link @ManageNavPages.MyBoatReservationsNavClass(ViewContext)" id="my-boatReservations" asp-page="./MyBoatReservations">Moje rezervacije brodova</a></li>
+            <li class="nav-item"><a class="nav-link @ManageNavPages.AdventureReservationsNavClass(ViewContext)" id="my-adventureReservations" asp-page="./AdventureReservations">Moje rezervacije usluga instruktora</a></li>
+
+            <li class="nav-item"><a class="nav-link @ManageNavPages.UserCottageFavoritesNavClass(ViewContext)" id="my-userCottageFavorites" asp-page="./UserCottageFavorites">Omiljene vikendice</a></li>
+            <li class="nav-item"><a class="nav-link @ManageNavPages.UserBoatFavoritesNavClass(ViewContext)" id="my-userBoatFavorites" asp-page="./UserBoatFavorites">Omiljeni brodovi</a></li>
+
 
 
         }
@@ -49,6 +55,20 @@
         @if (User.IsInRole("Vlasnik vikendice"))
         {
             <li class="nav-item"><a class="nav-link @ManageNavPages.MySpecialOffersNavClass(ViewContext)" id="my-special-offers" asp-page="./MySpecialOffers">Moje specijalne ponude</a></li>
+        }
+    }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Vlasnik vikendice"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.CottagesReservationsNavClass(ViewContext)" id="my-cottage-reservations" asp-page="./CottagesReservations">Pregled rezervacija</a></li>
+        }
+    }
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Vlasnik vikendice"))
+        {
+            <li class="nav-item"><a class="nav-link @ManageNavPages.CottagesReservationsHistoryNavClass(ViewContext)" id="cottages-reservations-history" asp-page="./CottagesReservationsHistory">Istorija rezervacija</a></li>
         }
     }
 </ul>

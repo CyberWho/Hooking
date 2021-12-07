@@ -25,10 +25,19 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         /*   public void OnGet()
            {
            }*/
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string sortOrder="")
         {
             var user = await _userManager.GetUserAsync(User);
             myCottageReservations = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+            List<Cottage> myCottages = new List<Cottage>();
+            foreach(var myCottageReservation in myCottageReservations )
+            {
+               
+                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(myCottageReservation.CottageId)).FirstOrDefault<Cottage>();
+                myCottages.Add(ctg);
+
+            }
+            ViewData["Cottage"] = myCottages;
             return Page();
         }
     }
