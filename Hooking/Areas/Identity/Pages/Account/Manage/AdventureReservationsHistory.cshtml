@@ -45,10 +45,14 @@
                 Opis
             </th>
             <th>
-                Cena
+                <a asp-page="./AdventureReservationsHistory" asp-route-sortOrder="@Model.PriceSort">
+                    Cena
+                </a>
             </th>
             <th>
-                Datum pocetka
+                <a asp-page="./AdventureReservationsHistory" asp-route-sortOrder="@Model.StartDateSort">
+                    Datum pocetka
+                </a>
             </th>
             <th>
                 Trajanje
