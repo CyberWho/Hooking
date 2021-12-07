@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Hooking.Models.Instructor>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<Hooking.Models.Instructor>
+@inject SignInManager<IdentityUser> _signInManager
 
 @{
     ViewData["Title"] = "Instruktori";
@@ -95,7 +97,14 @@
             </td>
 
             <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Prikazi jos</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+                @if (_signInManager.IsSignedIn(User))
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
+                    }
+                }
             </td>
         </tr>
     i++;

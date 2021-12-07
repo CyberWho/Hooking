@@ -306,6 +306,7 @@ namespace Hooking.Controllers
         // POST: Cottages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var cottage = await _context.Cottage.FindAsync(id);
@@ -322,6 +323,12 @@ namespace Hooking.Controllers
                     cottageSpecialOfferReservationsFull.Add(cottageSpecialOfferReservation);
                 }
             }
+
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Records", "Home");
+            }
+
             if(cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
             {
                 _context.Cottage.Remove(cottage);
