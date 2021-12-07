@@ -71,30 +71,37 @@
 
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @userInstructors[i].FirstName
-            </td>
-            <td>
-                @userInstructors[i].LastName
-            </td>
-            <td>
-                @userInstructors[i].Address
-            </td>
-            <td>
-                @userInstructors[i].City
-            </td>
-            <td>
-                @userInstructors[i].Country
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AverageGrade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GradeCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Biography)
-            </td>
+            @if (userInstructors.Count>0)
+            {
+                <td>
+                    @userInstructors[i].FirstName
+                </td>
+                <td>
+                    @userInstructors[i].LastName
+                </td>
+                <td>
+                    @userInstructors[i].Address
+                </td>
+                <td>
+                    @userInstructors[i].City
+                </td>
+                <td>
+                    @userInstructors[i].Country
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GradeCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Biography)
+                </td>
+
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Prikazi jos</a> |
+                </td>
+            }
 
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
