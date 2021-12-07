@@ -62,5 +62,6 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.HouseRules> HouseRules { get; set; }
         public DbSet<Hooking.Models.RegistrationRequest> RegistrationRequest { get; set; }
         public DbSet<Hooking.Models.FirstLoginAdmins> FirstLoginAdmins { get; set; }
+        public DbSet<Hooking.Models.SystemOptions> SystemOptions { get; set; }
     }
 }
