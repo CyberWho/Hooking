@@ -127,6 +127,9 @@ namespace Hooking.Controllers
 
             var adventureReservation = await _context.AdventureReservation
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var adventureRealisation = await _context.AdventureRealisation.FirstOrDefaultAsync(m => m.Id == Guid.Parse(adventureReservation.AdventureRealisationId));
+            ViewData["AdventureRealisation"] = adventureRealisation;
+            System.Diagnostics.Debug.WriteLine(adventureRealisation.StartDate.ToString());
             if (adventureReservation == null)
             {
                 return NotFound();

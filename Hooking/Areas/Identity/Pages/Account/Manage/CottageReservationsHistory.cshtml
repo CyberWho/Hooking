@@ -7,7 +7,7 @@
 
 }
 @{
-    var cottages = (List<Cottage>)ViewData["Cottage"];
+    List<Cottage> cottages = (List<Cottage>)ViewData["Cottage"];
     int i = 0;
 }
 
@@ -40,7 +40,7 @@
             {
                 <tr>
                     <td>
-                        Ime vikendice
+                            @cottages[i].Name
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
