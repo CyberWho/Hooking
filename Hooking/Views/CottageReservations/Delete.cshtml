@@ -10,18 +10,7 @@
     <div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CottageId)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CottageId)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.UserDetailsId)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.UserDetailsId)
-            </dd>
+
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.StartDate)
             </dt>
@@ -46,19 +35,14 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MaxPersonCount)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.RowVersion)
-            </dd>
         </dl>
 
-        <form asp-action="Delete">
+        <form asp-action="Otkazi">
             <input type="hidden" asp-for="Id" />
             <input type="submit" value="Otkazi" class="btn btn-danger" /> |
-            <a asp-action="Index">Nazad</a>
         </form>
+        <a href='javascript:history.go(-1)'>Nazad</a>
+
     </div>
 }
 else
@@ -68,18 +52,6 @@ else
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CottageId)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CottageId)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.UserDetailsId)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.UserDetailsId)
-            </dd>
-            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.StartDate)
             </dt>
             <dd class="col-sm-10">
@@ -103,15 +75,9 @@ else
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MaxPersonCount)
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.RowVersion)
-            </dd>
         </dl>
 
-        <form asp-action="Delete">
+        <form asp-action="Otkazi">
             <a href='javascript:history.go(-1)'>>Nazad</a>
         </form>
     </div>

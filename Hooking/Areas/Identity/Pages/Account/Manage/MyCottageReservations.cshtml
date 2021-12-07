@@ -1,12 +1,21 @@
 ﻿@page
 @model Hooking.Areas.Identity.Pages.Account.Manage.MyCottageReservationsModel
+@using Hooking.Models;
+
 @{
     ViewData["Title"] = "Moje rezervacije vikendica";
     ViewData["ActivePage"] = ManageNavPages.MyCottageReservations;
 }
+@{
+    List<Cottage> cottages = (List<Cottage>)ViewData["Cottage"];
+    int i = 0;
+}
 <table class="table">
     <thead>
         <tr>
+            <th>
+                Naziv vikendice
+            </th>
             <th>
                 Od
             </th>
@@ -26,29 +35,33 @@
         {
             @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
             {
-                <tr>
+        <tr>
+            <td>
+                @cottages[i].Name
+            </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaxPersonCount)
-                    </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
+            </td>
 
-                    <td>
-                        <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikazi vise</a>|
-                        <a href="@Url.Action("Delete", "CottageReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
-                    </td>
+            <td>
+                <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikazi vise</a>|
+                <a href="@Url.Action("Delete", "CottageReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
+            </td>
 
 
-                </tr>
+        </tr>
             }
+            i++;
         }
     </tbody>
 </table>

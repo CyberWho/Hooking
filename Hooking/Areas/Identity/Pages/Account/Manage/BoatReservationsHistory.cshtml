@@ -1,12 +1,22 @@
 ﻿@page
 @model Hooking.Areas.Identity.Pages.Account.Manage.BoatReservationsHistoryModel
+@using Hooking.Models;
+
 @{
     ViewData["Title"] = "Istorija rezervacija brodova";
     ViewData["ActivePage"] = ManageNavPages.BoatReservationHistory;
 }
+
+@{
+    List<Boat> boats = (List<Boat>)ViewData["Boat"];
+    int i = 0;
+}
 <table class="table">
     <thead>
         <tr>
+            <th>
+                Naziv broda
+            </th>
             <th>
                 Od
             </th>
@@ -27,6 +37,9 @@
             @if (DateTime.Compare(item.StartDate, DateTime.Now) < 0)
             {
                 <tr>
+                    <td>
+                        @boats[i].Name
+                    </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
@@ -50,6 +63,7 @@
 
                 </tr>
             }
+            i++;
         }
     </tbody>
 </table>
