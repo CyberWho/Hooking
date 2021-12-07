@@ -102,11 +102,11 @@ namespace Hooking.Areas.Identity.Pages.Account
                     var roles = await _userManager.GetRolesAsync(user);
                     if (roles[0] == "Admin")
                     {
-                        var admin = _context.FirstLoginAdmins.FirstOrDefault(o => o.AdminId == user.Id);
-                        if (admin != null)
+                        var firstLoginAdmin = _context.FirstLoginAdmins.FirstOrDefault(o => o.AdminId == user.Id);
+                        if (firstLoginAdmin != null)
                         {
                             _logger.LogInformation("Admin " + user.NormalizedUserName + " logged in for the first time.");
-                            treeba da redirect na page koji ce da bude forma za promenu passworda
+                            return RedirectToPage("./FirstPasswordChange");
                         }
                     }
 
