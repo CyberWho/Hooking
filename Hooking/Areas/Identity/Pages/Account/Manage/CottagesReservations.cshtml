@@ -5,7 +5,8 @@
     ViewData["ActivePage"] = ManageNavPages.MyCottageReservations;
 }
 @{
-    var cottageName = (string)ViewData["CottageName"];
+    List<string> cottageNames = (List<string>)ViewData["CottageNames"];
+    var index = 0;
 }
 
 <h4>Pregled rezervacija</h4>
@@ -36,27 +37,29 @@
     <tbody>
         @foreach (var item in Model.cottageReservations)
         {
-            <tr>
-                <th>
-                    @cottageName
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaxPersonCount)
-                </td>
-                <td>
-                    <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikaži još</a>
-                </td>
-
-            </tr>
+        <tr>
+            <th>
+                @cottageNames[index]
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
+            </td>
+            <td>
+                <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikaži još</a>
+            </td>
+            @{
+                index++;
+            }
+        </tr>
         }
     </tbody>
 </table>

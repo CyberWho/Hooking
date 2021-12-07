@@ -21,7 +21,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         private readonly IEmailSender _emailSender;
         [BindProperty]
         public List<CottageReservation> cottageReservations { get; set; }
-        public string cottageName;
+        [BindProperty]
+        public List<string> cottageNames { get; set; }
         public CottagesReservationsHistoryModel(ApplicationDbContext context,
                                           UserManager<IdentityUser> userManager,
                                           RoleManager<IdentityRole> roleManager,
@@ -39,6 +40,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             List<Cottage> myCottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
             cottageReservations = new List<CottageReservation>();
+            cottageNames = new List<string>();
             foreach (var cottage in myCottages)
             {
                 var cottageId = cottage.Id.ToString();
@@ -51,8 +53,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                         if (cottageReservation.StartDate <= DateTime.Now)
                         {
                             cottageReservations.Add(cottageReservation);
-                            cottageName = cottage.Name;
-                            ViewData["CottageName"] = cottageName;
+                            cottageNames.Add(cottage.Name);
                         }
                     }
                 }
@@ -60,6 +61,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             }
            // List<Cottage> cottages = await _context.Cottage.ToListAsync();
            
+            ViewData["CottageNames"] = cottageNames;
             return Page();
         }
     }

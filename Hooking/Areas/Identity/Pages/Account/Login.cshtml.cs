@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -98,7 +99,18 @@ namespace Hooking.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles[0] == "Admin")
+                    {
+                        var firstLoginAdmin = _context.FirstLoginAdmins.FirstOrDefault(o => o.AdminId == user.Id);
+                        if (firstLoginAdmin != null)
+                        {
+                            _logger.LogInformation("Admin " + user.NormalizedUserName + " logged in for the first time.");
+                            return RedirectToPage("./FirstPasswordChange");
+                        }
+                    }
+
+                    _logger.LogInformation("User " + user.NormalizedUserName + " logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
