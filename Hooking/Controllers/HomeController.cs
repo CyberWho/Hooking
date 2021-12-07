@@ -35,6 +35,11 @@ namespace Hooking.Controllers
         {
             return Redirect("/Adventures");
         }
+
+        public IActionResult Records()
+        {
+            return Redirect("/Records");
+        }
         public IActionResult Privacy()
         {
             return View();
