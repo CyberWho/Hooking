@@ -8,6 +8,5 @@ namespace Hooking.Models
     public class FirstLoginAdmins : BaseModel
     {
         public string AdminId { get; set; }
-        public bool FirstLogin { get; set; }
     }
 }

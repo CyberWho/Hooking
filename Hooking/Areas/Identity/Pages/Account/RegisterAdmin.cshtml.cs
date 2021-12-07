@@ -118,8 +118,7 @@ namespace Hooking.Areas.Identity.Pages.Account
 
                         _context.Add(new FirstLoginAdmins()
                         {
-                            AdminId = user.Id,
-                            FirstLogin = true
+                            AdminId = user.Id
                         });
 
                         await _context.SaveChangesAsync();
