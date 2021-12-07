@@ -23,15 +23,7 @@ namespace Hooking.Controllers
         // GET: Instructors
         public async Task<IActionResult> Index(string searchString="",string sortOrder="")
         {
-            var instructors = await _context.Instructor.ToListAsync();
-            List<UserDetails> users = new List<UserDetails>();
-            foreach (Instructor instructor in instructors)
-            {
-                Guid guid = new Guid(instructor.UserDetailsId);
-                UserDetails user = _context.UserDetails.Where(m => m.Id == guid).FirstOrDefault<UserDetails>();
-                users.Add(user);
-            }
-            ViewData["UserInstructors"] = users;
+           
             var ins = from b in _context.UserDetails
                       select b;
             if (!String.IsNullOrEmpty(searchString))
@@ -61,6 +53,23 @@ namespace Hooking.Controllers
 
 
             }
+            List<UserDetails> userIns = await ins.AsNoTracking().ToListAsync();
+
+            var instructors = await _context.Instructor.ToListAsync();
+            List<UserDetails> users = new List<UserDetails>();
+            foreach (Instructor instructor in instructors)
+            {
+                Guid guid = new Guid(instructor.UserDetailsId);
+                UserDetails user = _context.UserDetails.Where(m => m.Id == guid).FirstOrDefault<UserDetails>();
+                foreach(var userIn in userIns)
+                {
+                    if(userIn.Id==user.Id && !users.Contains(user))
+                    {
+                        users.Add(user);
+                    }
+                }
+            }
+            ViewData["UserInstructors"] = users;
             return View(await _context.Instructor.ToListAsync());
         }
 

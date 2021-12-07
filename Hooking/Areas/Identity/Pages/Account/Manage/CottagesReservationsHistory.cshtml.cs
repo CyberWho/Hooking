@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Hooking.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hooking.Areas.Identity.Pages.Account.Manage
 {
@@ -34,7 +35,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string sortOrder="")
         {
             var user = await _userManager.GetUserAsync(User);
             List<Cottage> myCottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
@@ -58,6 +59,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 }
 
             }
+           // List<Cottage> cottages = await _context.Cottage.ToListAsync();
+           
             ViewData["CottageNames"] = cottageNames;
             return Page();
         }

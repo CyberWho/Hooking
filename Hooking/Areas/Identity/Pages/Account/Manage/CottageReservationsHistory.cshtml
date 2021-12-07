@@ -3,7 +3,7 @@
 @using Hooking.Models;
 @{
     ViewData["Title"] = "Istorija rezervacija vikendica";
-    ViewData["ActivePage"] = ManageNavPages.CottageReservationHistory;
+    ViewData["ActivePage"] = ManageNavPages.CottageReservationsHistory;
 
 }
 @{
@@ -19,13 +19,17 @@
                 Naziv vikendice
             </th>
             <th>
-                Od
+                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="@Model.StartDateSort">
+                    Od
+                </a>
             </th>
             <th>
                 Do
             </th>
             <th>
-                Cena
+                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="@Model.PriceSort">
+                    Cena
+                </a>
             </th>
             <th>
                 Max broj osoba

@@ -18,13 +18,17 @@
                 Naziv broda
             </th>
             <th>
-                Od
+                <a asp-page="./BoatReservationsHistory" asp-route-sortOrder="@Model.StartDateSort">
+                    Od
+                </a>
             </th>
             <th>
                 Do
             </th>
             <th>
-                Cena
+                <a asp-page="./BoatReservationsHistory" asp-route-sortOrder="@Model.PriceSort">
+                    Cena
+                </a>
             </th>
             <th>
                 Max broj osoba
