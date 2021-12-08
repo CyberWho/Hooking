@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hooking.Services;
+using Hooking.Services.Implementations;
 
 namespace Hooking
 {
@@ -33,7 +35,8 @@ namespace Hooking
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-                
+
+            services.AddScoped<IAdventureService, AdventureService>();
             services.AddControllersWithViews();
             services.AddAuthorization();
             services.AddRazorPages();
