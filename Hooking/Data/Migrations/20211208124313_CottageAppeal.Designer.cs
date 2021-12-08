@@ -4,14 +4,16 @@ using Hooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hooking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211208124313_CottageAppeal")]
+    partial class CottageAppeal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,28 +62,6 @@ namespace Hooking.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Adventure");
-                });
-
-            modelBuilder.Entity("Hooking.Models.AdventureAppeal", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AdventureId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppealContent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdventureAppeal");
                 });
 
             modelBuilder.Entity("Hooking.Models.AdventureFavorites", b =>
@@ -455,28 +435,6 @@ namespace Hooking.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BoatAmenities");
-                });
-
-            modelBuilder.Entity("Hooking.Models.BoatAppeal", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AppealContent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BoatId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BoatAppeal");
                 });
 
             modelBuilder.Entity("Hooking.Models.BoatFavorites", b =>

@@ -60,8 +60,7 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Prilozi zalbu</a>
-                        <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikazi vise</a>
+                        <a href="@Url.Action("Create", "CottageAppeals", new { Id = @item.Id })">Prilozi zalbu</a>
 
                     </td>
 

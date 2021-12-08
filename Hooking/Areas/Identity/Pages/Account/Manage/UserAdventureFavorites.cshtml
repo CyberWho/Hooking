@@ -1,0 +1,57 @@
+﻿@page
+@model Hooking.Areas.Identity.Pages.Account.Manage.UserAdventureFavoritesModel
+@using Hooking.Models
+
+@{
+    ViewData["Title"] = "Omiljene avanture";
+    ViewData["ActivePage"] = ManageNavPages.UserAdventureFavorites;
+    List<Adventure> adventureData = (List<Adventure>)ViewData["AdventureData"];
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Naziv
+            </th>
+            <th>
+                Adresa
+            </th>
+            <th>
+                Grad
+            </th>
+            <th>
+                Država
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Prosečna ocena
+            </th>
+    </thead>
+    <tbody>
+        @foreach (var item in adventureData)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
