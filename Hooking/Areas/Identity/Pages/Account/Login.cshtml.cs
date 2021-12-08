@@ -85,20 +85,21 @@ namespace Hooking.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                UserDetails userDetails = _context.UserDetails.FirstOrDefault(x => x.IdentityUserId == user.Id);
-                if (userDetails is { Approved: false })
-                {
-                    _logger.LogWarning("User account ( {userEmail} ) is not approved by admin.", await _userManager.GetUserNameAsync(user));
-                    ModelState.AddModelError(string.Empty, "Korisnik još nije odobren od strane administratora.");
-                    return Page();
-                }
-
+                
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                
                 if (result.Succeeded)
                 {
+                    UserDetails userDetails = _context.UserDetails.FirstOrDefault(x => x.IdentityUserId == user.Id);
+                    if (userDetails is { Approved: false })
+                    {
+                        _logger.LogWarning("User account ( {userEmail} ) is not approved by admin.", await _userManager.GetUserNameAsync(user));
+                        ModelState.AddModelError(string.Empty, "Korisnik još nije odobren od strane administratora.");
+                        return Page();
+                    }
                     var roles = await _userManager.GetRolesAsync(user);
                     if (roles[0] == "Admin")
                     {
