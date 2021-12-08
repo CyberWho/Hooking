@@ -31,7 +31,7 @@ namespace Hooking.Controllers
         public HouseRules houseRules;
         public Facilities facilities;
         public List<CottageRoom> cottageRooms = new List<CottageRoom>();
-        public string cottageId;
+        public Guid cottageId;
         public List<CottageImage> cottageImages = new List<CottageImage>();
        
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -89,7 +89,7 @@ namespace Hooking.Controllers
         [HttpGet("/Cottages/ShowAllUsers/{id}")]
         public async Task<IActionResult> ShowAllUsers(Guid id)
         {
-            cottageId = id.ToString();
+            cottageId = id;
             ViewData["CottageId"] = cottageId;
             var allUsers = _context.UserDetails.ToListAsync();
             return View(allUsers);

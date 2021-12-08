@@ -4,7 +4,7 @@
     ViewData["Title"] = "View";
 }
 @{
-    var cottageId = (string)ViewData["CottageId"];
+    var cottageId = (Guid)ViewData["CottageId"];
 }
 
 <h4>Odabir klijenta</h4>
@@ -54,7 +54,7 @@
                 </td>
 
                 <td>
-                    <a href="@Url.Action("CreateReservation", "CottageReservations", new { id = item.Id, cId = cottageId })"></a>
+                    <a href="@Url.RouteUrl(new { controller = "CottageReservations", Action = "CreateView", cId = cottageId, id = item.Id })"></a>
                 </td>
             </tr>
         }

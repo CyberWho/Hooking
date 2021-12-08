@@ -3,16 +3,17 @@
 @{
     ViewData["Title"] = "View";
 }
-@{ 
-    var cottageId = (string)ViewData["CottageId"];
+@{
+    Guid cottageId = (Guid)ViewData["CottageId"];
 }
+
 
 <h4>Odabir klijenta</h4>
 
 <table class="table">
     <thead>
         <tr>
-           
+
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -28,7 +29,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Country)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
@@ -36,7 +37,7 @@
         @foreach (var item in Model)
         {
             <tr>
-              
+
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
@@ -52,9 +53,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Country)
                 </td>
-               
+
                 <td>
-                   <a href="@Url.Action("CreateReservation", "CottageReservations", new { id = item.Id, cId = cottageId })"></a>
+                    <a href="@Url.RouteUrl(new { controller = "CottageReservations", Action = "CreateView", cId = cottageId, id = item.Id })"></a>
                 </td>
             </tr>
         }

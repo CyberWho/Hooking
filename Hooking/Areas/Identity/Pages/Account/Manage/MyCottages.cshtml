@@ -108,6 +108,7 @@
                     <a href="@Url.Action("MyCottage", "Cottages", new { Id = @item.Id })">Prikaži još</a> |
                     <a href="@Url.Action("Delete", "Cottages", new { Id = @item.Id })">Ukloni iz ponude</a>
                     <a href="@Url.Action("Create","CottageNotAvailablePeriods",new { id = @item.Id})">Definiši period nedostupnosti</a>
+                    <a href="@Url.Action("Index","CottageNotAvailablePeriods",new { id = @item.Id})">Kalendar dostupnosti</a>
                 </td>
             </tr>
         }

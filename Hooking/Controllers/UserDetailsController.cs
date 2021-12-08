@@ -16,7 +16,7 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public string cottageId;
+        public Guid cottageId;
         public UserDetailsController(ApplicationDbContext context,
                                      UserManager<IdentityUser> userManager,
                                      RoleManager<IdentityRole> roleManager)
@@ -91,7 +91,7 @@ namespace Hooking.Controllers
         [HttpGet("/Users/ShowAllUsers/{id}")]
         public async Task<IActionResult> ShowAllUsers(Guid id)
         {
-            cottageId = id.ToString();
+            cottageId = id;
             ViewData["CottageId"] = cottageId;
             var allUsers = await _context.UserDetails.ToListAsync();
             return View(allUsers);

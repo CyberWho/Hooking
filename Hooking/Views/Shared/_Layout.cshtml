@@ -11,7 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Hooking</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css"/> 
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.print.css" media="print" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.css" />
+
+
 </head>
 <body>
     <header>
@@ -53,21 +58,21 @@
                         {
                             @if (User.IsInRole("Korisnik"))
                             {
-                             //   <li class="nav-item">
-                              //      <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju vikendice</a>
-                            //    </li>
+                                //   <li class="nav-item">
+                                //      <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="Create">Unesi rezervaciju vikendice</a>
+                                //    </li>
                                 //   <li class="nav-item">
                                 //        <a class="nav-link text-dark" asp-area="" asp-controller="CottageReservations" asp-action="CottageReservationsHistory">Istorija rezervacija vikendica</a>
                                 //     </li>
-                           //     <li class="nav-item">
-                            //        <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="Create">Unesi rezervaciju broda</a>
-                             //   </li>
+                                //     <li class="nav-item">
+                                //        <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="Create">Unesi rezervaciju broda</a>
+                                //   </li>
                                 //    <li class="nav-item">
                                 //     <a class="nav-link text-dark" asp-area="" asp-controller="BoatReservations" asp-action="BoatReservationsHistory">Istorija rezervacija brodova</a>
                                 //   </li>
-                               // <li class="nav-item">
-                               //     <a class="nav-link text-dark" asp-area="" asp-controller="Instructors" asp-action="Create">Unesi instruktora</a>
-                              //  </li>
+                                // <li class="nav-item">
+                                //     <a class="nav-link text-dark" asp-area="" asp-controller="Instructors" asp-action="Create">Unesi instruktora</a>
+                                //  </li>
                             }
                         }
                     </ul>
@@ -89,6 +94,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"></script>
     @RenderSection("Scripts", required: false)
+
+
 </body>
 </html>
