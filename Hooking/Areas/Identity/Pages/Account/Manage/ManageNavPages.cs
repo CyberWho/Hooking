@@ -29,7 +29,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string MyCottageReservations => "MyCottageReservations";
 
-        public static string CottageReservationHistory => "CottageReservationHistory";
+        public static string CottageReservationsHistory => "CottageReservationsHistory";
 
         public static string MySpecialOffers => "MySpecialOffers";
 
@@ -43,6 +43,11 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public static string UserBoatFavorites => "UserBoatFavorites";
 
         public static string InstructorReservationsHistory => "InstructorReservationHistory";
+
+        public static string AdventureReservationsHistory => "AdventureReservationsHistory";
+        public static string AdventureReservations => "AdventureReservations";
+
+
 
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
@@ -67,7 +72,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string MyCottageReservationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, MyCottageReservations);
 
-        public static string CottageReservatiosHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, CottageReservationHistory);
+        public static string CottageReservationsHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, CottageReservationsHistory);
 
         public static string MySpecialOffersNavClass(ViewContext viewContext) => PageNavClass(viewContext, MySpecialOffers);
 
@@ -82,7 +87,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string UserBoatFavoritesNavClass(ViewContext viewContext) => PageNavClass(viewContext, UserBoatFavorites);
         public static string InstructorReservationsHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, InstructorReservationsHistory);
+        public static string AdventureReservationsHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, AdventureReservationsHistory);
 
+        public static string AdventureReservationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, AdventureReservations);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

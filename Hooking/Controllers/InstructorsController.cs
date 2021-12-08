@@ -23,14 +23,7 @@ namespace Hooking.Controllers
         // GET: Instructors
         public async Task<IActionResult> Index(string searchString="",string sortOrder="")
         {
-            var instructors = await _context.Instructor.ToListAsync();
-            List<UserDetails> users = new List<UserDetails>();
-            foreach (Instructor instructor in instructors)
-            {
-                UserDetails user = _context.UserDetails.Where(m => m.IdentityUserId == instructor.UserDetailsId).FirstOrDefault<UserDetails>();
-                users.Add(user);
-            }
-            ViewData["UserInstructors"] = users;
+           
             var ins = from b in _context.UserDetails
                       select b;
             if (!String.IsNullOrEmpty(searchString))
@@ -60,6 +53,23 @@ namespace Hooking.Controllers
 
 
             }
+            List<UserDetails> userIns = await ins.AsNoTracking().ToListAsync();
+
+            var instructors = await _context.Instructor.ToListAsync();
+            List<UserDetails> users = new List<UserDetails>();
+            foreach (Instructor instructor in instructors)
+            {
+                Guid guid = new Guid(instructor.UserDetailsId);
+                UserDetails user = _context.UserDetails.Where(m => m.Id == guid).FirstOrDefault<UserDetails>();
+                foreach(var userIn in userIns)
+                {
+                    if(userIn.Id==user.Id && !users.Contains(user))
+                    {
+                        users.Add(user);
+                    }
+                }
+            }
+            ViewData["UserInstructors"] = users;
             return View(await _context.Instructor.ToListAsync());
         }
 
@@ -77,6 +87,23 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
+            Guid userInstructorId = Guid.Parse(instructor.UserDetailsId);
+            var userInstructor = _context.UserDetails.Where(m => m.Id == userInstructorId).FirstOrDefault<UserDetails>();
+            var allAdventures = await _context.Adventure.ToListAsync();
+            List<Adventure> adventures = new List<Adventure>();
+            foreach (Adventure adventure in allAdventures)
+            {
+                Guid guid = new Guid(adventure.InstructorId);
+                if(guid==id)
+                {
+                    adventures.Add(adventure);
+                }
+               // Adventure a = _context.Adventure.Where(m => m.InstructorId == adventure.InstructorId).FirstOrDefault<Adventure>();
+              
+            }
+            ViewData["UserInstructor"] = userInstructor;
+            ViewData["InstructorsAdventures"] = adventures;
+
 
             return View(instructor);
         }

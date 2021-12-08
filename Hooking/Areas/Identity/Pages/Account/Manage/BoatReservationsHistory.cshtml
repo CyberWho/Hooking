@@ -1,26 +1,34 @@
 ﻿@page
 @model Hooking.Areas.Identity.Pages.Account.Manage.BoatReservationsHistoryModel
+@using Hooking.Models;
+
 @{
     ViewData["Title"] = "Istorija rezervacija brodova";
     ViewData["ActivePage"] = ManageNavPages.BoatReservationHistory;
+}
+
+@{
+    List<Boat> boats = (List<Boat>)ViewData["Boat"];
+    int i = 0;
 }
 <table class="table">
     <thead>
         <tr>
             <th>
-                Id broda
+                Naziv broda
             </th>
             <th>
-                Id korisnika
+                <a asp-page="./BoatReservationsHistory" asp-route-sortOrder="@Model.StartDateSort">
+                    Od
+                </a>
             </th>
             <th>
-                Pocetni datum
+                Do
             </th>
             <th>
-                Krajnji datum
-            </th>
-            <th>
-                Cena
+                <a asp-page="./BoatReservationsHistory" asp-route-sortOrder="@Model.PriceSort">
+                    Cena
+                </a>
             </th>
             <th>
                 Max broj osoba
@@ -33,14 +41,10 @@
             @if (DateTime.Compare(item.StartDate, DateTime.Now) < 0)
             {
                 <tr>
-
-
                     <td>
-                        @Html.DisplayFor(modelItem => item.BoatId)
+                        @boats[i].Name
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserDetailsId)
-                    </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
                     </td>
@@ -55,12 +59,15 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Prilozi zalbu</a> |
+                        <a asp-action="Edit" asp-route-id="@item.Id">Prilozi zalbu</a>
+                        <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikazi vise</a>
+
                     </td>
 
 
                 </tr>
             }
+            i++;
         }
     </tbody>
 </table>

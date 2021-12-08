@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Hooking.Models.Instructor>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<Hooking.Models.Instructor>
+@inject SignInManager<IdentityUser> _signInManager
 
 @{
     ViewData["Title"] = "Instruktori";
@@ -36,9 +38,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserDetailsId)
-            </th>
-            <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["Name"]">Ime</a>
             </th>
             <th>
@@ -54,54 +53,65 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["Country"]">Drzava</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AverageGrade)
+                  Prosecna ocena
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GradeCount)
+                  Zbirna ocena
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Biography)
+                  Biografija
             </th>
 
-            <th></th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
 
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserDetailsId)
-            </td>
-            <td>
-                @userInstructors[i].FirstName
-            </td>
-            <td>
-                @userInstructors[i].LastName
-            </td>
-            <td>
-                @userInstructors[i].Address
-            </td>
-            <td>
-                @userInstructors[i].City
-            </td>
-            <td>
-                @userInstructors[i].Country
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AverageGrade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GradeCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Biography)
-            </td>
+            @if (userInstructors.Count>0)
+            {
+                <td>
+                    @userInstructors[i].FirstName
+                </td>
+                <td>
+                    @userInstructors[i].LastName
+                </td>
+                <td>
+                    @userInstructors[i].Address
+                </td>
+                <td>
+                    @userInstructors[i].City
+                </td>
+                <td>
+                    @userInstructors[i].Country
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GradeCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Biography)
+                </td>
+
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Prikazi jos</a> |
+                </td>
+            }
 
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+                @if (_signInManager.IsSignedIn(User))
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
+                    }
+                }
             </td>
         </tr>
     i++;
