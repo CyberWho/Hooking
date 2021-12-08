@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\DTO\**" />
-    <Content Remove="Models\DTO\**" />
-    <EmbeddedResource Remove="Models\DTO\**" />
-    <None Remove="Models\DTO\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="Data\Migrations\20211105194554_CottageClasses.cs" />
     <Compile Remove="Data\Migrations\20211105194554_CottageClasses.Designer.cs" />
     <Compile Remove="Data\Migrations\20211125161630_houseRules.cs" />
@@ -40,10 +33,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
