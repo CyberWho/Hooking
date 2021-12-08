@@ -4,7 +4,7 @@
     ViewData["Title"] = "View";
 }
 @{
-    var cottageId = (string)ViewData["CottageId"];
+    Guid cottageId = (Guid)ViewData["CottageId"];
 }
 
 <h4>Odabir klijenta</h4>
@@ -54,7 +54,9 @@
                 </td>
 
                 <td>
-                    <a href="@Url.Action("CreateView", "CottageReservations", new { id = item.Id, cId = cottageId })">Odaberi</a>
+                    <a href="@Url.Action("CreateView","CottageReservations",new {id = item.Id , cId = cottageId})">Odaberi</a>
+                    <!--<a href="/CottageReservations/CreateView?id=@item.Id&cottageId=@cottageId">Odaberi</a>-->
+                   <!-- <a asp-controller="CottageReservations" asp-action="CreateView" asp-route-property1="@item.Id" asp-route-property2="@cottageId">Odaberi</a>-->
                 </td>
             </tr>
         }

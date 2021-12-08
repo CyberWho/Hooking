@@ -18,6 +18,7 @@ namespace Hooking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         public Cottage cottage;
+        public List<CalendarHelper> calendarHelpers;
         public CottageNotAvailablePeriodsController(ApplicationDbContext context,
                                                     UserManager<IdentityUser> userManager,
                                                     RoleManager<IdentityRole> roleManager)
@@ -28,9 +29,51 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageNotAvailablePeriods
-        public async Task<IActionResult> Index()
+        [HttpGet("/CottageNotAvailablePeriods/Index/{id}")]
+        public async Task<IActionResult> Index(Guid id)
         {
-            return View(await _context.CottageNotAvailablePeriod.ToListAsync());
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            cottage = await _context.Cottage
+                .FirstOrDefaultAsync(m => m.Id == id);
+            ViewData["Cottage"] = cottage;
+            
+            return View();
+
+        }
+        /// GET: /Home/GetCalendarData  
+        /// </summary>  
+        /// <returns>Return data</returns>  
+        public IActionResult GetCalendarData()
+        {
+            Guid id = Guid.Parse("4e64e953-0282-4e59-8be7-00a661f59680");
+            cottage = _context.Cottage
+                .FirstOrDefault(m => m.Id == id);
+            var cottageId = id.ToString();
+            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = new List<CottageNotAvailablePeriod>();
+            cottageNotAvailablePeriods = _context.CottageNotAvailablePeriod.Where(m => m.CottageId == cottageId).ToList();
+            calendarHelpers = new List<CalendarHelper>();
+            
+            foreach (CottageNotAvailablePeriod cottageNotAvailablePeriod in cottageNotAvailablePeriods)
+            {
+                
+                CalendarHelper calendarHelper = new CalendarHelper
+                {
+                    start = cottageNotAvailablePeriod.StartTime.ToString("yyyy-MM-dd"),
+                    end = cottageNotAvailablePeriod.EndTime.ToString("yyyy-MM-dd"),
+                    title = "Rezervacija",
+                    description = "Rezervacija vikendice " + cottage.Name
+                  
+                };
+                System.Diagnostics.Debug.WriteLine(calendarHelper.title);
+                calendarHelpers.Add(calendarHelper);
+
+            }
+            return Json(calendarHelpers);
+           
         }
 
         // GET: CottageNotAvailablePeriods/Details/5

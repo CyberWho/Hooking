@@ -72,44 +72,23 @@ namespace Hooking.Controllers
             // return View(await _context.CottageReservation.ToListAsync());
             return View(ctg);
         }
-        // GET : CottageReservations/CreateView
-        [HttpGet("/CottageReservations/CreateView")]
-        public  IActionResult CreateView()
+        [HttpGet]
+        public  IActionResult CreateView(Guid id, Guid cId)
         {
             return View();
         }
-        [HttpPost("/CottageReservations/CreateView/{cId}/{id}")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateView(Guid cId, Guid id, [Bind("StartDate,EndDate,MaxPersonCount,Id,RowVersion")] CottageReservation cottageReservation)
+        public async Task<IActionResult> CreateView(Guid id, Guid cId, [Bind("StartDate,EndDate,MaxPersonCount,Id,RowVersion")] CottageReservation cottageReservation)
         {
             if (ModelState.IsValid)
             {
+               
                 cottageReservation.Id = Guid.NewGuid();
-                cottageReservation.Price = 1000;
-                cottageReservation.UserDetailsId = id.ToString();
-                cottageReservation.CottageId = cId.ToString();
-                cottageReservation.IsReviewed = false;
-                _context.Add(cottageReservation);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
-            }
-            return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
-            
-        }
-        // GET : CottageReservations/CreateReservation/
-        public IActionResult CreateReservation()
-        {
-              return View();
-        }
-
-        [HttpPost("/CottageReservations/CreateReservation/{cId}/{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReservation(Guid cId, Guid id, [Bind("StartDate,EndDate,MaxPersonCount,Id,RowVersion")] CottageReservation cottageReservation)
-        {
-            if (ModelState.IsValid)
-            {
-                cottageReservation.Id = Guid.NewGuid();
-                cottageReservation.Price = 1000;
+                var cottage = await _context.Cottage
+                     .FirstOrDefaultAsync(m => m.Id == cId);
+                double numberOfDays = (cottageReservation.EndDate - cottageReservation.StartDate).TotalDays;
+                cottageReservation.Price = numberOfDays * cottage.RegularPrice;
                 cottageReservation.UserDetailsId = id.ToString();
                 cottageReservation.CottageId = cId.ToString();
                 cottageReservation.IsReviewed = false;
@@ -122,11 +101,12 @@ namespace Hooking.Controllers
                 cottageNotAvailablePeriod.EndTime = cottageReservation.EndDate;
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
+                return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
             }
-            return RedirectToPage("/Account/Manage/MyCottageReservations", new { area = "Identity" });
-
+            return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
+            
         }
+       
         // GET: CottageReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
