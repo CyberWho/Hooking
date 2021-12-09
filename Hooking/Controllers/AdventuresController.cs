@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,9 +30,11 @@ namespace Hooking.Controllers
             return View(await _context.Adventure.ToListAsync());
         }
 
-        public IActionResult InstructorIndex(Guid instructorId)
+        public IActionResult InstructorIndex()
         {
-            return View(_adventureService.GetInstructorAdventures(instructorId));
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return View(_adventureService.GetInstructorAdventures(userId));
         }
 
         // GET: Adventures/Details/5

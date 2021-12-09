@@ -13,11 +13,15 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InstructorId)
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InstructorName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
@@ -34,13 +38,10 @@
                 @Html.DisplayNameFor(model => model.MaxPersonCount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CancellationPolicyId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.AverageGrade)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
+                @Html.DisplayNameFor(model => model.CancelationPolicyDescription)
             </th>
             <th></th>
         </tr>
@@ -48,9 +49,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.InstructorId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -70,10 +68,13 @@
                 @Html.DisplayFor(modelItem => item.MaxPersonCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CancellationPolicyId)
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
+                @Html.DisplayFor(modelItem => item.AverageGrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CancelationPolicyDescription)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AdventureId">Edit</a> |

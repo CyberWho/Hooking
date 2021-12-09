@@ -6,6 +6,7 @@ using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Hooking.Services.Implementations
@@ -55,8 +56,12 @@ namespace Hooking.Services.Implementations
             return retVal;
         }
 
-        public IEnumerable<AdventureDTO> GetInstructorAdventures(Guid instructorId)
+        public IEnumerable<AdventureDTO> GetInstructorAdventures(string userId)
         {
+            Guid userDetailsId = GetUserDetailsIdFromUserId(userId);
+
+            Guid instructorId = GetInstructorIdFromUserDetailsId(userDetailsId);
+
             IEnumerable<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == instructorId.ToString()).ToList();
             List<AdventureDTO> dtos = new List<AdventureDTO>();
 
@@ -64,7 +69,7 @@ namespace Hooking.Services.Implementations
             {
                 AdventureDTO tempDto = new AdventureDTO(adventure);
                 
-                CancelationPolicy policy = _context.CancelationPolicy.Find(adventure.CancellationPolicyId);
+                CancelationPolicy policy = _context.CancelationPolicy.Find(Guid.Parse(adventure.CancellationPolicyId));
                 tempDto.PopulateFieldsFromCancellationPolicy(policy);
 
                 tempDto.InstructorName = GetInstructorNameFromId(instructorId);
@@ -80,6 +85,20 @@ namespace Hooking.Services.Implementations
             UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
 
             return $"{userDetails.FirstName} {userDetails.LastName}";
+        }
+
+        private Guid GetUserDetailsIdFromUserId(string userId)
+        {
+            return _context.UserDetails.Where(user => user.IdentityUserId == userId)
+                .Select(user => user.Id)
+                .FirstOrDefault();
+        }
+
+        private Guid GetInstructorIdFromUserDetailsId(Guid userDetailsId)
+        {
+            return _context.Instructor.Where(inst => inst.UserDetailsId == userDetailsId.ToString())
+                .Select(inst => inst.Id)
+                .FirstOrDefault();
         }
     }
 }
