@@ -10,6 +10,6 @@ namespace Hooking.Services
     public interface IAdventureService
     {
         IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId);
-        IEnumerable<> 
+        IEnumerable<AdventureDTO> GetInstructorAdventures(Guid instructorId);
     }
 }

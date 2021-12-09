@@ -43,5 +43,10 @@ namespace Hooking.Models.DTO
         {
         }
 
+        public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy, AdventureDTO dto)
+        {
+            dto.CancelationPolicyDescription = $"Free until: {policy.FreeUntil}, penalty: {policy.PenaltyPercentage}%";
+        }
+
     }
 }
