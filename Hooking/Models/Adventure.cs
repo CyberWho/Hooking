@@ -14,7 +14,7 @@ namespace Hooking.Models
         public string Country { get; set; }
         public string Description { get; set; }
         public int MaxPersonCount { get; set; }
-        public string CancelationPolicy { get; set; }
+        public string CancellationPolicyId { get; set; }
         public double AverageGrade { get; set; }
     }
 }

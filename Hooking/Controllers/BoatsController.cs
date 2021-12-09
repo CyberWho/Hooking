@@ -105,7 +105,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Type,Length,Capacity,EngineNumber,EnginePower,MaxSpeed,Address,City,Country,CancelationPolicyId,Description,AverageGrade,GradeCount,RegularPrice,WeekendPrice,BoatOwnerId,Id,RowVersion")] Boat boat)
+        public async Task<IActionResult> Create([Bind("Name,Type,Length,Capacity,EngineNumber,EnginePower,MaxSpeed,Address,City,Country,CancellationPolicyId,Description,AverageGrade,GradeCount,RegularPrice,WeekendPrice,BoatOwnerId,Id,RowVersion")] Boat boat)
         {
             if (ModelState.IsValid)
             {

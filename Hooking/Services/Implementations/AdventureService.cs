@@ -18,7 +18,7 @@ namespace Hooking.Services.Implementations
             _context = context;
         }
 
-        public IEnumerable<AdventureReservationDTO> GetAdventures(Guid instructorId)
+        public IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId)
         {
 
             var allAdventures = _context.Adventure.ToList();
