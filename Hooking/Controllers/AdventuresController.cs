@@ -7,22 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
     public class AdventuresController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAdventureService _adventureService;
 
-        public AdventuresController(ApplicationDbContext context)
+        public AdventuresController(ApplicationDbContext context, 
+            IAdventureService adventureService)
         {
             _context = context;
+            _adventureService = adventureService;
         }
 
         // GET: Adventures
         public async Task<IActionResult> Index()
         {
             return View(await _context.Adventure.ToListAsync());
+        }
+
+        public IActionResult InstructorIndex(Guid instructorId)
+        {
+            return View(_adventureService.GetInstructorAdventures(instructorId));
         }
 
         // GET: Adventures/Details/5

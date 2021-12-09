@@ -6,6 +6,7 @@ using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Hooking.Services.Implementations
 {
@@ -52,6 +53,33 @@ namespace Hooking.Services.Implementations
 
 
             return retVal;
+        }
+
+        public IEnumerable<AdventureDTO> GetInstructorAdventures(Guid instructorId)
+        {
+            IEnumerable<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == instructorId.ToString()).ToList();
+            List<AdventureDTO> dtos = new List<AdventureDTO>();
+
+            foreach (Adventure adventure in adventures)
+            {
+                AdventureDTO tempDto = new AdventureDTO(adventure);
+                
+                CancelationPolicy policy = _context.CancelationPolicy.Find(adventure.CancellationPolicyId);
+                tempDto.PopulateFieldsFromCancellationPolicy(policy);
+
+                tempDto.InstructorName = GetInstructorNameFromId(instructorId);
+                dtos.Add(tempDto);
+            }
+            
+            return dtos;
+        }
+
+        private string GetInstructorNameFromId(Guid instructorId)
+        {
+            Instructor instructor = _context.Instructor.Find(instructorId);
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
+
+            return $"{userDetails.FirstName} {userDetails.LastName}";
         }
     }
 }

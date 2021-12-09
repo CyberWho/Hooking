@@ -39,13 +39,9 @@ namespace Hooking.Models.DTO
             AverageGrade = adventure.AverageGrade.ToString();
         }
 
-        public void PopulateFieldsFromInstructor(Instructor instructor, AdventureDTO dto)
+        public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy)
         {
-        }
-
-        public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy, AdventureDTO dto)
-        {
-            dto.CancelationPolicyDescription = $"Free until: {policy.FreeUntil}, penalty: {policy.PenaltyPercentage}%";
+            CancelationPolicyDescription = $"Free until: {policy.FreeUntil}, penalty: {policy.PenaltyPercentage}%";
         }
 
     }
