@@ -55,7 +55,7 @@
                 <td>
                     @if (!item.IsReviewed)
                     {
-                        <a href="@Url.Action("Create", "AdventureReservationReviews", new { Id = @item.Id })">Recenzija</a> 
+                        <a href="@Url.Action("Create", "CottageReservationReviews", new { Id = @item.Id })">Recenzija</a> 
                     }
                     <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikaži još</a>
                 </td>
