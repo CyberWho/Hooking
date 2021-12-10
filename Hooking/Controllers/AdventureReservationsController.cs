@@ -39,41 +39,63 @@ namespace Hooking.Controllers
 
             return View(_adventureService.GetAdventureReservations(userDetails.Id));
         }
-        [HttpGet]
-        public IActionResult CreateView(Guid id, Guid cId)
+        // GET: AdventureReservations/Create
+        public IActionResult Create()
         {
             return View();
         }
+
+        // POST: AdventureReservations/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateView(Guid id, Guid cId, [Bind("Id,RowVersion")] AdventureReservation adventureReservation)
+        public async Task<IActionResult> Create([Bind("AdventureRealisationId,UserDetailsId,Id,RowVersion")] AdventureReservation adventureReservation)
         {
             if (ModelState.IsValid)
             {
                 adventureReservation.Id = Guid.NewGuid();
-                adventureReservation.AdventureRealisationId = cId.ToString();
-                adventureReservation.UserDetailsId = id.ToString();
-                adventureReservation.IsReviewed = false;
+                _context.Add(adventureReservation);
                 await _context.SaveChangesAsync();
-
-                return Redirect("/Adventures/Index");
+                return RedirectToAction(nameof(Index));
             }
-            return Redirect("/Adventures/Index");
-
+            return View(adventureReservation);
         }
-        public async Task<IActionResult> AdventureReservationHistory()
-        {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == userId);
 
-            if (userDetails == null)
+
+        // GET: AdventureReservations/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null)
             {
                 return NotFound();
             }
 
-            return View(_adventureService.GetAdventureReservationsHistory(userDetails.Id));
+            var adventureReservation = await _context.AdventureReservation
+                .FirstOrDefaultAsync(m => m.Id == id);
+            var adventureRealisation = await _context.AdventureRealisation.FirstOrDefaultAsync(m => m.Id == Guid.Parse(adventureReservation.AdventureRealisationId));
+            ViewData["AdventureRealisation"] = adventureRealisation;
+            System.Diagnostics.Debug.WriteLine(adventureRealisation.StartDate.ToString());
+            if (adventureReservation == null)
+            {
+                return NotFound();
+            }
+
+            return View(adventureReservation);
         }
 
+        // POST: AdventureReservations/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var adventureReservation = await _context.AdventureReservation.FindAsync(id);
+            _context.AdventureReservation.Remove(adventureReservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
-        
+
 }

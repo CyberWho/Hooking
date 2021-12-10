@@ -20,6 +20,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public List<AdventureRealisation> adRealisations = new List<AdventureRealisation>();
         public string StartDateSort { get; set; }
         public string PriceSort { get; set; }
+
+        public string DurationSort { get; set; }
+
         public AdventureReservationsHistoryModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
@@ -29,6 +32,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             StartDateSort = sortOrder == "StartDate" ? "date_desc" : "StartDate";
             PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
+            DurationSort = sortOrder == "Duration" ? "duration_desc" : "Duration";
+
 
             IQueryable<AdventureRealisation> reservationToSort = from s in _context.AdventureRealisation
                                                             select s;
@@ -46,6 +51,13 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 case "price_desc":
                     reservationToSort = reservationToSort.OrderByDescending(s => s.Price);
                     break;
+                case "Duration":
+                    reservationToSort = reservationToSort.OrderBy(s => s.Duration);
+                    break;
+                case "duration_desc":
+                    reservationToSort = reservationToSort.OrderByDescending(s => s.Duration);
+                    break;
+
             }
             adRealisations = await reservationToSort.AsNoTracking().ToListAsync();
 
