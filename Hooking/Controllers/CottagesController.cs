@@ -306,7 +306,7 @@ namespace Hooking.Controllers
                     }
                 }
                 ViewData["StatusMessage"] = StatusMessage;
-                return View();
+                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
@@ -372,7 +372,7 @@ namespace Hooking.Controllers
                 StatusMessage = "Ne mozete poslati zahtev za brisanje vikendice jer je rezervisana!";
             }
             ViewData["StatusMessage"] = StatusMessage;
-            return View();
+            return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
         [HttpPost("/Cottages/UploadImage/{id}")]
         public async Task<ActionResult> UploadImage(Guid id,IFormFile file)
