@@ -107,6 +107,7 @@ namespace Hooking.Controllers
                 string instructorId = instructor.Id.ToString();
                 instructorNotAvailablePeriod.Id = Guid.NewGuid();
                 instructorNotAvailablePeriod.InstructorId = instructorId;
+                instructorNotAvailablePeriod.title = "Slobodan dan";
                 _context.Add(instructorNotAvailablePeriod);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

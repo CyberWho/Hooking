@@ -13,5 +13,6 @@ namespace Hooking.Models
         public DateTime StartTime { get; set; }
         [DisplayName("Do")]
         public DateTime EndTime { get; set; }
+        public string title { get; set; }
     }
 }

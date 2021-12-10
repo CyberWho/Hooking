@@ -139,6 +139,7 @@ namespace Hooking.Controllers
             {
                 cottageNotAvailablePeriod.Id = Guid.NewGuid();
                 cottageNotAvailablePeriod.CottageId = id.ToString();
+                
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
                 return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
