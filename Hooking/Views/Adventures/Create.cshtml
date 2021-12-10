@@ -13,9 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="InstructorId" class="control-label"></label>
-                <input asp-for="InstructorId" class="form-control" />
-                <span asp-validation-for="InstructorId" class="text-danger"></span>
+                <input asp-for="InstructorId" class="form-control" hidden/>
             </div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -53,11 +51,6 @@
                 <span asp-validation-for="CancellationPolicyId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AverageGrade" class="control-label"></label>
-                <input asp-for="AverageGrade" class="form-control" />
-                <span asp-validation-for="AverageGrade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -65,7 +58,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="InstructorIndex" asp-route-instructorId ="@Model.InstructorId">Nazad</a>
 </div>
 
 @section Scripts {

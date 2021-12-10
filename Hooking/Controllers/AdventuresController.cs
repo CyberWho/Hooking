@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Hooking.Services;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Hooking.Controllers
 {
@@ -33,8 +34,9 @@ namespace Hooking.Controllers
         public IActionResult InstructorIndex()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var adventures = _adventureService.GetInstructorAdventures(userId);
 
-            return View(_adventureService.GetInstructorAdventures(userId));
+            return View(adventures);
         }
 
         // GET: Adventures/Details/5
@@ -56,9 +58,13 @@ namespace Hooking.Controllers
         }
 
         // GET: Adventures/Create
-        public IActionResult Create()
+        public IActionResult Create(string instructorId)
         {
-            return View();
+            Adventure newAdventure = new Adventure
+            {
+                InstructorId = instructorId
+            };
+            return View(newAdventure);
         }
 
         // POST: Adventures/Create
@@ -73,7 +79,7 @@ namespace Hooking.Controllers
                 adventure.Id = Guid.NewGuid();
                 _context.Add(adventure);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(InstructorIndex));
             }
             return View(adventure);
         }
@@ -110,7 +116,8 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(adventure);
+                    Adventure updatedAdventure = await _context.Adventure.FindAsync(adventure.Id);
+                    _context.Entry(updatedAdventure).CurrentValues.SetValues(adventure);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -124,7 +131,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(InstructorIndex));
             }
             return View(adventure);
         }
@@ -155,7 +162,7 @@ namespace Hooking.Controllers
             var adventure = await _context.Adventure.FindAsync(id);
             _context.Adventure.Remove(adventure);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(InstructorIndex));
         }
 
         private bool AdventureExists(Guid id)
