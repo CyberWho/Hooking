@@ -14,6 +14,16 @@
     <Compile Remove="Data\Migrations\20211125162744_houseRules1.Designer.cs" />
     <Compile Remove="Data\Migrations\20211201082417_cottageImages.cs" />
     <Compile Remove="Data\Migrations\20211201082417_cottageImages.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211210150709_adveturePriceAdded.cs" />
+    <Compile Remove="Data\Migrations\20211210150709_adveturePriceAdded.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211210151116_adventureUpdate.cs" />
+    <Compile Remove="Data\Migrations\20211210151116_adventureUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211210151407_updateAdventure.cs" />
+    <Compile Remove="Data\Migrations\20211210151407_updateAdventure.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211210151846_adventureUpdate.cs" />
+    <Compile Remove="Data\Migrations\20211210151846_adventureUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20211210152513_updateAdv.cs" />
+    <Compile Remove="Data\Migrations\20211210152513_updateAdv.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

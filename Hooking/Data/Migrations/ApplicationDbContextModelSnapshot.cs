@@ -52,6 +52,9 @@ namespace Hooking.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -148,23 +151,6 @@ namespace Hooking.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AdventureFishingTechniques");
-                });
-
-            modelBuilder.Entity("Hooking.Models.AdventureImages", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AdventureId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdventureImages");
                 });
 
             modelBuilder.Entity("Hooking.Models.AdventureRealisation", b =>

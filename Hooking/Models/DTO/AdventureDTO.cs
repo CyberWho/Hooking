@@ -38,6 +38,8 @@ namespace Hooking.Models.DTO
         public string FishingEquipment { get; set; }
         [Display(Name="Pravila")]
         public string Rules { get; set; }
+        [Display(Name = "Cena")]
+        public string Price { get; set; }
 
         public AdventureDTO(){}
 
@@ -55,6 +57,7 @@ namespace Hooking.Models.DTO
             MaxPersonCount = adventure.MaxPersonCount.ToString();
             CancellationPolicyId = adventure.CancellationPolicyId;
             AverageGrade = adventure.AverageGrade.ToString();
+            Price = adventure.Price.ToString();
         }
 
         public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy)
