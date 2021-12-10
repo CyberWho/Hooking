@@ -51,7 +51,7 @@ namespace Hooking.Models.DTO
 
         public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy)
         {
-            CancelationPolicyDescription = $"Free until: {policy.FreeUntil}, penalty: {policy.PenaltyPercentage}%";
+            CancelationPolicyDescription = $"Besplatno dana: {policy.FreeUntil}, kazna: {policy.PenaltyPercentage}%";
         }
 
     }

@@ -19,10 +19,6 @@
                 @Html.DisplayNameFor(model => model.InstructorName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-
-            <th>
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
@@ -53,6 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.InstructorName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
@@ -68,18 +67,15 @@
                 @Html.DisplayFor(modelItem => item.MaxPersonCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaxPersonCount)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.AverageGrade)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CancelationPolicyDescription)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.AdventureId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AdventureId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AdventureId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.AdventureId">Ažuriraj</a> |
+                <a asp-action="Details" asp-route-id="@item.AdventureId">Detalji</a> |
+                <a asp-action="Delete" asp-route-id="@item.AdventureId">Obriši</a>
             </td>
         </tr>
 }
