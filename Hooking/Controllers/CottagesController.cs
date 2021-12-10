@@ -259,13 +259,38 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    Cottage cottageTemp = await _context.Cottage.FindAsync(id);
-                    cottageTemp.Name = cottage.Name;
-                    cottageTemp.Description = cottage.Description;
-                    cottageTemp.RegularPrice = cottage.RegularPrice;
-                    cottageTemp.WeekendPrice = cottage.WeekendPrice;
-                    _context.Update(cottageTemp);
-                    await _context.SaveChangesAsync();
+                    
+                    var cottageId = cottage.Id.ToString();
+                    List<CottageSpecialOfferReservation> cottageSpecialOfferReservationsFull = new List<CottageSpecialOfferReservation>();
+                    List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageId).ToListAsync<CottageReservation>();
+                    List<CottageSpecialOfferReservation> cottageSpecialOfferReservations = await _context.CottageSpecialOfferReservation.ToListAsync<CottageSpecialOfferReservation>();
+                    foreach (var cottageSpecialOfferReservation in cottageSpecialOfferReservations)
+                    {
+                        Guid csId = Guid.Parse(cottageSpecialOfferReservation.CottageSpecialOfferId);
+                        var cottageSpecialOffer = _context.CottageSpecialOffer.Where(m => m.Id == csId).FirstOrDefault<CottageSpecialOffer>();
+                        if (cottageSpecialOffer.CottageId == cottageId)
+                        {
+                            cottageSpecialOfferReservationsFull.Add(cottageSpecialOfferReservation);
+                        }
+                    }
+
+                   
+                    if (cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
+                    {
+                        Cottage cottageTemp = await _context.Cottage.FindAsync(id);
+                        cottageTemp.Name = cottage.Name;
+                        cottageTemp.Description = cottage.Description;
+                        cottageTemp.RegularPrice = cottage.RegularPrice;
+                        cottageTemp.WeekendPrice = cottage.WeekendPrice;
+                        _context.Update(cottageTemp);
+                        await _context.SaveChangesAsync();
+                        return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                    }
+                    else
+                    {
+                        return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                    }
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
