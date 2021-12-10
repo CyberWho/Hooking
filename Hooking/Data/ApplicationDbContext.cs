@@ -70,6 +70,7 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.BoatAppeal> BoatAppeal { get; set; }
         public DbSet<Hooking.Models.AdventureAppeal> AdventureAppeal { get; set; }
         public DbSet<Hooking.Models.InstructorNotAvailablePeriod> InstructorNotAvailablePeriod { get; set; }
+        public DbSet<Hooking.Models.AdventureImage> AdventureImage { get; set; }
         
     }
 }

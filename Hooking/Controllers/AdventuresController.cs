@@ -12,6 +12,10 @@ using Hooking.Models.DTO;
 using Hooking.Services;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hooking.Controllers
 {
@@ -20,7 +24,8 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IAdventureService _adventureService;
         private readonly UserManager<IdentityUser> _userManager;
-       
+        public List<AdventureImage> adventureImages = new List<AdventureImage>();
+        private readonly BlobUtility utility;
         public AdventuresController(ApplicationDbContext context, 
             IAdventureService adventureService,
             UserManager<IdentityUser> userManager)
@@ -28,6 +33,7 @@ namespace Hooking.Controllers
             _context = context;
             _adventureService = adventureService;
             _userManager = userManager;
+            utility = new BlobUtility();
         }
 
         // GET: Adventures
@@ -73,8 +79,55 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
-
+            string adventureIds = adventureId.ToString();
+            adventureImages = _context.AdventureImage.Where(m => m.AdventureId == adventureIds).ToList();
+            ViewData["AdventureImages"] = adventureImages;
             return View(dto);
+        }
+        [HttpPost("/Adventures/UploadImage/{id}")]
+        public async Task<ActionResult> UploadImage(Guid id, IFormFile file)
+        {
+            if (file != null)
+            {
+                string ContainerName = "adventure"; //hardcoded container name
+                string fileName = Path.GetFileName(file.FileName);
+                using (var fileStream = file.OpenReadStream())
+                {
+                    string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=hookingstorage;AccountKey=+v8L5XkQZ7Z2CTfdTd03pngWlA4xu02caFJDGUkvGlo/rv8uZnM9CQQYleH3lpb+3Z8sefUOlC0EaoXWIquyDg==;EndpointSuffix=core.windows.net");
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(UserConnectionString);
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference(ContainerName.ToLower());
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                    try
+                    {
+                        await blockBlob.UploadFromStreamAsync(fileStream);
+
+                    }
+                    catch (Exception e)
+                    {
+                        var r = e.Message;
+                        return null;
+                    }
+
+                    if (blockBlob != null)
+                    {
+                        AdventureImage adventureImage = new AdventureImage();
+                        adventureImage.Id = Guid.NewGuid();
+                        adventureImage.AdventureId = id.ToString();
+                        adventureImage.ImageUrl = blockBlob.Uri.ToString();
+                        _context.AdventureImage.Add(adventureImage);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+                return RedirectToAction(nameof(InstructorIndex));
+            }
+            else
+            {
+                return RedirectToAction(nameof(InstructorIndex));
+            }
+
+
         }
 
         // GET: Adventures/Create
