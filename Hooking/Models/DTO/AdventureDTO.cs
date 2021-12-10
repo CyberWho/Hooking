@@ -20,6 +20,7 @@ namespace Hooking.Models.DTO
         public string Name { get; set; }
         [Display(Name = "Adresa")]
         public string Address { get; set; }
+        public string FullAddress { get; set; }
         [Display(Name = "Grad")]
         public string City { get; set; }
         [Display(Name = "Država")]
@@ -49,6 +50,7 @@ namespace Hooking.Models.DTO
             Address = adventure.Address;
             City = adventure.City;
             Country = adventure.Country;
+            FullAddress = $"{Address},{City},{Country}";
             Description = adventure.Description;
             MaxPersonCount = adventure.MaxPersonCount.ToString();
             CancellationPolicyId = adventure.CancellationPolicyId;
