@@ -17,15 +17,18 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         public Cottage cottage;
         public List<CalendarHelper> calendarHelpers;
         public CottageNotAvailablePeriodsController(ApplicationDbContext context,
                                                     UserManager<IdentityUser> userManager,
-                                                    RoleManager<IdentityRole> roleManager)
+                                                    RoleManager<IdentityRole> roleManager,
+                                                    SignInManager<IdentityUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // GET: CottageNotAvailablePeriods
@@ -39,17 +42,41 @@ namespace Hooking.Controllers
 
             cottage = await _context.Cottage
                 .FirstOrDefaultAsync(m => m.Id == id);
-            ViewData["Cottage"] = cottage;
+            string cottageId = id.ToString();
+            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = new List<CottageNotAvailablePeriod>();
+            cottageNotAvailablePeriods = _context.CottageNotAvailablePeriod.Where(m => m.CottageId == cottageId).ToList();
+            string codeForFront = "[";
+
+            int i = 0;
+            string title = "Rezervacija";
+            foreach (var cottageNotAvailablePeriod in cottageNotAvailablePeriods)
+            {
+                if (i++ > 0)
+                {
+                    codeForFront += ",";
+                }
+                
+
+
+                codeForFront += "{ title: '" + title  + "', start: '" +
+                    cottageNotAvailablePeriod.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
+                    "end: '" + cottageNotAvailablePeriod.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+            }
+            codeForFront += "]";
+            codeForFront = codeForFront.Replace("‘", "").Replace("’", "");
             
+            
+            ViewData["Cottage"] = cottage;
+            ViewData["codeForFront"] = codeForFront;
             return View();
 
         }
-        /// GET: /Home/GetCalendarData  
+        /// GET: /Home/GetCalendarData/{id} 
         /// </summary>  
         /// <returns>Return data</returns>  
-        public IActionResult GetCalendarData()
+        public IActionResult GetCalendarData(Guid id)
         {
-            Guid id = Guid.Parse("4e64e953-0282-4e59-8be7-00a661f59680");
+            
             cottage = _context.Cottage
                 .FirstOrDefault(m => m.Id == id);
             var cottageId = id.ToString();
@@ -72,7 +99,8 @@ namespace Hooking.Controllers
                 calendarHelpers.Add(calendarHelper);
 
             }
-            return Json(calendarHelpers);
+            JsonResult result = new JsonResult(calendarHelpers);
+            return result;
            
         }
 
