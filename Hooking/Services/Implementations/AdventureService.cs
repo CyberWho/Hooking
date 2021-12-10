@@ -7,6 +7,7 @@ using Hooking.Models;
 using Hooking.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Hooking.Services.Implementations
@@ -77,6 +78,27 @@ namespace Hooking.Services.Implementations
             }
             
             return dtos;
+        }
+
+        public bool AdventureEditable(Guid adventureId)
+        {
+            List<AdventureRealisation> realisations = _context.AdventureRealisation.Where(a => a.AdventureId == adventureId.ToString() && DateTime.Now >= a.StartDate).ToList();
+            if (realisations.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (AdventureRealisation realisation in realisations)
+            {
+                AdventureReservation reservation = _context.AdventureReservation.FirstOrDefault(r => r.AdventureRealisationId == realisation.Id.ToString());
+
+                if (reservation == null)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
         }
 
         private string GetInstructorNameFromId(Guid instructorId)

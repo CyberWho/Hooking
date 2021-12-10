@@ -130,15 +130,15 @@ namespace Hooking.Controllers
         }
 
         // GET: Adventures/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid? adventureId, Guid? instructorId)
         {
-            if (id == null)
+            if (adventureId == null)
             {
                 return NotFound();
             }
 
             var adventure = await _context.Adventure
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == adventureId);
             if (adventure == null)
             {
                 return NotFound();

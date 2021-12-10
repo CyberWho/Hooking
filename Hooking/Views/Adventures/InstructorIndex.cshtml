@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Hooking.Models.DTO.AdventureDTO>
+﻿@using Hooking.Services
+@model IEnumerable<Hooking.Models.DTO.AdventureDTO>
+@inject IAdventureService _adventureService;
 
 @{
     ViewData["Title"] = "Avanture";
@@ -73,9 +75,18 @@
                 @Html.DisplayFor(modelItem => item.CancelationPolicyDescription)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.AdventureId">Ažuriraj</a> |
                 <a asp-action="Details" asp-route-id="@item.AdventureId">Detalji</a> |
-                <a asp-action="Delete" asp-route-id="@item.AdventureId">Obriši</a>
+                @if (_adventureService.AdventureEditable(Guid.Parse(item.AdventureId)))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.AdventureId">Ažuriraj | </a>
+                    <a asp-action="Delete" asp-route-adventureId="@item.AdventureId" asp-route-instructorId="@Guid.Parse(item.InstructorId)">Obriši</a>
+                }
+                else
+                {
+
+                    <a>Ažuriraj | </a>
+                    <a>Obriši</a>
+                }
             </td>
         </tr>
 }

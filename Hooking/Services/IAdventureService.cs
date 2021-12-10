@@ -11,5 +11,6 @@ namespace Hooking.Services
     {
         IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId);
         IEnumerable<AdventureDTO> GetInstructorAdventures(string userId);
+        bool AdventureEditable(Guid adventureId);
     }
 }
