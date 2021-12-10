@@ -144,7 +144,7 @@ namespace Hooking.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
             }
-            return View(cottageNotAvailablePeriod);
+            return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
 
         // GET: CottageNotAvailablePeriods/Edit/5
