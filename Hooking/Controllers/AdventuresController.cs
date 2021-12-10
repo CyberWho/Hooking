@@ -11,6 +11,7 @@ using Hooking.Models;
 using Hooking.Models.DTO;
 using Hooking.Services;
 using Microsoft.EntityFrameworkCore.Update.Internal;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
@@ -18,12 +19,14 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IAdventureService _adventureService;
-
+        private readonly UserManager<IdentityUser> _userManager;
         public AdventuresController(ApplicationDbContext context, 
-            IAdventureService adventureService)
+            IAdventureService adventureService,
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
             _adventureService = adventureService;
+            _userManager = userManager;
         }
 
         // GET: Adventures
@@ -135,7 +138,19 @@ namespace Hooking.Controllers
             }
             return View(adventure);
         }
+        public async Task<IActionResult> AdventureForSpecialOffer()
+        {
+            var user = await _userManager.GetUserAsync(User);
 
+            Guid userId = Guid.Parse(user.Id);
+            System.Diagnostics.Debug.WriteLine(userId);
+            UserDetails userDetails = await _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefaultAsync<UserDetails>();
+            var userDetailsId = userDetails.Id.ToString();
+            Instructor instructor = await _context.Instructor.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefaultAsync<Instructor>();
+            string instructorId = instructor.Id.ToString();
+            List<Adventure> adventures = await _context.Adventure.Where(m => m.InstructorId == instructorId).ToListAsync<Adventure>();
+            return View(adventures);
+        }
         // GET: Adventures/Delete/5
         public async Task<IActionResult> Delete(Guid? adventureId, Guid? instructorId)
         {

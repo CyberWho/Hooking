@@ -2,52 +2,77 @@
 
 @{
     ViewData["Title"] = "Index";
+    List<string> adventureNames = (List<string>)ViewData["AdventureNames"];
+    var index = 0;
 }
-
-<h1>Index</h1>
+<h1>Moje aktivne specijalne ponude</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a href="@Url.Action("AdventureForSpecialOffer", "Adventures")">Dodaj novu specijalnu ponudu</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AdventureRealisationId)
+                Naziv avanture
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserDetailsId)
+                Od
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Trajanje
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
+                Cena
+            </th>
+            <th>
+                Maksimalan broj gostiju
+            </th>
+            <th>
+                Rezervisano
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdventureRealisationId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserDetailsId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @adventureNames[index]
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxPersonCount)
+                </td>
+                <td>
+                    @if (item.IsReserved)
+                    {
+                        @Html.Raw("Da");
+                    }
+                    else
+                    {
+                        @Html.Raw("Ne");
+                    }
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "AdventureSpecialOffers", new { Id = @item.Id })">Izmeni</a> |
+                    <a href="@Url.Action("Details", "AdventureSpecialOffers", new { Id = @item.Id })">Prikaži još</a> |
+                    <a href="@Url.Action("Delete", "AdventureSpecialOffers", new { Id = @item.Id })">Ukloni</a>
+                </td>
+                @{
+                    index++;
+                }
+            </tr>
+        }
     </tbody>
 </table>
+
