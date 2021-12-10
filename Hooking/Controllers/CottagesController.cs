@@ -33,7 +33,9 @@ namespace Hooking.Controllers
         public List<CottageRoom> cottageRooms = new List<CottageRoom>();
         public Guid cottageId;
         public List<CottageImage> cottageImages = new List<CottageImage>();
-       
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -284,11 +286,11 @@ namespace Hooking.Controllers
                         cottageTemp.WeekendPrice = cottage.WeekendPrice;
                         _context.Update(cottageTemp);
                         await _context.SaveChangesAsync();
-                        return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                        StatusMessage = "Uspesno ste izmeni informacije o vikendici!";
                     }
                     else
                     {
-                        return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                        StatusMessage = "Ne mozete izmeniti informacije o vikendice jer je rezervisana!";
                     }
                     
                 }
@@ -303,7 +305,8 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ViewData["StatusMessage"] = StatusMessage;
+                return View();
             }
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
@@ -363,13 +366,13 @@ namespace Hooking.Controllers
             {
                 _context.Cottage.Remove(cottage);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                StatusMessage = "Uspesno ste poslali zahtev za brisanje vikendice!";
             } else
             {
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                StatusMessage = "Ne mozete poslati zahtev za brisanje vikendice jer je rezervisana!";
             }
-            
-            
+            ViewData["StatusMessage"] = StatusMessage;
+            return View();
         }
         [HttpPost("/Cottages/UploadImage/{id}")]
         public async Task<ActionResult> UploadImage(Guid id,IFormFile file)
