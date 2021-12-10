@@ -1,74 +1,69 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> _signInManager
+@{
     ViewData["Title"] = "Index";
-
+    
 }
 @{
     var cottage = (Cottage)ViewData["Cottage"];
 }
 
 <h1>Kalendar dostupnosti vikendice @cottage.Name</h1>
+@if (_signInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("Vlasnik vikendice"))
+    {
+        <a href="@Url.Action("Create","CottageNotAvailablePeriods",new { id = cottage.Id})">Definiši period nedostupnosti</a>
+    }
+}
 @section Scripts {
-   <script>
-        $(document).ready(function () {
-            $('#calendar').fullCalendar({
-                
-                header:
-                {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                buttonText: {
-                    today: 'today',
-                    month: 'month',
-                    week: 'week',
-                    day: 'day'
-                },
-                
-                events: function (start, end, timezone, callback) {
-                    $.ajax({
-                       /* url: '/CottageNotAvailablePeriods/GetCalendarData',
-                        type: "GET",
-                        dataType: "json",*/
-                        events: '/CottageNotAvailablePeriods/GetCalendarData/'
-                       /* success: function (result) {
-                            
-                            
-                            $.each(result, function (i, data) {
-                                events.push(
-                                    {
 
-                                        title: data.Title,
-                                        description: data.Description,
-                                        start: data.StartDate,
-                                        end: data.EndDate,
-                                        backgroundColor: "#9501fc",
-                                        borderColor: "#fc0101",
-                                        allDay: true
-                                        
-                                    });
-                            });
-                            
-                            callback(events);
-                        }*/
-                    });
-                },
 
-                eventRender: function (event, element) {
-                    element.qtip(
-                        {
-                            content: event.description
-                        });
-                },
+    <!-- <script>
+     $(document).ready(function ()
+     {
+     $('#calendar').fullCalendar({
+         header:
+         {
+         left: 'prev,next today',
+         center: 'title',
+         right: 'month,agendaWeek,agendaDay'
+         },
+         buttonText: {
+         today: 'today',
+         month: 'month',
+         week: 'week',
+         day: 'day'
+         },
+         events:
 
-                editable: true
-                
+         editable : false
+     });
+     });
+     </script> -->
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
 
-            });
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
+    <script>
+       $(document).ready(function () {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,basicWeek,basicDay'
+            },
+            defaultDate: new Date().toISOString().split('T')[0],
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+        events: @Html.Raw(ViewData["codeForFront"])
         });
-       
+    });
     </script>
-   
+
 }
 <div class="row">
     <div class="panel-heading">
@@ -78,7 +73,7 @@
             </h3>
         </div>
     </div>
-</div> 
+</div>
 
 <div class="row">
     <div class="col-xs-9 col-xs-push-2">

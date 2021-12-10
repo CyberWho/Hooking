@@ -248,7 +248,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Address,City,Country,Description,RoomCount,Area,AverageGrade,GradeCount,CancelationPolicyId,RegularPrice,WeekendPrice,CottageOwnerId,Id,RowVersion")] Cottage cottage)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,RegularPrice,WeekendPrice,Id,RowVersion")] Cottage cottage)
         {
             if (id != cottage.Id)
             {
@@ -259,7 +259,12 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(cottage);
+                    Cottage cottageTemp = await _context.Cottage.FindAsync(id);
+                    cottageTemp.Name = cottage.Name;
+                    cottageTemp.Description = cottage.Description;
+                    cottageTemp.RegularPrice = cottage.RegularPrice;
+                    cottageTemp.WeekendPrice = cottage.WeekendPrice;
+                    _context.Update(cottageTemp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -275,7 +280,7 @@ namespace Hooking.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cottage);
+            return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
         
         // GET: Cottages/Delete/5
