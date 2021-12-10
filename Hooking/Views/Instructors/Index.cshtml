@@ -69,10 +69,13 @@
     </thead>
     <tbody>
 
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
+
         <tr>
-            @if (userInstructors.Count>0)
+            @if (userInstructors.Count > 0 && i < userInstructors.Count)
             {
+
                 <td>
                     @userInstructors[i].FirstName
                 </td>
@@ -97,20 +100,21 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Biography)
                 </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+                    @if (_signInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
+                        }
+                    }
+                </td>
             }
 
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
-                @if (_signInManager.IsSignedIn(User))
-                {
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
-                    }
-                }
-            </td>
+
         </tr>
-    i++;
-}
+            i++;
+        }
     </tbody>
 </table>
