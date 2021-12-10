@@ -38,30 +38,24 @@ namespace Hooking.Controllers
             var userDetailsId = userDetails.Id.ToString();
             instructor = await _context.Instructor.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefaultAsync<Instructor>();
             string instructorId = instructor.Id.ToString();
-            List<Adventure> adventures = await _context.Adventure.Where(m => m.InstructorId == instructorId).ToListAsync<Adventure>();
-            List<AdventureRealisation> adventureRealisations = new List<AdventureRealisation>();
-            foreach(Adventure adventure in adventures)
-            {
-                var adventureId = adventure.Id.ToString();
-                List<AdventureRealisation> adventureRealisationsTemp = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId).ToListAsync<AdventureRealisation>();
-                adventureRealisations.AddRange(adventureRealisationsTemp);
-            }
-            string codeForFront = "[";
+          
+            List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = await _context.InstructorNotAvailablePeriod.Where(m => m.InstructorId == instructorId).ToListAsync<InstructorNotAvailablePeriod>();
 
             int i = 0;
-            string title = "Rezervacija";
-            foreach (var adventureRealization in adventureRealisations)
+            string title = "Rezervisano";
+            string codeForFront = "[";
+            foreach (var notAvailable in instructorNotAvailablePeriods)
             {
                 if (i++ > 0)
                 {
                     codeForFront += ",";
                 }
 
-                
-                DateTime end = adventureRealization.StartDate.AddMinutes(adventureRealization.Duration);
-                codeForFront += "{ title: '" + title + "', start: '" +
-                    adventureRealization.StartDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
-                    "end: '" + end.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+
+
+                codeForFront += "{ title: '" + title + "', allDay : '" + true + "', start: '" +
+                   notAvailable.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
+                   "end: '" + notAvailable.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
             }
             codeForFront += "]";
             codeForFront = codeForFront.Replace("‘", "").Replace("’", "");
