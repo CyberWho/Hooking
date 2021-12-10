@@ -75,7 +75,7 @@
                 @Html.DisplayFor(modelItem => item.CancelationPolicyDescription)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.AdventureId">Detalji</a> |
+                <a asp-action="Details" asp-route-adventureId="@item.AdventureId">Detalji</a> |
                 @if (_adventureService.AdventureEditable(Guid.Parse(item.AdventureId)))
                 {
                     <a asp-action="Edit" asp-route-id="@item.AdventureId">Ažuriraj | </a>

@@ -14,6 +14,8 @@ namespace Hooking.Models.DTO
         public string InstructorId { get; set; }
         [Display(Name="Instruktor")]
         public string InstructorName { get; set; }
+        [Display(Name = "Biografija instruktora")]
+        public string InstructorBiography { get; set; }
         [Display(Name = "Naziv avanture")]
         public string Name { get; set; }
         [Display(Name = "Adresa")]
@@ -31,6 +33,8 @@ namespace Hooking.Models.DTO
         public string CancelationPolicyDescription { get; set; }
         [Display(Name = "Prosečna ocena")]
         public string AverageGrade { get; set; }
+        [Display(Name = "Dostupna oprema")]
+        public string FishingEquipment { get; set; }
 
         public AdventureDTO(){}
 
@@ -51,7 +55,18 @@ namespace Hooking.Models.DTO
 
         public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy)
         {
-            CancelationPolicyDescription = $"Besplatno {policy.FreeUntil} dana, kazna: {policy.PenaltyPercentage}%";
+            CancelationPolicyDescription = $"Besplatno {policy.FreeUntil} dana ranije, kazna: {policy.PenaltyPercentage}%";
+        }
+
+        public void PopulateFieldsFromFishingEquipment(FishingEquipment equipment)
+        {
+            string LiveBite = equipment.LiveBite ? "Da" : "Ne";
+            string Lures = equipment.Lures ? "Da" : "Ne";
+            string FlyFishingGear = equipment.FlyFishingGear ? "Da" : "Ne";
+            string RodsReelsTackle = equipment.RodsReelsTackle ? "Da" : "Ne";
+            FishingEquipment =
+                $"Live bite: {LiveBite}\nLures: {Lures}\nFly fishing gear: {FlyFishingGear}\nRods reels tackle: {RodsReelsTackle}";
+
         }
 
     }

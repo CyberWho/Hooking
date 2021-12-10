@@ -1,5 +1,5 @@
 ﻿@using Hooking.Services
-@model Hooking.Models.Adventure
+@model Hooking.Models.DTO.AdventureDTO
 @inject IAdventureService _adventureService 
 
 @{
@@ -17,6 +17,18 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.InstructorName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.InstructorName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.InstructorBiography)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.InstructorBiography)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Address)
@@ -43,16 +55,22 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FishingEquipment)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FishingEquipment)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxPersonCount)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxPersonCount)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CancellationPolicyId)
+            @Html.DisplayNameFor(model => model.CancelationPolicyDescription)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CancellationPolicyId)
+            @Html.DisplayFor(model => model.CancelationPolicyDescription)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AverageGrade)
@@ -63,9 +81,9 @@
     </dl>
 </div>
 <div>
-    @if (_adventureService.AdventureEditable(Model.Id))
+    @if (_adventureService.AdventureEditable(Guid.Parse(Model.AdventureId)))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Ažuriraj</a>
+        <a asp-action="Edit" asp-route-id="@Guid.Parse(Model.AdventureId)">Ažuriraj</a>
     }
     <br/><br/>
     <a asp-controller="Adventures" asp-action="InstructorIndex">Nazad</a>

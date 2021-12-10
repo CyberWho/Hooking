@@ -74,6 +74,7 @@ namespace Hooking.Services.Implementations
                 tempDto.PopulateFieldsFromCancellationPolicy(policy);
 
                 tempDto.InstructorName = GetInstructorNameFromId(instructorId);
+                tempDto.InstructorBiography = _context.Instructor.Find(instructorId).Biography;
                 dtos.Add(tempDto);
             }
             
@@ -99,6 +100,29 @@ namespace Hooking.Services.Implementations
             }
             
             return false;
+        }
+
+        public AdventureDTO GetAdventureDto(Guid adventureId)
+        {
+            Adventure adventure = _context.Adventure.Find(adventureId);
+            AdventureDTO dto = new AdventureDTO(adventure);
+            CancelationPolicy policy = _context.CancelationPolicy.Find(Guid.Parse(adventure.CancellationPolicyId));
+            dto.PopulateFieldsFromCancellationPolicy(policy);
+
+            dto.InstructorName = GetInstructorNameFromId(Guid.Parse(adventure.InstructorId));
+            dto.InstructorBiography = _context.Instructor.Find(Guid.Parse(adventure.InstructorId)).Biography;
+
+            var adventureEquipment =
+                _context.AdventureFishingEquipment.FirstOrDefault(e => e.AdventureId == adventureId.ToString());
+
+            if (adventureEquipment == null)
+            {
+                return dto;
+            }
+            FishingEquipment equipment = _context.FishingEquipment.FirstOrDefault(e => e.Id == Guid.Parse(adventureEquipment.FishingEquipmentId));
+            dto.PopulateFieldsFromFishingEquipment(equipment);
+
+            return dto;
         }
 
         private string GetInstructorNameFromId(Guid instructorId)

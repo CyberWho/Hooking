@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Models.DTO;
 using Hooking.Services;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 
@@ -40,21 +41,20 @@ namespace Hooking.Controllers
         }
 
         // GET: Adventures/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid? adventureId)
         {
-            if (id == null)
+            if (adventureId == null)
             {
                 return NotFound();
             }
 
-            var adventure = await _context.Adventure
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (adventure == null)
+            AdventureDTO dto = _adventureService.GetAdventureDto((Guid)adventureId);
+            if (dto == null)
             {
                 return NotFound();
             }
 
-            return View(adventure);
+            return View(dto);
         }
 
         // GET: Adventures/Create
