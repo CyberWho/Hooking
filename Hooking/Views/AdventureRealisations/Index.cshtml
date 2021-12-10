@@ -2,18 +2,17 @@
 
 @{
     ViewData["Title"] = "Index";
+    List<string> adventureNames = (List<string>)ViewData["AdventureNames"];
+    int index = 0;
 }
 
-<h1>Index</h1>
+<h1>Avanture za rezervaciju</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AdventureId)
+                Naziv
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Duration)
@@ -24,9 +23,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -34,7 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.AdventureId)
+                @adventureNames[index]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Duration)
@@ -46,13 +46,13 @@
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
+                <a href="@Url.Action("ShowAllUsers","Adventures",new { id = @item.AdventureId })">Odaberi</a> |
+
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            @{
+                index++;
+            }
+
         </tr>
 }
     </tbody>

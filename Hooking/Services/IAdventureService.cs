@@ -10,6 +10,7 @@ namespace Hooking.Services
     public interface IAdventureService
     {
         IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId);
+        IEnumerable<AdventureReservationDTO> GetAdventureReservationsHistory(Guid instructorId);
         IEnumerable<AdventureDTO> GetInstructorAdventures(string userId);
         bool AdventureEditable(Guid adventureId);
         AdventureDTO GetAdventureDto(Guid adventureId);

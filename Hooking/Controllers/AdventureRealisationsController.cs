@@ -7,22 +7,44 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class AdventureRealisationsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public AdventureRealisationsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public AdventureRealisationsController(ApplicationDbContext context,
+                                                UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: AdventureRealisations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AdventureRealisation.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+
+            Guid userId = Guid.Parse(user.Id);
+            System.Diagnostics.Debug.WriteLine(userId);
+            UserDetails userDetails = await _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefaultAsync<UserDetails>();
+            var userDetailsId = userDetails.Id.ToString();
+            Instructor instructor = await _context.Instructor.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefaultAsync<Instructor>();
+            string instructorId = instructor.Id.ToString();
+            List<Adventure> adventures = await _context.Adventure.Where(m => m.InstructorId == instructorId).ToListAsync();
+            List<AdventureRealisation> adventureRealisations = new List<AdventureRealisation>();
+            List<string> adventureNames = new List<string>();
+            foreach(Adventure adventure in adventures)
+            {
+                var advId = adventure.Id.ToString();
+                List<AdventureRealisation> adventureRealisations1 = await _context.AdventureRealisation.Where(m => m.AdventureId == advId).ToListAsync();
+                adventureRealisations.AddRange(adventureRealisations1);
+                adventureNames.Add(adventure.Name);
+            }
+            ViewData["AdventureNames"] = adventureNames;
+            return View(adventureRealisations);
         }
 
         // GET: AdventureRealisations/Details/5

@@ -4,8 +4,8 @@
     ViewData["Title"] = "Istorija rezervacija";
 }
 
-<h1>@ViewData["Title"]</h1>
-
+<h1>Rezervacije</h1>
+<a href="@Url.Action("Index","AdventureRealisations")">Kreiraj novu rezervaciju</a>
 <table class="table">
     <thead>
         <tr>
@@ -52,10 +52,7 @@
                 @Html.DisplayFor(modelItem => item.UserDetailsLastName)
             </td>
             <td>
-                @if (!item.IsReviewed)
-                {
-                    <a href="@Url.Action("Create", "AdventureReservationReviews", new { Id = @item.AdventureReservationId })">Recenzija</a>
-                }
+               
                 <a asp-controller="UserDetails" asp-action="Details" asp-route-id="@item.UserDetailsId">Pregledaj profil</a>
             </td>
         </tr>

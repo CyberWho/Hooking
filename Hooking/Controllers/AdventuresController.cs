@@ -20,6 +20,7 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IAdventureService _adventureService;
         private readonly UserManager<IdentityUser> _userManager;
+       
         public AdventuresController(ApplicationDbContext context, 
             IAdventureService adventureService,
             UserManager<IdentityUser> userManager)
@@ -41,6 +42,22 @@ namespace Hooking.Controllers
             var adventures = _adventureService.GetInstructorAdventures(userId);
 
             return View(adventures);
+        }
+        public IActionResult MyAdventures()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var adventures = _adventureService.GetInstructorAdventures(userId);
+
+            return View(adventures);
+        }
+        [HttpGet("/Adventures/ShowAllUsers/{id}")]
+        public async Task<IActionResult> ShowAllUsers(Guid id)
+        {
+            var adventureId = id;
+            ViewData["AdventureId"] = adventureId;
+            var allUsers = await _context.UserDetails.ToListAsync();
+            
+            return View(allUsers);
         }
 
         // GET: Adventures/Details/5

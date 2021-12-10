@@ -1,9 +1,7 @@
 ﻿@model IEnumerable<Hooking.Models.UserDetails>
+
 @{
-    ViewData["Title"] = "View";
-}
-@{
-    var cottageId = (Guid)ViewData["CottageId"];
+    var adventureId = (Guid)ViewData["AdventureId"];
 }
 
 <h4>Odabir klijenta</h4>
@@ -53,7 +51,7 @@
                 </td>
 
                 <td>
-                    <a href="@Url.RouteUrl(new { controller = "CottageReservations", Action = "CreateView", cId = cottageId, id = item.Id })">Odaberi</a>
+                    <a href="@Url.RouteUrl(new { controller = "AdventureReservations", Action = "CreateView", cId = adventureId, id = item.Id })">Odaberi</a>
                 </td>
             </tr>
         }

@@ -37,7 +37,42 @@ namespace Hooking.Services.Implementations
                     foreach(AdventureReservation reservation in allAdventureReservations)
                     {
                         if (reservation.AdventureRealisationId == realisation.Id.ToString() &&
-                            realisation.AdventureId == adventure.Id.ToString())
+                            realisation.AdventureId == adventure.Id.ToString() && realisation.StartDate >= DateTime.Now)
+                        {
+                            AdventureReservationDTO dto = new AdventureReservationDTO(adventure, realisation, reservation);
+                            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(dto.UserDetailsId));
+                            if (userDetails == null)
+                            {
+                                continue;
+                            }
+                            dto.UserDetailsFirstName = userDetails.FirstName;
+                            dto.UserDetailsLastName = userDetails.LastName;
+                            retVal.Add(dto);
+                        }
+                    }
+                }
+            }
+
+
+            return retVal;
+        }
+        public IEnumerable<AdventureReservationDTO> GetAdventureReservationsHistory(Guid instructorId)
+        {
+
+            var allAdventures = _context.Adventure.ToList();
+            var allAdventureRealisations = _context.AdventureRealisation.ToList();
+            var allAdventureReservations = _context.AdventureReservation.ToList();
+
+            List<AdventureReservationDTO> retVal = new List<AdventureReservationDTO>();
+
+            foreach (Adventure adventure in allAdventures)
+            {
+                foreach (AdventureRealisation realisation in allAdventureRealisations)
+                {
+                    foreach (AdventureReservation reservation in allAdventureReservations)
+                    {
+                        if (reservation.AdventureRealisationId == realisation.Id.ToString() &&
+                            realisation.AdventureId == adventure.Id.ToString() && realisation.StartDate <= DateTime.Now)
                         {
                             AdventureReservationDTO dto = new AdventureReservationDTO(adventure, realisation, reservation);
                             UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(dto.UserDetailsId));
