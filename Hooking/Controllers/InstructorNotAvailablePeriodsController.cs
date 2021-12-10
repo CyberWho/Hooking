@@ -99,11 +99,20 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,StartTime,EndTime,Id,RowVersion")] InstructorNotAvailablePeriod instructorNotAvailablePeriod)
+        public async Task<IActionResult> Create([Bind("StartTime,EndTime,Id,RowVersion")] InstructorNotAvailablePeriod instructorNotAvailablePeriod)
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+
+                Guid userId = Guid.Parse(user.Id);
+                System.Diagnostics.Debug.WriteLine(userId);
+                UserDetails userDetails = await _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefaultAsync<UserDetails>();
+                var userDetailsId = userDetails.Id.ToString();
+                instructor = await _context.Instructor.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefaultAsync<Instructor>();
+                string instructorId = instructor.Id.ToString();
                 instructorNotAvailablePeriod.Id = Guid.NewGuid();
+                instructorNotAvailablePeriod.InstructorId = instructorId;
                 _context.Add(instructorNotAvailablePeriod);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -11,7 +11,7 @@
 {
     @if (User.IsInRole("Instruktor"))
     {
-        <a href="@Url.Action("Create","InstructorNotAvailablePeriods",new { id = instructor.Id})">Definiši period nedostupnosti</a>
+        <a href="@Url.Action("Create","InstructorNotAvailablePeriods")">Definiši period nedostupnosti</a>
     }
 }
 @section Scripts {
