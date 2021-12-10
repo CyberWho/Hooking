@@ -37,7 +37,7 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            return View(_adventureService.GetAdventures(userDetails.Id));
+            return View(_adventureService.GetAdventureReservations(userDetails.Id));
         }
 
     }

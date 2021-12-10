@@ -137,7 +137,7 @@ namespace Hooking.Controllers
             ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
             ViewData["HouseRules"] = houseRules;
-            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["CancellationPolicyId"] = cancelationPolicy;
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
             ViewData["CottageImages"] = cottageImages;
@@ -184,7 +184,7 @@ namespace Hooking.Controllers
             ViewBag.PhotoCount = cottageImages.Count;
             ViewData["CottageOwner"] = cottageOwner;
             ViewData["HouseRules"] = houseRules;
-            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["CancellationPolicyId"] = cancelationPolicy;
             ViewData["Facilities"] = facilities;
             ViewData["CottageRooms"] = cottageRooms;
             ViewData["CottageImages"] = cottageImages;
@@ -210,7 +210,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Address,City,Country,Description,RoomCount,Area,AverageGrade,GradeCount,CancelationPolicyId,RegularPrice,WeekendPrice,CottageOwnerId,Id,RowVersion")] Cottage cottage)
+        public async Task<IActionResult> Create([Bind("Name,Address,City,Country,Description,RoomCount,Area,AverageGrade,GradeCount,CancellationPolicyId,RegularPrice,WeekendPrice,CottageOwnerId,Id,RowVersion")] Cottage cottage)
         {
             if (ModelState.IsValid)
             {

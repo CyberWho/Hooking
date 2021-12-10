@@ -36,7 +36,6 @@ namespace Hooking.Controllers
         {
             var request = await _context.RegistrationRequest.FindAsync(id);
             _context.RegistrationRequest.Remove(request);
-            await _context.SaveChangesAsync();
 
             UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
             userDetails.Approved = true;
@@ -123,11 +122,6 @@ namespace Hooking.Controllers
                 GradeCount = 0
             };
             return instructor;
-        }
-
-        private bool RegistrationRequestExists(Guid id)
-        {
-            return _context.RegistrationRequest.Any(e => e.Id == id);
         }
     }
 }

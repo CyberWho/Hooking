@@ -6,6 +6,9 @@ using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 namespace Hooking.Services.Implementations
 {
@@ -18,7 +21,7 @@ namespace Hooking.Services.Implementations
             _context = context;
         }
 
-        public IEnumerable<AdventureReservationDTO> GetAdventures(Guid instructorId)
+        public IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId)
         {
 
             var allAdventures = _context.Adventure.ToList();
@@ -52,6 +55,72 @@ namespace Hooking.Services.Implementations
 
 
             return retVal;
+        }
+
+        public IEnumerable<AdventureDTO> GetInstructorAdventures(string userId)
+        {
+            Guid userDetailsId = GetUserDetailsIdFromUserId(userId);
+
+            Guid instructorId = GetInstructorIdFromUserDetailsId(userDetailsId);
+
+            IEnumerable<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == instructorId.ToString()).ToList();
+            List<AdventureDTO> dtos = new List<AdventureDTO>();
+
+            foreach (Adventure adventure in adventures)
+            {
+                AdventureDTO tempDto = new AdventureDTO(adventure);
+                
+                CancelationPolicy policy = _context.CancelationPolicy.Find(Guid.Parse(adventure.CancellationPolicyId));
+                tempDto.PopulateFieldsFromCancellationPolicy(policy);
+
+                tempDto.InstructorName = GetInstructorNameFromId(instructorId);
+                dtos.Add(tempDto);
+            }
+            
+            return dtos;
+        }
+
+        public bool AdventureEditable(Guid adventureId)
+        {
+            List<AdventureRealisation> realisations = _context.AdventureRealisation.Where(a => a.AdventureId == adventureId.ToString() && DateTime.Now >= a.StartDate).ToList();
+            if (realisations.Count == 0)
+            {
+                return true;
+            }
+
+            foreach (AdventureRealisation realisation in realisations)
+            {
+                AdventureReservation reservation = _context.AdventureReservation.FirstOrDefault(r => r.AdventureRealisationId == realisation.Id.ToString());
+
+                if (reservation == null)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        private string GetInstructorNameFromId(Guid instructorId)
+        {
+            Instructor instructor = _context.Instructor.Find(instructorId);
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
+
+            return $"{userDetails.FirstName} {userDetails.LastName}";
+        }
+
+        private Guid GetUserDetailsIdFromUserId(string userId)
+        {
+            return _context.UserDetails.Where(user => user.IdentityUserId == userId)
+                .Select(user => user.Id)
+                .FirstOrDefault();
+        }
+
+        private Guid GetInstructorIdFromUserDetailsId(Guid userDetailsId)
+        {
+            return _context.Instructor.Where(inst => inst.UserDetailsId == userDetailsId.ToString())
+                .Select(inst => inst.Id)
+                .FirstOrDefault();
         }
     }
 }

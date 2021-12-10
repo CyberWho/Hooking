@@ -1,28 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Hooking.Controllers
 {
     public class AdventuresController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAdventureService _adventureService;
 
-        public AdventuresController(ApplicationDbContext context)
+        public AdventuresController(ApplicationDbContext context, 
+            IAdventureService adventureService)
         {
             _context = context;
+            _adventureService = adventureService;
         }
 
         // GET: Adventures
         public async Task<IActionResult> Index()
         {
             return View(await _context.Adventure.ToListAsync());
+        }
+
+        public IActionResult InstructorIndex()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var adventures = _adventureService.GetInstructorAdventures(userId);
+
+            return View(adventures);
         }
 
         // GET: Adventures/Details/5
@@ -44,9 +58,13 @@ namespace Hooking.Controllers
         }
 
         // GET: Adventures/Create
-        public IActionResult Create()
+        public IActionResult Create(string instructorId)
         {
-            return View();
+            Adventure newAdventure = new Adventure
+            {
+                InstructorId = instructorId
+            };
+            return View(newAdventure);
         }
 
         // POST: Adventures/Create
@@ -54,14 +72,14 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancelationPolicy,AverageGrade,Id,RowVersion")] Adventure adventure)
+        public async Task<IActionResult> Create([Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancellationPolicyId,AverageGrade,Id,RowVersion")] Adventure adventure)
         {
             if (ModelState.IsValid)
             {
                 adventure.Id = Guid.NewGuid();
                 _context.Add(adventure);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(InstructorIndex));
             }
             return View(adventure);
         }
@@ -87,7 +105,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancelationPolicy,AverageGrade,Id,RowVersion")] Adventure adventure)
+        public async Task<IActionResult> Edit(Guid id, [Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancellationPolicyId,AverageGrade,Id,RowVersion")] Adventure adventure)
         {
             if (id != adventure.Id)
             {
@@ -98,7 +116,8 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(adventure);
+                    Adventure updatedAdventure = await _context.Adventure.FindAsync(adventure.Id);
+                    _context.Entry(updatedAdventure).CurrentValues.SetValues(adventure);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -112,21 +131,21 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(InstructorIndex));
             }
             return View(adventure);
         }
 
         // GET: Adventures/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid? adventureId, Guid? instructorId)
         {
-            if (id == null)
+            if (adventureId == null)
             {
                 return NotFound();
             }
 
             var adventure = await _context.Adventure
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == adventureId);
             if (adventure == null)
             {
                 return NotFound();
@@ -143,7 +162,7 @@ namespace Hooking.Controllers
             var adventure = await _context.Adventure.FindAsync(id);
             _context.Adventure.Remove(adventure);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(InstructorIndex));
         }
 
         private bool AdventureExists(Guid id)
