@@ -115,13 +115,19 @@ namespace Hooking.Services.Implementations
             var adventureEquipment =
                 _context.AdventureFishingEquipment.FirstOrDefault(e => e.AdventureId == adventureId.ToString());
 
+            string rulesId = _context.AdventuresAdventureRules
+                .FirstOrDefault(r => r.AdventureId == adventureId.ToString()).AdventureRulesId;
+
+            AdventureRules rules = _context.AdventureRules.Find(Guid.Parse(rulesId));
+
             if (adventureEquipment == null)
             {
+                dto.PopulateFieldsFromRulesWithoutFishing(rules);
                 return dto;
             }
             FishingEquipment equipment = _context.FishingEquipment.FirstOrDefault(e => e.Id == Guid.Parse(adventureEquipment.FishingEquipmentId));
             dto.PopulateFieldsFromFishingEquipment(equipment);
-
+            dto.PopulateFieldsFromRulesWithFishing(rules);
             return dto;
         }
 

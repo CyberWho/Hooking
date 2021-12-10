@@ -35,6 +35,8 @@ namespace Hooking.Models.DTO
         public string AverageGrade { get; set; }
         [Display(Name = "Dostupna oprema")]
         public string FishingEquipment { get; set; }
+        [Display(Name="Pravila")]
+        public string Rules { get; set; }
 
         public AdventureDTO(){}
 
@@ -66,7 +68,21 @@ namespace Hooking.Models.DTO
             string RodsReelsTackle = equipment.RodsReelsTackle ? "Da" : "Ne";
             FishingEquipment =
                 $"Live bite: {LiveBite}\nLures: {Lures}\nFly fishing gear: {FlyFishingGear}\nRods reels tackle: {RodsReelsTackle}";
+        }
 
+        public void PopulateFieldsFromRulesWithFishing(AdventureRules rules)
+        {
+            string ChildFriendly = rules.ChildFriendly ? "Da" : "Ne";
+            string CabinSmoking = rules.CabinSmoking ? "Da" : "Ne";
+            string CatchAndReleaseAllowed = rules.CatchAndReleaseAllowed ? "Da" : "Ne";
+            string YouKeepCatch = rules.YouKeepCatch ? "Da" : "Ne";
+            Rules = $"Za decu: {ChildFriendly} | Pušenje u kabini: {CabinSmoking} | Zadržavanje ulova: {YouKeepCatch} | Uhvati-baci: {CatchAndReleaseAllowed}";
+        }
+
+        public void PopulateFieldsFromRulesWithoutFishing(AdventureRules rules)
+        {
+            string ChildFriendly = rules.ChildFriendly ? "Da" : "Ne";
+            Rules = $"Za decu: {ChildFriendly}";
         }
 
     }
