@@ -58,7 +58,7 @@ namespace Hooking.Controllers
                 
 
 
-                codeForFront += "{ title: '" + title  + "', start: '" +
+                codeForFront += "{ title: '" + title  + "', allDay : '" + true + "', start: '" +
                     cottageNotAvailablePeriod.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
                     "end: '" + cottageNotAvailablePeriod.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
             }
