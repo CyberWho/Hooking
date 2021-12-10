@@ -2,18 +2,16 @@
 @inject SignInManager<IdentityUser> _signInManager
 @{
     ViewData["Title"] = "Index";
-    
-}
-@{
-    var cottage = (Cottage)ViewData["Cottage"];
+    var instructor = (Instructor)ViewData["Instructor"];
 }
 
-<h1>Kalendar dostupnosti vikendice @cottage.Name</h1>
+<h1>Kalendar dostupnosti</h1>
+
 @if (_signInManager.IsSignedIn(User))
 {
-    @if (User.IsInRole("Vlasnik vikendice"))
+    @if (User.IsInRole("Instruktor"))
     {
-        <a href="@Url.Action("Create","CottageNotAvailablePeriods",new { id = cottage.Id})">Definiši period nedostupnosti</a>
+        <a href="@Url.Action("Create","InstructorNotAvailablePeriods",new { id = instructor.Id})">Definiši period nedostupnosti</a>
     }
 }
 @section Scripts {
@@ -61,4 +59,3 @@
         </div>
     </div>
 </div>
-
