@@ -192,8 +192,22 @@ namespace Hooking.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var adventure = await _context.Adventure.FindAsync(id);
-            _context.Adventure.Remove(adventure);
-            await _context.SaveChangesAsync();
+            List<AdventureRealisation> adventureRealisations = new List<AdventureRealisation>();
+            string adventureId = adventure.Id.ToString();
+            adventureRealisations = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId).ToListAsync();
+            if(adventureRealisations.Count == 0)
+            {
+                _context.Adventure.Remove(adventure);
+                await _context.SaveChangesAsync();
+            }
+            List<AdventureSpecialOffer> adventureSpecialOffers = new List<AdventureSpecialOffer>();
+            adventureSpecialOffers = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureId).ToListAsync();
+            if(adventureSpecialOffers.Count == 0)
+            {
+                _context.Adventure.Remove(adventure);
+                await _context.SaveChangesAsync();
+            }
+           
             return RedirectToAction(nameof(InstructorIndex));
         }
 
