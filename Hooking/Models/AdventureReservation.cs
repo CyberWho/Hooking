@@ -9,5 +9,6 @@ namespace Hooking.Models
     {
         public string AdventureRealisationId { get; set; }
         public string UserDetailsId { get; set; }
+        public bool IsReviewed { get; set; }
     }
 }

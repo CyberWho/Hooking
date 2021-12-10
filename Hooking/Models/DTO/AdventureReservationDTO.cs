@@ -30,7 +30,7 @@ namespace Hooking.Models.DTO
         public string UserDetailsFirstName { get; set; }
         [Display(Name = "Prezime korisnika")]
         public string UserDetailsLastName { get; set; }
-
+        public bool IsReviewed { get; set; }
         public AdventureReservationDTO(){}
 
         public AdventureReservationDTO(Adventure adventure, AdventureRealisation realisation, AdventureReservation reservation)
@@ -46,6 +46,7 @@ namespace Hooking.Models.DTO
 
             AdventureReservationId = reservation.Id.ToString();
             UserDetailsId = reservation.UserDetailsId;
+            IsReviewed = reservation.IsReviewed;
         }
 
     }

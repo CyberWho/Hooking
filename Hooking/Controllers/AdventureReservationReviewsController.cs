@@ -52,13 +52,34 @@ namespace Hooking.Controllers
         // POST: AdventureReservationReviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/AdventureReservationReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdventureReservationId,Review,DidntShow,ReceivedPenalty,Id,RowVersion")] AdventureReservationReview adventureReservationReview)
+        public async Task<IActionResult> Create(Guid id,[Bind("Review,DidntShow,ReceivedPenalty,Id,RowVersion")] AdventureReservationReview adventureReservationReview)
         {
             if (ModelState.IsValid)
             {
+                AdventureReservation adventureReservation = await _context.AdventureReservation.Where(m => m.Id == id).FirstOrDefaultAsync<AdventureReservation>();
+                adventureReservation.IsReviewed = true;
+                await _context.SaveChangesAsync();
                 adventureReservationReview.Id = Guid.NewGuid();
+                adventureReservationReview.AdventureReservationId = adventureReservation.Id.ToString();
+                if (!adventureReservationReview.DidntShow)
+                {
+                    Guid userId = Guid.Parse(adventureReservation.UserDetailsId);
+                    UserDetails userDetails = _context.UserDetails.Where(m => m.Id == userId).FirstOrDefault<UserDetails>();
+                    userDetails.PenaltyCount++;
+                    _context.Update(userDetails);
+                    await _context.SaveChangesAsync();
+
+                }
+                if (adventureReservationReview.ReceivedPenalty)
+                {
+                    adventureReservationReview.IsReviewedByAdmin = false;
+                }
+                else
+                {
+                    adventureReservationReview.IsReviewedByAdmin = true;
+                }
                 _context.Add(adventureReservationReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

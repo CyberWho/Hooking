@@ -52,6 +52,10 @@
                 @Html.DisplayFor(modelItem => item.UserDetailsLastName)
             </td>
             <td>
+                @if (!item.IsReviewed)
+                {
+                    <a href="@Url.Action("Create", "AdventureReservationReviews", new { Id = @item.AdventureReservationId })">Recenzija</a>
+                }
                 <a asp-controller="UserDetails" asp-action="Details" asp-route-id="@item.UserDetailsId">Pregledaj profil</a>
             </td>
         </tr>

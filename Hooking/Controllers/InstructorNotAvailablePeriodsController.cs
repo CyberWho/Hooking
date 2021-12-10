@@ -42,7 +42,7 @@ namespace Hooking.Controllers
             List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = await _context.InstructorNotAvailablePeriod.Where(m => m.InstructorId == instructorId).ToListAsync<InstructorNotAvailablePeriod>();
 
             int i = 0;
-            string title = "Rezervisano";
+            
             string codeForFront = "[";
             foreach (var notAvailable in instructorNotAvailablePeriods)
             {
@@ -53,7 +53,7 @@ namespace Hooking.Controllers
 
 
 
-                codeForFront += "{ title: '" + title + "', allDay : '" + true + "', start: '" +
+                codeForFront += "{ title: '" + notAvailable.title + "', allDay : '" + true + "', start: '" +
                    notAvailable.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
                    "end: '" + notAvailable.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
             }
