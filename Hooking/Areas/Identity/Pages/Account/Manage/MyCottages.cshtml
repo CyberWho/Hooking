@@ -39,21 +39,7 @@
             <th>
                 Broj ocena
             </th>
-            <th hidden>
-                Uslovi otkaza
-            </th>
-            <th>
-                Regularna cena
-            </th>
-            <th>
-                Vikend cena
-            </th>
-            <th hidden>
-                CottageOwnerId
-            </th>
-            <th hidden>
-                RowVersion
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -88,27 +74,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.GradeCount)
                 </td>
-                <td hidden>
-                    @Html.DisplayFor(modelItem => item.CancelationPolicyId)
-                </td>
+                
                 <td>
-                    @Html.DisplayFor(modelItem => item.RegularPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WeekendPrice)
-                </td>
-                <td hidden>
-                    @Html.DisplayFor(modelItem => item.CottageOwnerId)
-                </td>
-                <td hidden>
-                    @Html.DisplayFor(modelItem => item.RowVersion)
-                </td>
-                <td>
-                    <a href="@Url.Action("Edit", "Cottages", new { Id = @item.Id })">Izmeni informacije</a> |
                     <a href="@Url.Action("MyCottage", "Cottages", new { Id = @item.Id })">Prikaži još</a> |
                     <a href="@Url.Action("Delete", "Cottages", new { Id = @item.Id })">Ukloni iz ponude</a>
-                    <a href="@Url.Action("Create","CottageNotAvailablePeriods",new { id = @item.Id})">Definiši period nedostupnosti</a>
-                    <a href="@Url.Action("Index","CottageNotAvailablePeriods",new { id = @item.Id})">Kalendar dostupnosti</a>
                 </td>
             </tr>
         }
