@@ -306,7 +306,8 @@ namespace Hooking.Controllers
                     }
                 }
                 ViewData["StatusMessage"] = StatusMessage;
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToRoute("default",
+                                        new { controller = "Cottages", action = "MyCottage", id = cottage.Id });
             }
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
@@ -410,11 +411,13 @@ namespace Hooking.Controllers
                     }
                    
                 }
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToRoute("default",
+                                       new { controller = "Cottages", action = "MyCottage", id = id });
             }
             else
             {
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToRoute("default",
+                                       new { controller = "Cottages", action = "MyCottage", id = id });
             }
 
 

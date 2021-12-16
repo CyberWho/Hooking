@@ -142,9 +142,11 @@ namespace Hooking.Controllers
                 
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToRoute("default",
+                                         new { controller = "CottageNotAvailablePeriods", action = "Index", id = id });
             }
-            return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+            return RedirectToRoute("default",
+                                        new { controller = "CottageNotAvailablePeriods", action = "Index", id = id });
         }
 
         // GET: CottageNotAvailablePeriods/Edit/5
