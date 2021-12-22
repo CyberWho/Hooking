@@ -1,20 +1,21 @@
 ﻿using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Hooking.Services.Implementations
 {
     public class CottageService : ICottageService
     {
         private readonly ApplicationDbContext _context;
+        
         public CottageService(ApplicationDbContext context)
         {
             _context = context;
+           
         }
         public Cottage Create(string ownerId,Cottage cottage)
         {
@@ -30,12 +31,22 @@ namespace Hooking.Services.Implementations
         
         public bool DeleteById(Guid id)
         {
-            throw new NotImplementedException();
+            Cottage cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
+            _context.Cottage.Remove(cottage);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool Edit(Guid id, Cottage editedCottage)
         {
-            throw new NotImplementedException();
+            Cottage cottageTemp =  _context.Cottage.Find(id);
+            cottageTemp.Name = editedCottage.Name;
+            cottageTemp.Description = editedCottage.Description;
+            cottageTemp.RegularPrice = editedCottage.RegularPrice;
+            cottageTemp.WeekendPrice = editedCottage.WeekendPrice;
+            _context.Update(cottageTemp);
+            _context.SaveChanges();
+            return true;
         }
 
         public IEnumerable<Cottage> GetAllByOwnerId(string ownerId)
@@ -45,12 +56,13 @@ namespace Hooking.Services.Implementations
 
         public Cottage GetCottageById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
         }
 
         public bool UploadImage(Guid id, IFormFile file)
-        {
-            throw new NotImplementedException();
+        { 
+            return true;
         }
+
     }
 }

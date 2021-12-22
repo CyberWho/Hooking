@@ -20,6 +20,22 @@ namespace Hooking.Services.Implementations
             throw new NotImplementedException();
         }
 
+        public IEnumerable<CottageReservation> GetAllFutureByCottageId(string cottageId)
+        {
+            List<CottageReservation> cottageReservations = new List<CottageReservation>();
+            List<CottageReservation> cottageReservationsTemp = _context.CottageReservation.Where(m => m.CottageId == cottageId).ToList();
+            foreach(CottageReservation cottageReservation in cottageReservationsTemp)
+            {
+                if (cottageReservation.StartDate >= DateTime.Now)
+                {
+                    cottageReservations.Add(cottageReservation);
+
+                }
+            }
+
+            return cottageReservations;
+        }
+
         public IEnumerable<CottageReservation> GetAllFutureByOwnerId(string ownerId, IEnumerable<Cottage> cottages)
         {
             List<CottageReservation> cottageReservations = new List<CottageReservation>();

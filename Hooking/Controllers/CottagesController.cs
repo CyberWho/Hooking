@@ -27,6 +27,7 @@ namespace Hooking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICottageService _cottageService;
+        private readonly ICottageReservationsService _cottageReservationsService;
         private readonly BlobUtility utility;
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
@@ -39,13 +40,14 @@ namespace Hooking.Controllers
         public string StatusMessage { get; set; }
 
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
-                                  ICottageService cottageService)
+                                  ICottageService cottageService, ICottageReservationsService cottageReservationsService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             utility = new BlobUtility();
             _cottageService = cottageService;
+            _cottageReservationsService = cottageReservationsService;
 
         }
        
@@ -151,15 +153,14 @@ namespace Hooking.Controllers
             return View(cottage);
         }
         [HttpGet("/Cottages/MyCottage/{id}")]
-        public async Task<IActionResult> MyCottage(Guid? id)
+        public async Task<IActionResult> MyCottage(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottage = await _context.Cottage
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottage = _cottageService.GetCottageById(id);
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
             var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
 
@@ -207,8 +208,8 @@ namespace Hooking.Controllers
         public async Task<IActionResult> CottagesForSpecialOffer()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
-            return View(myCottages);
+            
+            return View(_cottageService.GetAllByOwnerId(user.Id));
         }
 
         // POST: Cottages/Create
@@ -263,7 +264,7 @@ namespace Hooking.Controllers
                     
                     var cottageId = cottage.Id.ToString();
                     List<CottageSpecialOfferReservation> cottageSpecialOfferReservationsFull = new List<CottageSpecialOfferReservation>();
-                    List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageId).ToListAsync<CottageReservation>();
+                    List<CottageReservation> cottageReservations = _cottageReservationsService.GetAllFutureByCottageId(cottageId).ToList();
                     List<CottageSpecialOfferReservation> cottageSpecialOfferReservations = await _context.CottageSpecialOfferReservation.ToListAsync<CottageSpecialOfferReservation>();
                     foreach (var cottageSpecialOfferReservation in cottageSpecialOfferReservations)
                     {
@@ -275,23 +276,11 @@ namespace Hooking.Controllers
                         }
                     }
 
-                   
+
                     if (cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
                     {
-                        Cottage cottageTemp = await _context.Cottage.FindAsync(id);
-                        cottageTemp.Name = cottage.Name;
-                        cottageTemp.Description = cottage.Description;
-                        cottageTemp.RegularPrice = cottage.RegularPrice;
-                        cottageTemp.WeekendPrice = cottage.WeekendPrice;
-                        _context.Update(cottageTemp);
-                        await _context.SaveChangesAsync();
-                        StatusMessage = "Uspesno ste izmeni informacije o vikendici!";
-                    }
-                    else
-                    {
-                        StatusMessage = "Ne mozete izmeniti informacije o vikendice jer je rezervisana!";
-                    }
-                    
+                        _cottageService.Edit(id, cottage);
+                    }   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -332,8 +321,7 @@ namespace Hooking.Controllers
         public async Task<IActionResult> CottagesForReservation()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
-            return View(myCottages);
+            return View(_cottageService.GetAllByOwnerId(user.Id));
         }
 
         // POST: Cottages/Delete/5
@@ -345,7 +333,7 @@ namespace Hooking.Controllers
             var cottage = await _context.Cottage.FindAsync(id);
             var cottageId = cottage.Id.ToString();
             List<CottageSpecialOfferReservation> cottageSpecialOfferReservationsFull = new List<CottageSpecialOfferReservation>();
-            List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageId).ToListAsync<CottageReservation>();
+            List<CottageReservation> cottageReservations = _cottageReservationsService.GetAllFutureByCottageId(cottageId).ToList();
             List<CottageSpecialOfferReservation> cottageSpecialOfferReservations = await _context.CottageSpecialOfferReservation.ToListAsync<CottageSpecialOfferReservation>();
             foreach(var cottageSpecialOfferReservation in cottageSpecialOfferReservations)
             {
@@ -364,14 +352,10 @@ namespace Hooking.Controllers
 
             if(cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
             {
-                _context.Cottage.Remove(cottage);
-                await _context.SaveChangesAsync();
-                StatusMessage = "Uspesno ste poslali zahtev za brisanje vikendice!";
-            } else
-            {
-                StatusMessage = "Ne mozete poslati zahtev za brisanje vikendice jer je rezervisana!";
-            }
-            ViewData["StatusMessage"] = StatusMessage;
+                _cottageService.DeleteById(id);
+                
+            } 
+            
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
         [HttpPost("/Cottages/UploadImage/{id}")]
@@ -390,25 +374,25 @@ namespace Hooking.Controllers
                     CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
                     try
                     {
-                        await blockBlob.UploadFromStreamAsync(fileStream);
-                        
+                        blockBlob.UploadFromStreamAsync(fileStream);
+
                     }
                     catch (Exception e)
                     {
                         var r = e.Message;
                         return null;
                     }
-                    
-                    if(blockBlob != null)
+
+                    if (blockBlob != null)
                     {
                         CottageImage cottageImage = new CottageImage();
                         cottageImage.Id = Guid.NewGuid();
                         cottageImage.CottageId = id.ToString();
                         cottageImage.ImageUrl = blockBlob.Uri.ToString();
                         _context.CottageImages.Add(cottageImage);
-                        await _context.SaveChangesAsync();
+                        _context.SaveChanges();
                     }
-                   
+
                 }
                 return RedirectToRoute("default",
                                        new { controller = "Cottages", action = "MyCottage", id = id });
