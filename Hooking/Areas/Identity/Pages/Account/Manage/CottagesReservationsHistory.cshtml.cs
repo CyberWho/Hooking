@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Hooking.Models;
+using Hooking.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hooking.Areas.Identity.Pages.Account.Manage
@@ -23,44 +24,36 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public List<CottageReservation> cottageReservations { get; set; }
         [BindProperty]
         public List<string> cottageNames { get; set; }
+        private readonly ICottageReservationsService _cottageReservationsService;
+        private readonly ICottageService _cottageService;
         public CottagesReservationsHistoryModel(ApplicationDbContext context,
                                           UserManager<IdentityUser> userManager,
                                           RoleManager<IdentityRole> roleManager,
                                           SignInManager<IdentityUser> signInManager,
-                                          IEmailSender emailSender)
+                                          IEmailSender emailSender,
+                                          ICottageReservationsService cottageReservationsService,
+                                          ICottageService cottageService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _cottageReservationsService = cottageReservationsService;
+            _cottageService = cottageService;
         }
         public async Task<IActionResult> OnGetAsync(string sortOrder="")
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Cottage> myCottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
-            cottageReservations = new List<CottageReservation>();
+            IEnumerable<Cottage> myCottages = _cottageService.GetAllByOwnerId(user.Id);
+            cottageReservations = _cottageReservationsService.GetAllFutureByOwnerId(user.Id, myCottages).ToList();
             cottageNames = new List<string>();
-            foreach (var cottage in myCottages)
+            foreach (CottageReservation cottageReservation in cottageReservations)
             {
-                var cottageId = cottage.Id.ToString();
-                List<CottageReservation> myCottageReservations = new List<CottageReservation>();
-                myCottageReservations = _context.CottageReservation.Where(m => m.CottageId == cottageId).ToList();
-                if (myCottageReservations.Count != 0)
-                {
-                    foreach (CottageReservation cottageReservation in myCottageReservations)
-                    {
-                        if (cottageReservation.StartDate <= DateTime.Now)
-                        {
-                            cottageReservations.Add(cottageReservation);
-                            cottageNames.Add(cottage.Name);
-                        }
-                    }
-                }
-
+                Guid id = Guid.Parse(cottageReservation.CottageId);
+                Cottage cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
+                cottageNames.Add(cottage.Name);
             }
-           // List<Cottage> cottages = await _context.Cottage.ToListAsync();
-           
             ViewData["CottageNames"] = cottageNames;
             return Page();
         }

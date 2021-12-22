@@ -17,6 +17,7 @@ using System.Runtime.Serialization.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using GoogleMaps.LocationServices;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
@@ -25,6 +26,7 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICottageService _cottageService;
         private readonly BlobUtility utility;
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
@@ -36,12 +38,14 @@ namespace Hooking.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
-        public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
+                                  ICottageService cottageService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             utility = new BlobUtility();
+            _cottageService = cottageService;
 
         }
        
@@ -216,14 +220,9 @@ namespace Hooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                cottage.Id = Guid.NewGuid();
+               
                 var user = await _userManager.GetUserAsync(User);
-                cottage.CottageOwnerId = user.Id;
-                cottage.CancelationPolicyId = "0";
-                cottage.AverageGrade = 0;
-                cottage.GradeCount = 0;
-                _context.Add(cottage);
-                await _context.SaveChangesAsync();
+                _cottageService.Create(user.Id, cottage);
                 return RedirectToAction("Create", "HouseRules", new { id = cottage.Id});
             }
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });

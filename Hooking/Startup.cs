@@ -37,6 +37,8 @@ namespace Hooking
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IAdventureService, AdventureService>();
+            services.AddScoped<ICottageService, CottageService>();
+            services.AddScoped<ICottageReservationsService, CottageReservationsService>(); 
             services.AddControllersWithViews();
             services.AddAuthorization();
             services.AddRazorPages();
