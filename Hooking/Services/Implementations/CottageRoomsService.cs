@@ -40,7 +40,16 @@ namespace Hooking.Services.Implementations
 
         public IEnumerable<CottageRoom> GetAllByCottageId(Guid id)
         {
-            throw new NotImplementedException();
+            var cottageId = id.ToString();
+            List<CottageRoom> cottageRooms = new List<CottageRoom>();
+            List<CottagesRooms> cottagesRooms = _context.CottagesRooms.Where(m => m.CottageId == cottageId).ToList<CottagesRooms>();
+            foreach (var cottagesRoom in cottagesRooms)
+            {
+                Guid cottageRoomId = Guid.Parse(cottagesRoom.CottageRoomId);
+                var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
+                cottageRooms.Add(cottageRoom);
+            }
+            return cottageRooms;
         }
 
         public CottageRoom GetById(Guid id)

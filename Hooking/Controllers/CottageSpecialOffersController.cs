@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
@@ -23,17 +24,26 @@ namespace Hooking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
+        private readonly ICottageSpecialOffersService _cottageSpecialOffersService;
+        private readonly ICottageService _cottageService;
+        private readonly ICottageFavoritesService _cottageFavoritesService;
         public Cottage cottage;
 
         public CottageSpecialOffersController(ApplicationDbContext context,
                                               UserManager<IdentityUser> userManager,
                                               RoleManager<IdentityRole> roleManager,
-                                              IEmailSender emailSender)
+                                              IEmailSender emailSender,
+                                              ICottageSpecialOffersService cottageSpecialOffersService,
+                                              ICottageService cottageService,
+                                              ICottageFavoritesService cottageFavoritesService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _emailSender = emailSender;
+            _cottageSpecialOffersService = cottageSpecialOffersService;
+            _cottageService = cottageService;
+            _cottageFavoritesService = cottageFavoritesService;
             using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
             {
                 string json = reader.ReadToEnd();
@@ -48,17 +58,16 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageSpecialOffers/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageSpecialOffer = await _context.CottageSpecialOffer
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageSpecialOffer = _cottageSpecialOffersService.GetById(id);
             Guid cottageId = Guid.Parse(cottageSpecialOffer.CottageId);
-            cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+            cottage = _cottageService.GetCottageById(cottageId);
             
             if (cottageSpecialOffer == null)
             {
@@ -88,12 +97,9 @@ namespace Hooking.Controllers
                 cottageSpecialOffer.StartDate = cottageSpecialOffer.StartDate.Date;
                 cottageSpecialOffer.EndDate = cottageSpecialOffer.EndDate.Date;
                 cottageSpecialOffer.IsReserved = false;
-                _context.Add(cottageSpecialOffer);
-                await _context.SaveChangesAsync();
-                Cottage cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
-                var cId = id.ToString();
-                List<CottageFavorites> cottageFavorites = new List<CottageFavorites>();
-                cottageFavorites = _context.CottageFavorites.Where(m => m.CottageId == cId).ToList();
+                _cottageSpecialOffersService.Create(cottageSpecialOffer);
+                Cottage cottage = _cottageService.GetCottageById(id);
+                List<CottageFavorites> cottageFavorites = _cottageFavoritesService.GetAllByCottageId(cottage.Id).ToList();
                 foreach (var subscribe in cottageFavorites)
                 {
                     UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == subscribe.UserDetailsId).FirstOrDefault<UserDetails>();
@@ -132,14 +138,14 @@ namespace Hooking.Controllers
             }
         }
         // GET: CottageSpecialOffers/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageSpecialOffer = await _context.CottageSpecialOffer.FindAsync(id);
+            var cottageSpecialOffer = _cottageSpecialOffersService.GetById(id);
             if (cottageSpecialOffer == null)
             {
                 return NotFound();
@@ -163,17 +169,7 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var cottageSpecialOfferTmp = await _context.CottageSpecialOffer.FindAsync(id);
-                    cottageSpecialOfferTmp.Id = id;
-                    cottageSpecialOfferTmp.CottageId = cottageSpecialOffer.CottageId;
-                    cottageSpecialOfferTmp.StartDate = cottageSpecialOffer.StartDate;
-                    cottageSpecialOfferTmp.EndDate = cottageSpecialOffer.EndDate;
-                    cottageSpecialOfferTmp.Price = cottageSpecialOffer.Price;
-                    cottageSpecialOfferTmp.MaxPersonCount = cottageSpecialOffer.MaxPersonCount;
-                    cottageSpecialOfferTmp.Description = cottageSpecialOffer.Description;
-                    cottageSpecialOfferTmp.IsReserved = cottageSpecialOffer.IsReserved;
-                    _context.Update(cottageSpecialOfferTmp);
-                    await _context.SaveChangesAsync();
+                    _cottageSpecialOffersService.Update(id, cottageSpecialOffer);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -192,15 +188,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageSpecialOffers/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageSpecialOffer = await _context.CottageSpecialOffer
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageSpecialOffer = _cottageSpecialOffersService.GetById(id);
             if (cottageSpecialOffer == null)
             {
                 return NotFound();
@@ -214,9 +209,8 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cottageSpecialOffer = await _context.CottageSpecialOffer.FindAsync(id);
-            _context.CottageSpecialOffer.Remove(cottageSpecialOffer);
-            await _context.SaveChangesAsync();
+
+            _cottageSpecialOffersService.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
 

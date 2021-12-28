@@ -28,6 +28,7 @@ namespace Hooking.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ICottageService _cottageService;
         private readonly ICottageReservationsService _cottageReservationsService;
+        private readonly ICottageRoomsService _cottageRoomsService;
         private readonly BlobUtility utility;
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
@@ -40,7 +41,8 @@ namespace Hooking.Controllers
         public string StatusMessage { get; set; }
 
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
-                                  ICottageService cottageService, ICottageReservationsService cottageReservationsService)
+                                  ICottageService cottageService, ICottageReservationsService cottageReservationsService,
+                                  ICottageRoomsService cottageRoomsService)
         {
             _context = context;
             _userManager = userManager;
@@ -48,6 +50,7 @@ namespace Hooking.Controllers
             utility = new BlobUtility();
             _cottageService = cottageService;
             _cottageReservationsService = cottageReservationsService;
+            _cottageRoomsService = cottageRoomsService;
 
         }
        
@@ -130,14 +133,7 @@ namespace Hooking.Controllers
             var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
             Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
             facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
-            List<CottagesRooms> cottagesRooms = await _context.CottagesRooms.Where(m => m.CottageId == cottageId).ToListAsync<CottagesRooms>();
-            foreach(var cottagesRoom in cottagesRooms)
-            {
-                Guid cottageRoomId = Guid.Parse(cottagesRoom.CottageRoomId);
-                var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
-                cottageRooms.Add(cottageRoom);
-            }
-            
+            cottageRooms = _cottageRoomsService.GetAllByCottageId(cottage.Id).ToList();
             var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
           
             cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
@@ -173,13 +169,7 @@ namespace Hooking.Controllers
             var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
             Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
             facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
-            List<CottagesRooms> cottagesRooms = await _context.CottagesRooms.Where(m => m.CottageId == cottageId).ToListAsync<CottagesRooms>();
-            foreach (var cottagesRoom in cottagesRooms)
-            {
-                Guid cottageRoomId = Guid.Parse(cottagesRoom.CottageRoomId);
-                var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
-                cottageRooms.Add(cottageRoom);
-            }
+            cottageRooms = _cottageRoomsService.GetAllByCottageId(cottage.Id).ToList();
             if (cottage == null)
             {
                 return NotFound();
