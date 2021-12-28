@@ -12,5 +12,8 @@ namespace Hooking.Services
         IEnumerable<CottageReservation> GetAllHistoryByOwnerId(string ownerId, IEnumerable<Cottage> cottages);
         IEnumerable<CottageReservation> GetAllByCottageId(string cottageId);
         IEnumerable<CottageReservation> GetAllFutureByCottageId(string cottageId);
+        bool Create(CottageReservation cottageReservation);
+        bool DeleteById(Guid id);
+        CottageReservation GetById(Guid id);
     }
 }

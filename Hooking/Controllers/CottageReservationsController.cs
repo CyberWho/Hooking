@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
@@ -16,16 +17,22 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICottageService _cottageService;
+        private readonly ICottageReservationsService _cottageReservationsService;
         public Cottage cottage;
         public UserDetails userDetails;
 
         public CottageReservationsController(ApplicationDbContext context, 
                                              UserManager<IdentityUser> userManager,
-                                             RoleManager<IdentityRole> roleManager)
+                                             RoleManager<IdentityRole> roleManager,
+                                             ICottageService cottageService,
+                                             ICottageReservationsService cottageReservationsService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _cottageService = cottageService;
+            _cottageReservationsService = cottageReservationsService;
         }
 
         // GET: CottageReservations
@@ -85,15 +92,13 @@ namespace Hooking.Controllers
             {
                
                 cottageReservation.Id = Guid.NewGuid();
-                var cottage = await _context.Cottage
-                     .FirstOrDefaultAsync(m => m.Id == cId);
+                var cottage = _cottageService.GetCottageById(id);
                 double numberOfDays = (cottageReservation.EndDate - cottageReservation.StartDate).TotalDays;
                 cottageReservation.Price = numberOfDays * cottage.RegularPrice;
                 cottageReservation.UserDetailsId = id.ToString();
                 cottageReservation.CottageId = cId.ToString();
                 cottageReservation.IsReviewed = false;
-                _context.Add(cottageReservation);
-                await _context.SaveChangesAsync();
+                _cottageReservationsService.Create(cottageReservation);
                 CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
                 cottageNotAvailablePeriod.Id = Guid.NewGuid();
                 cottageNotAvailablePeriod.CottageId = cottageReservation.CottageId;
@@ -108,17 +113,16 @@ namespace Hooking.Controllers
         }
        
         // GET: CottageReservations/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageReservation = await _context.CottageReservation
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageReservation = _cottageReservationsService.GetById(id);
             Guid cottageId = Guid.Parse(cottageReservation.CottageId);
-            cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+            cottage = _cottageService.GetCottageById(cottageId);
             userDetails = _context.UserDetails.Where(m => m.IdentityUserId == cottageReservation.UserDetailsId).FirstOrDefault<UserDetails>();
             Guid identityUserId = Guid.Parse(userDetails.IdentityUserId);
             var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
@@ -167,14 +171,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageReservations/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageReservation = await _context.CottageReservation.FindAsync(id);
+            var cottageReservation = _cottageReservationsService.GetById(id);
             if (cottageReservation == null)
             {
                 return NotFound();

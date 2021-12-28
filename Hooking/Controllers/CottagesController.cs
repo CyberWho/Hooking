@@ -105,15 +105,14 @@ namespace Hooking.Controllers
 
 
         // GET: Cottages/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottage = await _context.Cottage
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottage = _cottageService.GetCottageById(id);
             if (cottage == null)
             {
                 return NotFound();
@@ -301,15 +300,14 @@ namespace Hooking.Controllers
         }
         
         // GET: Cottages/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottage = await _context.Cottage
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottage = _cottageService.GetCottageById(id);
             if (cottage == null)
             {
                 return NotFound();
@@ -330,7 +328,7 @@ namespace Hooking.Controllers
 
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cottage = await _context.Cottage.FindAsync(id);
+            var cottage = _cottageService.GetCottageById(id);
             var cottageId = cottage.Id.ToString();
             List<CottageSpecialOfferReservation> cottageSpecialOfferReservationsFull = new List<CottageSpecialOfferReservation>();
             List<CottageReservation> cottageReservations = _cottageReservationsService.GetAllFutureByCottageId(cottageId).ToList();

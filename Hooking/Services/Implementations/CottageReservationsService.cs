@@ -15,6 +15,18 @@ namespace Hooking.Services.Implementations
             _context = context;
         }
 
+        public bool Create(CottageReservation cottageReservation)
+        {
+            _context.CottageReservation.Add(cottageReservation);
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool DeleteById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<CottageReservation> GetAllByCottageId(string cottageId)
         {
             throw new NotImplementedException();
@@ -85,6 +97,11 @@ namespace Hooking.Services.Implementations
 
             }
             return cottageReservations;
+        }
+
+        public CottageReservation GetById(Guid id)
+        {
+            return _context.CottageReservation.Where(m => m.Id == id).FirstOrDefault();
         }
     }
 }

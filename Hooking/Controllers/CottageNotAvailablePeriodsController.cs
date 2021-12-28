@@ -9,6 +9,7 @@ using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
 using Hooking.Models;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
@@ -18,17 +19,23 @@ namespace Hooking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ICottageNotAvailablePeriodsService _cottageNotAvailablePeriodsService;
+        private readonly ICottageService _cottageService;
         public Cottage cottage;
         public List<CalendarHelper> calendarHelpers;
         public CottageNotAvailablePeriodsController(ApplicationDbContext context,
                                                     UserManager<IdentityUser> userManager,
                                                     RoleManager<IdentityRole> roleManager,
-                                                    SignInManager<IdentityUser> signInManager)
+                                                    SignInManager<IdentityUser> signInManager,
+                                                    ICottageNotAvailablePeriodsService cottageNotAvailablePeriodsService,
+                                                    ICottageService cottageService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _cottageNotAvailablePeriodsService = cottageNotAvailablePeriodsService;
+            _cottageService = cottageService;
         }
 
         // GET: CottageNotAvailablePeriods
@@ -40,11 +47,8 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            cottage = await _context.Cottage
-                .FirstOrDefaultAsync(m => m.Id == id);
-            string cottageId = id.ToString();
-            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = new List<CottageNotAvailablePeriod>();
-            cottageNotAvailablePeriods = _context.CottageNotAvailablePeriod.Where(m => m.CottageId == cottageId).ToList();
+            cottage = _cottageService.GetCottageById(id);
+            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = _cottageNotAvailablePeriodsService.GetAllByCottageId(cottage.Id).ToList();
             string codeForFront = "[";
 
             int i = 0;
@@ -70,38 +74,6 @@ namespace Hooking.Controllers
             ViewData["codeForFront"] = codeForFront;
             return View();
 
-        }
-        /// GET: /Home/GetCalendarData/{id} 
-        /// </summary>  
-        /// <returns>Return data</returns>  
-        public IActionResult GetCalendarData(Guid id)
-        {
-            
-            cottage = _context.Cottage
-                .FirstOrDefault(m => m.Id == id);
-            var cottageId = id.ToString();
-            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = new List<CottageNotAvailablePeriod>();
-            cottageNotAvailablePeriods = _context.CottageNotAvailablePeriod.Where(m => m.CottageId == cottageId).ToList();
-            calendarHelpers = new List<CalendarHelper>();
-            
-            foreach (CottageNotAvailablePeriod cottageNotAvailablePeriod in cottageNotAvailablePeriods)
-            {
-                
-                CalendarHelper calendarHelper = new CalendarHelper
-                {
-                    start = cottageNotAvailablePeriod.StartTime.ToString("yyyy-MM-dd"),
-                    end = cottageNotAvailablePeriod.EndTime.ToString("yyyy-MM-dd"),
-                    title = "Rezervacija",
-                    description = "Rezervacija vikendice " + cottage.Name
-                  
-                };
-                System.Diagnostics.Debug.WriteLine(calendarHelper.title);
-                calendarHelpers.Add(calendarHelper);
-
-            }
-            JsonResult result = new JsonResult(calendarHelpers);
-            return result;
-           
         }
 
         // GET: CottageNotAvailablePeriods/Details/5
@@ -139,9 +111,8 @@ namespace Hooking.Controllers
             {
                 cottageNotAvailablePeriod.Id = Guid.NewGuid();
                 cottageNotAvailablePeriod.CottageId = id.ToString();
-                
-                _context.Add(cottageNotAvailablePeriod);
-                await _context.SaveChangesAsync();
+
+                _cottageNotAvailablePeriodsService.Create(cottageNotAvailablePeriod);
                 return RedirectToRoute("default",
                                          new { controller = "CottageNotAvailablePeriods", action = "Index", id = id });
             }
@@ -150,14 +121,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageNotAvailablePeriods/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageNotAvailablePeriod = await _context.CottageNotAvailablePeriod.FindAsync(id);
+            var cottageNotAvailablePeriod = _cottageNotAvailablePeriodsService.GetById(id);
             if (cottageNotAvailablePeriod == null)
             {
                 return NotFound();
@@ -201,15 +172,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageNotAvailablePeriods/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageNotAvailablePeriod = await _context.CottageNotAvailablePeriod
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageNotAvailablePeriod = _cottageNotAvailablePeriodsService.GetById(id);
             if (cottageNotAvailablePeriod == null)
             {
                 return NotFound();
@@ -223,7 +193,7 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cottageNotAvailablePeriod = await _context.CottageNotAvailablePeriod.FindAsync(id);
+            var cottageNotAvailablePeriod = _cottageNotAvailablePeriodsService.GetById(id);
             _context.CottageNotAvailablePeriod.Remove(cottageNotAvailablePeriod);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
