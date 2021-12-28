@@ -52,16 +52,22 @@ namespace Hooking.Controllers
         // POST: BoatRules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("BoatRules/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ChildFriendly,YouKeepCatch,CatchAndReleaseAllowed,CabinSmoking,Id,RowVersion")] BoatRules boatRules)
+        public async Task<IActionResult> Create(Guid id,[Bind("ChildFriendly,YouKeepCatch,CatchAndReleaseAllowed,CabinSmoking,Id,RowVersion")] BoatRules boatRules)
         {
             if (ModelState.IsValid)
             {
                 boatRules.Id = Guid.NewGuid();
                 _context.Add(boatRules);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                BoatsBoatRules boatsBoatRules = new BoatsBoatRules();
+                boatsBoatRules.Id = Guid.NewGuid();
+                boatsBoatRules.BoatId = id.ToString();
+                boatsBoatRules.BoatRulesId = boatRules.Id.ToString();
+                _context.Add(boatsBoatRules);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("CreateForBoat", "CancelationPolicies", new { id = boatsBoatRules.BoatId });
             }
             return View(boatRules);
         }

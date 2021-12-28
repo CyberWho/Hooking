@@ -52,16 +52,22 @@ namespace Hooking.Controllers
         // POST: FishingEquipments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/FishingEquipments/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LiveBite,FlyFishingGear,Lures,RodsReelsTackle,Id,RowVersion")] FishingEquipment fishingEquipment)
+        public async Task<IActionResult> Create(Guid id, [Bind("LiveBite,FlyFishingGear,Lures,RodsReelsTackle,Id,RowVersion")] FishingEquipment fishingEquipment)
         {
             if (ModelState.IsValid)
             {
                 fishingEquipment.Id = Guid.NewGuid();
                 _context.Add(fishingEquipment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                BoatFishingEquipment boatFishingEquipment = new BoatFishingEquipment();
+                boatFishingEquipment.Id = Guid.NewGuid();
+                boatFishingEquipment.BoatId = id.ToString();
+                boatFishingEquipment.FishingEquipment = fishingEquipment.Id.ToString();
+                _context.Add(boatFishingEquipment);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
             }
             return View(fishingEquipment);
         }

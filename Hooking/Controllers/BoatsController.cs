@@ -117,7 +117,7 @@ namespace Hooking.Controllers
                 boat.GradeCount = 0;
                 _context.Add(boat);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+                return RedirectToAction("Create", "BoatRules", new { id = boat.Id });
             }
             return View(boat);
         }
