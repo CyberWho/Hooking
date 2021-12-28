@@ -43,6 +43,7 @@ namespace Hooking
             services.AddScoped<ICottageOwnersService, CottageOwnersService>();
             services.AddScoped<ICottageFavoritesService, CottageFavoritesService>();
             services.AddScoped<ICottageReservationReviewsService, CottageReservationReviewsService>();
+            services.AddScoped<ICottageRoomsService, CottageRoomsService>();
             services.AddControllersWithViews();
             services.AddAuthorization();
             services.AddRazorPages();

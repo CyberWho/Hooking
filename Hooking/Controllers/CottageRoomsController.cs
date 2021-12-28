@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
     public class CottageRoomsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICottageRoomsService _cottageRoomsService;
+        private readonly ICottageService _cottageService;
         public Cottage cottage;
-        public CottageRoomsController(ApplicationDbContext context)
+        public CottageRoomsController(ApplicationDbContext context,
+                                        ICottageRoomsService cottageRoomsService,
+                                        ICottageService cottageService)
         {
             _context = context;
+            _cottageRoomsService = cottageRoomsService;
+            _cottageService = cottageService;
         }
 
         // GET: CottageRooms
@@ -26,15 +33,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageRooms/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageRoom = await _context.CottageRoom
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageRoom = _cottageRoomsService.GetById(id);
             if (cottageRoom == null)
             {
                 return NotFound();
@@ -59,35 +65,33 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 cottageRoom.Id = Guid.NewGuid();
-                _context.Add(cottageRoom);
-                await _context.SaveChangesAsync();
-                Cottage cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault<Cottage>();
+                _cottageRoomsService.Create(cottageRoom);
+                Cottage cottage = _cottageService.GetCottageById(id);
                 CottagesRooms cottagesRooms = new CottagesRooms();
                 cottagesRooms.Id = Guid.NewGuid();
                 cottagesRooms.CottageRoomId = cottageRoom.Id.ToString();
                 cottagesRooms.CottageId = cottage.Id.ToString();
-                _context.Add(cottagesRooms);
-                await _context.SaveChangesAsync();
+                _cottageRoomsService.AddToCottage(cottagesRooms);
                 return RedirectToAction("AddRooms", "CottageRooms", new { id = cottage.Id});
             }
             return View(cottageRoom);
         }
         [HttpGet("/CottageRooms/AddRooms/{id}")]
-        public async Task<IActionResult> AddRooms(Guid? id)
+        public async Task<IActionResult> AddRooms(Guid id)
         {
-            cottage = await _context.Cottage.FindAsync(id);
+            cottage = _cottageService.GetCottageById(id);
             ViewData["Cottage"] = cottage;
             return View();
         }
         // GET: CottageRooms/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageRoom = await _context.CottageRoom.FindAsync(id);
+            var cottageRoom = _cottageRoomsService.GetById(id);
             if (cottageRoom == null)
             {
                 return NotFound();
@@ -111,17 +115,12 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var cottageRoomTmp = await _context.CottageRoom.FindAsync(id);
-                    cottageRoomTmp.BedCount = cottageRoom.BedCount;
-                    cottageRoomTmp.AirCondition = cottageRoom.AirCondition;
-                    cottageRoomTmp.TV = cottageRoom.TV;
-                    cottageRoomTmp.Balcony = cottageRoom.Balcony;
-                    _context.Update(cottageRoomTmp);
-                    await _context.SaveChangesAsync();
+
+                    _cottageRoomsService.Update(id, cottageRoom);
                     var cottageRoomId = cottageRoom.Id.ToString();
                     CottagesRooms cottagesRooms = _context.CottagesRooms.Where(m => m.CottageRoomId == cottageRoomId).FirstOrDefault<CottagesRooms>();
                     Guid cottageId = Guid.Parse(cottagesRooms.CottageId);
-                    var cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
+                    var cottage = _cottageService.GetCottageById(cottageId);
                     return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id });
                 }
                 catch (DbUpdateConcurrencyException)
@@ -141,15 +140,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageRooms/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageRoom = await _context.CottageRoom
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageRoom = _cottageRoomsService.GetById(id);
             if (cottageRoom == null)
             {
                 return NotFound();
@@ -163,9 +161,8 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cottageRoom = await _context.CottageRoom.FindAsync(id);
-            _context.CottageRoom.Remove(cottageRoom);
-            await _context.SaveChangesAsync();
+
+            _cottageRoomsService.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
 
