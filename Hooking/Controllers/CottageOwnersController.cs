@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
@@ -16,11 +17,16 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public CottageOwnersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly ICottageOwnersService _cottageOwnersService;
+        public CottageOwnersController(ApplicationDbContext context, 
+                                        UserManager<IdentityUser> userManager, 
+                                        RoleManager<IdentityRole> roleManager,
+                                        ICottageOwnersService cottageOwnersService)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _cottageOwnersService = cottageOwnersService;
         }
 
         // GET: CottageOwners
@@ -30,15 +36,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageOwners/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageOwner = await _context.CottageOwner
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageOwner = _cottageOwnersService.GetById(id);
             if (cottageOwner == null)
             {
                 return NotFound();
@@ -69,8 +74,7 @@ namespace Hooking.Controllers
                 cottageOwner.UserDetailsId = user.Id.ToString();
                 cottageOwner.AverageGrade = 0;
                 cottageOwner.GradeCount = 0;
-                _context.Add(cottageOwner);
-                await _context.SaveChangesAsync();
+                _cottageOwnersService.Create(cottageOwner);
                 return RedirectToAction(nameof(Index));
             }
             
@@ -78,14 +82,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageOwners/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageOwner = await _context.CottageOwner.FindAsync(id);
+            var cottageOwner = _cottageOwnersService.GetById(id);
             if (cottageOwner == null)
             {
                 return NotFound();
@@ -129,15 +133,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageOwners/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageOwner = await _context.CottageOwner
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageOwner = _cottageOwnersService.GetById(id);
             if (cottageOwner == null)
             {
                 return NotFound();
@@ -151,9 +154,7 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cottageOwner = await _context.CottageOwner.FindAsync(id);
-            _context.CottageOwner.Remove(cottageOwner);
-            await _context.SaveChangesAsync();
+            _cottageOwnersService.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
 
