@@ -29,6 +29,7 @@ namespace Hooking.Controllers
         private readonly ICottageService _cottageService;
         private readonly ICottageReservationsService _cottageReservationsService;
         private readonly ICottageRoomsService _cottageRoomsService;
+        private readonly IFacilitiesService _facilitiesService;
         private readonly BlobUtility utility;
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
@@ -42,7 +43,8 @@ namespace Hooking.Controllers
 
         public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
                                   ICottageService cottageService, ICottageReservationsService cottageReservationsService,
-                                  ICottageRoomsService cottageRoomsService)
+                                  ICottageRoomsService cottageRoomsService,
+                                  IFacilitiesService facilitiesService)
         {
             _context = context;
             _userManager = userManager;
@@ -51,6 +53,7 @@ namespace Hooking.Controllers
             _cottageService = cottageService;
             _cottageReservationsService = cottageReservationsService;
             _cottageRoomsService = cottageRoomsService;
+            _facilitiesService = facilitiesService;
 
         }
        
@@ -130,9 +133,7 @@ namespace Hooking.Controllers
             houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
             Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
             cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
-            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
-            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
-            facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
+            facilities = _facilitiesService.GetByCottageId(cottage.Id);
             cottageRooms = _cottageRoomsService.GetAllByCottageId(cottage.Id).ToList();
             var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
           
@@ -166,9 +167,7 @@ namespace Hooking.Controllers
             houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
             Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
             cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
-            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
-            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
-            facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
+            facilities = _facilitiesService.GetByCottageId(cottage.Id);
             cottageRooms = _cottageRoomsService.GetAllByCottageId(cottage.Id).ToList();
             if (cottage == null)
             {

@@ -43,7 +43,10 @@ namespace Hooking.Services.Implementations
 
         public Facilities GetByCottageId(Guid cottageId)
         {
-            throw new NotImplementedException();
+            var cId = cottageId.ToString();
+            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cId).FirstOrDefault<CottagesFacilities>();
+            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
+            return _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
         }
 
         public CottagesFacilities GetByFacilitiesId(Guid id)
