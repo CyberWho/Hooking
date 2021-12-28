@@ -44,6 +44,8 @@ namespace Hooking
             services.AddScoped<ICottageFavoritesService, CottageFavoritesService>();
             services.AddScoped<ICottageReservationReviewsService, CottageReservationReviewsService>();
             services.AddScoped<ICottageRoomsService, CottageRoomsService>();
+            services.AddScoped<IFacilitiesService, FacilitiesService>();
+            services.AddScoped<IHouseRulesService, HouseRulesService>();
             services.AddControllersWithViews();
             services.AddAuthorization();
             services.AddRazorPages();

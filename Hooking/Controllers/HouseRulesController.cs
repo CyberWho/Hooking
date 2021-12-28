@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
     public class HouseRulesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public HouseRulesController(ApplicationDbContext context)
+        private readonly IHouseRulesService _houseRulesService;
+        public HouseRulesController(ApplicationDbContext context,
+                                    IHouseRulesService houseRulesService)
         {
             _context = context;
+            _houseRulesService = houseRulesService;
         }
 
         // GET: HouseRules
@@ -26,15 +29,14 @@ namespace Hooking.Controllers
         }
 
         // GET: HouseRules/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var houseRules = await _context.HouseRules
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var houseRules = _houseRulesService.GetById(id);
             if (houseRules == null)
             {
                 return NotFound();
@@ -58,16 +60,8 @@ namespace Hooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                houseRules.Id = Guid.NewGuid();
-                _context.Add(houseRules);
-                await _context.SaveChangesAsync();
-                CottagesHouseRules cottagesHouseRules = new CottagesHouseRules();
-                cottagesHouseRules.Id = Guid.NewGuid();
-                cottagesHouseRules.CottageId = id.ToString();
-                cottagesHouseRules.HouseRulesId = houseRules.Id.ToString();
-                _context.Add(cottagesHouseRules);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "CancelationPolicies", new { id = cottagesHouseRules.CottageId});
+                _houseRulesService.Create(id, houseRules);
+                return RedirectToAction("Create", "CancelationPolicies", new { id = id});
             }
             return View(houseRules);
         }
@@ -105,19 +99,9 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var houseRulesTmp = await _context.HouseRules.FindAsync(id);
-                    houseRulesTmp.PetFriendly = houseRules.PetFriendly;
-                    houseRulesTmp.NonSmoking = houseRules.NonSmoking;
-                    houseRulesTmp.CheckInTime = houseRules.CheckInTime;
-                    houseRulesTmp.CheckOutTime = houseRules.CheckOutTime;
-                    houseRulesTmp.AgeRestriction = houseRules.AgeRestriction;
-                    _context.Update(houseRulesTmp);
-                    await _context.SaveChangesAsync();
-                    var houseRulesId = houseRulesTmp.Id.ToString();
-                    var cottageHouseRules = _context.CottagesHouseRules.Where(m => m.HouseRulesId == houseRulesId).FirstOrDefault<CottagesHouseRules>();
-                    Guid cottageId = Guid.Parse(cottageHouseRules.CottageId);
-                    var cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
-                    return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id});
+                    HouseRules houseRulesTmp = _houseRulesService.Update(id, houseRules);
+                    var cottagesHouseRules = _houseRulesService.GetByHouseRulesId(houseRulesTmp.Id);
+                    return RedirectToAction("MyCottage", "Cottages", new { id = cottagesHouseRules.CottageId });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -158,9 +142,7 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var houseRules = await _context.HouseRules.FindAsync(id);
-            _context.HouseRules.Remove(houseRules);
-            await _context.SaveChangesAsync();
+            _houseRulesService.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
 
