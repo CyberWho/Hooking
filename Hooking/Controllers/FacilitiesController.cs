@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
     public class FacilitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public FacilitiesController(ApplicationDbContext context)
+        private readonly IFacilitiesService _facilitiesService;
+        private readonly ICottageService _cottageService;
+        public FacilitiesController(ApplicationDbContext context,
+                                    IFacilitiesService facilitiesService,
+                                    ICottageService cottageService)
         {
             _context = context;
+            _facilitiesService = facilitiesService;
+            _cottageService = cottageService;
         }
 
         // GET: Facilities
@@ -26,15 +32,14 @@ namespace Hooking.Controllers
         }
 
         // GET: Facilities/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var facilities = await _context.Facilities
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var facilities = _facilitiesService.GetById(id);
             if (facilities == null)
             {
                 return NotFound();
@@ -59,15 +64,8 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 facilities.Id = Guid.NewGuid();
-                _context.Add(facilities);
-                await _context.SaveChangesAsync();
-                CottagesFacilities cottagesFacilities = new CottagesFacilities();
-                cottagesFacilities.Id = Guid.NewGuid();
-                cottagesFacilities.CottageId = id.ToString();
-                cottagesFacilities.FacilitiesId = facilities.Id.ToString();
-                _context.Add(cottagesFacilities);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("AddRooms" , "CottageRooms" , new { id = Guid.Parse(cottagesFacilities.CottageId)});
+                _facilitiesService.Create(id, facilities);
+                return RedirectToAction("AddRooms" , "CottageRooms" , new { id = id });
             }
             return View(facilities);
         }
@@ -104,29 +102,9 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var facilitiesTmp = await _context.Facilities.FindAsync(id);
-                    facilitiesTmp.Parking = facilities.Parking;
-                    facilitiesTmp.Wifi = facilities.Wifi;
-                    facilitiesTmp.Heating = facilities.Heating;
-                    facilitiesTmp.BarbecueFacilities = facilities.BarbecueFacilities;
-                    facilitiesTmp.OnlineCheckin = facilities.OnlineCheckin;
-                    facilitiesTmp.Jacuzzi = facilities.Jacuzzi;
-                    facilitiesTmp.SeaView = facilities.SeaView;
-                    facilitiesTmp.MountainView = facilities.MountainView;
-                    facilitiesTmp.Kitchen = facilities.Kitchen;
-                    facilitiesTmp.WashingMachine = facilities.WashingMachine;
-                    facilitiesTmp.AirportShuttle = facilities.AirportShuttle;
-                    facilitiesTmp.Garden = facilities.Garden;
-                    facilitiesTmp.IndoorPool = facilities.IndoorPool;
-                    facilities.OutdoorPool = facilities.OutdoorPool;
-                    facilitiesTmp.StockedBar = facilities.StockedBar;
-                    _context.Update(facilitiesTmp);
-                    await _context.SaveChangesAsync();
-                    var facilitiesId = facilities.Id.ToString();
-                    CottagesFacilities cottagesFacilities = _context.CottagesFacilities.Where(m => m.FacilitiesId == facilitiesId).FirstOrDefault<CottagesFacilities>();
-                    Guid cottageId = Guid.Parse(cottagesFacilities.CottageId);
-                    var cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
-                    return RedirectToAction("MyCottage", "Cottages", new { id = cottage.Id });
+                    _facilitiesService.Update(id, facilities);
+                    CottagesFacilities cottagesFacilities = _facilitiesService.GetByFacilitiesId(id);
+                    return RedirectToAction("MyCottage", "Cottages", new { id = cottagesFacilities.CottageId });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -145,15 +123,14 @@ namespace Hooking.Controllers
         }
 
         // GET: Facilities/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var facilities = await _context.Facilities
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var facilities = _facilitiesService.GetById(id);
             if (facilities == null)
             {
                 return NotFound();
@@ -167,9 +144,7 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var facilities = await _context.Facilities.FindAsync(id);
-            _context.Facilities.Remove(facilities);
-            await _context.SaveChangesAsync();
+            _facilitiesService.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
 
