@@ -2,12 +2,20 @@
 
 @{
     ViewData["Title"] = "Details";
+
+}
+@{
+    var boatOwner = (UserDetails)ViewData["BoatOwner"];
+    var fullAddress = (string)ViewData["FullAddress"];
+    var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
+    var fishingEquipment = (FishingEquipment)ViewData["FishingEquipment"];
 }
 
-<h1>Prikaz informacija o brodu</h1>
+<h4>Prikaz informacija o brodu</h4>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false" type="text/javascript"></script>
 
 <div>
-    <h4>Brod</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -70,12 +78,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Country)
         </dd>
-        <dt class="col-sm-2" hidden>
-            @Html.DisplayNameFor(model => model.CancelationPolicyId)
-        </dt>
-        <dd class="col-sm-10" hidden>
-            @Html.DisplayFor(model => model.CancelationPolicyId)
-        </dd>
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -100,14 +103,103 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.WeekendPrice)
         </dd>
-        <dt class="col-sm-2" hidden>
-            @Html.DisplayNameFor(model => model.RowVersion)
+        <dt class="col-sm-2">
+            Ime i prezime vlasnika
         </dt>
-        <dd class="col-sm-10" hidden>
-            @Html.DisplayFor(model => model.RowVersion)
+        <dd class="col-sm-10">
+            @boatOwner.FirstName @boatOwner.LastName
+        </dd>
+
+    </dl>
+</div>
+
+<hr />
+<h4>Lokacija</h4>
+<div name="GoogleMap">
+
+    <div class="mapouter">
+        <div class="gmap_canvas">
+            <iframe width="800" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=@fullAddress&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><a href="https://www.online-timer.net">timer</a><br>
+            <style>
+                .mapouter {
+                    position: relative;
+                    text-align: right;
+                    height: 500px;
+                    width: 800px;
+                }
+            </style><a href="https://www.embedgooglemap.net">embedded google maps in website</a>
+            <style>
+                .gmap_canvas {
+                    overflow: hidden;
+                    background: none !important;
+                    height: 500px;
+                    width: 800px;
+                }
+            </style>
+        </div>
+    </div>
+</div>
+<hr />
+<div>
+    <h4>Uslovi otkazivanja</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Besplatno otkazivanje do (broj dana)
+        </dt>
+        <dd class="col-sm-10">
+            @cancelationPolicy.FreeUntil
+        </dd>
+        <dt class="col-sm-2">
+            Procenat od uplate koji se zadržava u slučaju otkaza
+        </dt>
+        <dd class="col-sm-10">
+            @cancelationPolicy.PenaltyPercentage
         </dd>
     </dl>
 </div>
+
+<hr />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o brodu</a> |
+    <h4>Oprema za pecanje</h4>
+    <hr />
+    <dl class="row">
+
+        @if (fishingEquipment.Lures)
+        {
+            <dt class="col-sm-2">
+                Mamci
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (fishingEquipment.LiveBite)
+        {
+            <dt class="col-sm-2">
+                Živi mamci
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (fishingEquipment.RodsReelsTackle)
+        {
+            <dt class="col-sm-2">
+                Štapovi za pecanje
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (fishingEquipment.FlyFishingGear)
+        {
+            <dt class="col-sm-2">
+                Oprema za fly-fishing
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
 </div>
+<hr />

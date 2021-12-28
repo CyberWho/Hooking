@@ -82,11 +82,22 @@ namespace Hooking.Controllers
 
             var boat = await _context.Boat
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var boatId = boat.Id.ToString();
+            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
+            Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
+            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
+            Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
             if (boat == null)
             {
                 return NotFound();
             }
-
+            ViewData["BoatOwner"] = boatOwnerUser;
+            ViewData["FullAddress"] = fullAddress;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["FishingEquipment"] = fishingEquipment;
             return View(boat);
         }
         [HttpGet("/Boats/MyBoatDetails/{id}")]
