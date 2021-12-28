@@ -7,16 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 
 namespace Hooking.Controllers
 {
     public class CottageReservationReviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CottageReservationReviewsController(ApplicationDbContext context)
+        private readonly ICottageReservationReviewsService _cottageReservationReviewsService;
+        private readonly ICottageReservationsService _cottageReservationsService;
+        public CottageReservationReviewsController(ApplicationDbContext context,
+                                                    ICottageReservationReviewsService cottageReservationReviewsService,
+                                                    ICottageReservationsService cottageReservationsService)
         {
             _context = context;
+            _cottageReservationReviewsService = cottageReservationReviewsService;
+            _cottageReservationsService = cottageReservationsService;
         }
 
         // GET: CottageReservationReviews
@@ -26,15 +32,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageReservationReviews/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageReservationReview = await _context.CottageReservationReview
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageReservationReview = _cottageReservationReviewsService.GetById(id);
             if (cottageReservationReview == null)
             {
                 return NotFound();
@@ -60,7 +65,7 @@ namespace Hooking.Controllers
             {
                 cottageReservationReview.Id = Guid.NewGuid();
                 cottageReservationReview.ReservationId = id.ToString();
-                CottageReservation cottageReservation = _context.CottageReservation.Where(m => m.Id == id).FirstOrDefault<CottageReservation>();
+                CottageReservation cottageReservation = _cottageReservationsService.GetById(id);
                 cottageReservation.IsReviewed = true;
                 if (!cottageReservationReview.DidntShow)
                 {
@@ -78,22 +83,21 @@ namespace Hooking.Controllers
                 {
                     cottageReservationReview.IsReviewedByAdmin = true;
                 }
-                _context.Add(cottageReservationReview);
-                await _context.SaveChangesAsync();
+                _cottageReservationReviewsService.Create(cottageReservationReview);
                 return RedirectToPage("/Account/Manage/CottagesReservationsHistory", new { area = "Identity" });
             }
             return View(cottageReservationReview);
         }
 
         // GET: CottageReservationReviews/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageReservationReview = await _context.CottageReservationReview.FindAsync(id);
+            var cottageReservationReview = _cottageReservationReviewsService.GetById(id);
             if (cottageReservationReview == null)
             {
                 return NotFound();
@@ -137,15 +141,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageReservationReviews/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cottageReservationReview = await _context.CottageReservationReview
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var cottageReservationReview = _cottageReservationReviewsService.GetById(id);
             if (cottageReservationReview == null)
             {
                 return NotFound();
@@ -159,9 +162,7 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var cottageReservationReview = await _context.CottageReservationReview.FindAsync(id);
-            _context.CottageReservationReview.Remove(cottageReservationReview);
-            await _context.SaveChangesAsync();
+            _cottageReservationReviewsService.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
 
