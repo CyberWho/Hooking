@@ -98,6 +98,9 @@ namespace Hooking.Controllers
             BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
             Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
             FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
             if (boat == null)
             {
                 return NotFound();
@@ -108,6 +111,7 @@ namespace Hooking.Controllers
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["FishingEquipment"] = fishingEquipment;
             ViewData["BoatImages"] = boatImages;
+            ViewData["Amenities"] = amenities;
             return View(boat);
         }
         [HttpGet("/Boats/MyBoatDetails/{id}")]
@@ -128,6 +132,9 @@ namespace Hooking.Controllers
             BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
             Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
             FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
             if (boat == null)
             {
                 return NotFound();
@@ -138,6 +145,7 @@ namespace Hooking.Controllers
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["FishingEquipment"] = fishingEquipment;
             ViewData["BoatImages"] = boatImages;
+            ViewData["Amenities"] = amenities;
             return View(boat);
         }
 

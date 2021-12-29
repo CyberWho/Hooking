@@ -52,16 +52,22 @@ namespace Hooking.Controllers
         // POST: Amenities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Amenities/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Gps,Radar,VhrRadio,Sonar,FishFinder,WiFi,Id,RowVersion")] Amenities amenities)
+        public async Task<IActionResult> Create(Guid id, [Bind("Gps,Radar,VhrRadio,Sonar,FishFinder,WiFi,Id,RowVersion")] Amenities amenities)
         {
             if (ModelState.IsValid)
             {
                 amenities.Id = Guid.NewGuid();
                 _context.Add(amenities);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                BoatAmenities boatAmenities = new BoatAmenities();
+                boatAmenities.BoatId = id.ToString();
+                boatAmenities.AmanitiesId = amenities.Id.ToString();
+                boatAmenities.Id = Guid.NewGuid();
+                _context.BoatAmenities.Add(boatAmenities);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
             }
             return View(amenities);
         }

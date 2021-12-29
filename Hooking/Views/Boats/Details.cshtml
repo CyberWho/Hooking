@@ -10,6 +10,7 @@
     var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
     var fishingEquipment = (FishingEquipment)ViewData["FishingEquipment"];
     List<BoatImage> boatImages = (List<BoatImage>)ViewData["BoatImages"];
+    var amenities = (Amenities)ViewData["Amenities"];
 }
 
 <h4>Prikaz informacija o brodu</h4>
@@ -197,6 +198,67 @@
         {
             <dt class="col-sm-2">
                 Oprema za fly-fishing
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+</div>
+<hr />
+<div>
+    <h4>Oprema</h4>
+    <hr />
+    <dl class="row">
+
+        @if (amenities.Radar)
+        {
+            <dt class="col-sm-2">
+                Radar
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (amenities.Sonar)
+        {
+            <dt class="col-sm-2">
+                Sonar
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (amenities.Gps)
+        {
+            <dt class="col-sm-2">
+                GPS
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (amenities.FishFinder)
+        {
+            <dt class="col-sm-2">
+                Fish-finder
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (amenities.VhrRadio)
+        {
+            <dt class="col-sm-2">
+                VHR Radio
+            </dt>
+            <dd class="col-sm-10">
+                <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
+            </dd>
+        }
+        @if (amenities.WiFi)
+        {
+            <dt class="col-sm-2">
+                WiFi
             </dt>
             <dd class="col-sm-10">
                 <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>

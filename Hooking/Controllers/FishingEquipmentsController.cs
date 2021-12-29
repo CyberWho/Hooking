@@ -67,7 +67,7 @@ namespace Hooking.Controllers
                 boatFishingEquipment.FishingEquipment = fishingEquipment.Id.ToString();
                 _context.Add(boatFishingEquipment);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+                return RedirectToAction("Create", "Amenities", new { id = id });
             }
             return View(fishingEquipment);
         }
