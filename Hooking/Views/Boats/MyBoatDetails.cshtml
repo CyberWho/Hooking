@@ -117,6 +117,7 @@
 <hr />
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o brodu</a> |
+    <a href="@Url.Action("Index","BoatNotAvailablePeriods",new { id = @Model.Id})">Kalendar dostupnosti</a>
 </div>
 <hr />
 <h4>Lokacija</h4>

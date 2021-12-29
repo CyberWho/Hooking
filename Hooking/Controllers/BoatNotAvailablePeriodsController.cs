@@ -7,22 +7,64 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class BoatNotAvailablePeriodsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public BoatNotAvailablePeriodsController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        public BoatNotAvailablePeriodsController(ApplicationDbContext context,
+                                                 UserManager<IdentityUser> userManager,
+                                                 RoleManager<IdentityRole> roleManager,
+                                                 SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         // GET: BoatNotAvailablePeriods
-        public async Task<IActionResult> Index()
+        [HttpGet("/BoatNotAvailablePeriods/Index/{id}")]
+        public async Task<IActionResult> Index(Guid id)
         {
-            return View(await _context.BoatNotAvailablePeriod.ToListAsync());
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            Boat boat = _context.Boat.Where(m => m.Id == id).FirstOrDefault();
+            string boatId = boat.Id.ToString();
+            List<BoatNotAvailablePeriod> boatNotAvailablePeriods = _context.BoatNotAvailablePeriod.Where(m => m.BoatId == boatId).ToList();
+            string codeForFront = "[";
+
+            int i = 0;
+            string title = "Rezervacija";
+            foreach (BoatNotAvailablePeriod boatNotAvailablePeriod in boatNotAvailablePeriods)
+            {
+                if (i++ > 0)
+                {
+                    codeForFront += ",";
+                }
+
+
+
+                codeForFront += "{ title: '" + title + "', allDay : '" + true + "', start: '" +
+                    boatNotAvailablePeriod.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
+                    "end: '" + boatNotAvailablePeriod.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+            }
+            codeForFront += "]";
+            codeForFront = codeForFront.Replace("‘", "").Replace("’", "");
+
+
+            ViewData["Boat"] = boat;
+            ViewData["codeForFront"] = codeForFront;
+            return View();
         }
 
         // GET: BoatNotAvailablePeriods/Details/5
