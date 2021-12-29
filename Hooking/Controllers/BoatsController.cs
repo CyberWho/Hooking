@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hooking.Controllers
 {
@@ -16,12 +20,16 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
-        public BoatsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly BlobUtility _utility;
+        public BoatsController(ApplicationDbContext context,
+                                UserManager<IdentityUser> userManager, 
+                                RoleManager<IdentityRole> roleManager
+                                )
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _utility = new BlobUtility();
         }
 
         // GET: Boats
@@ -94,10 +102,12 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
+            List<BoatImage> boatImages = _context.BoatImage.Where(m => m.BoatId == boatId).ToList<BoatImage>();
             ViewData["BoatOwner"] = boatOwnerUser;
             ViewData["FullAddress"] = fullAddress;
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["FishingEquipment"] = fishingEquipment;
+            ViewData["BoatImages"] = boatImages;
             return View(boat);
         }
         [HttpGet("/Boats/MyBoatDetails/{id}")]
@@ -122,10 +132,12 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
+            List<BoatImage> boatImages = _context.BoatImage.Where(m => m.BoatId == boatId).ToList<BoatImage>();
             ViewData["BoatOwner"] = boatOwnerUser;
             ViewData["FullAddress"] = fullAddress;
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["FishingEquipment"] = fishingEquipment;
+            ViewData["BoatImages"] = boatImages;
             return View(boat);
         }
 
@@ -250,7 +262,51 @@ namespace Hooking.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost("/Boats/UploadImage/{id}")]
+        public async Task<ActionResult> UploadImage(Guid id, IFormFile file)
+        {
+            if (file != null)
+            {
+                string ContainerName = "boat"; //hardcoded container name
+                string fileName = Path.GetFileName(file.FileName);
+                using (var fileStream = file.OpenReadStream())
+                {
+                    string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=hookingstorage;AccountKey=+v8L5XkQZ7Z2CTfdTd03pngWlA4xu02caFJDGUkvGlo/rv8uZnM9CQQYleH3lpb+3Z8sefUOlC0EaoXWIquyDg==;EndpointSuffix=core.windows.net");
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(UserConnectionString);
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference(ContainerName.ToLower());
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                    try
+                    {
+                        await blockBlob.UploadFromStreamAsync(fileStream);
 
+                    }
+                    catch (Exception e)
+                    {
+                        var r = e.Message;
+                        return null;
+                    }
+
+                    if (blockBlob != null)
+                    {
+                        BoatImage boatImage = new BoatImage();
+                        boatImage.Id = Guid.NewGuid();
+                        boatImage.BoatId = id.ToString();
+                        boatImage.ImageUrl = blockBlob.Uri.ToString();
+                        _context.BoatImage.Add(boatImage);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+            }
+            else
+            {
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+            }
+
+
+        }
         private bool BoatExists(Guid id)
         {
             return _context.Boat.Any(e => e.Id == id);
