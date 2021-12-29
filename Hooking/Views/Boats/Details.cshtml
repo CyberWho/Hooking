@@ -9,6 +9,7 @@
     var fullAddress = (string)ViewData["FullAddress"];
     var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
     var fishingEquipment = (FishingEquipment)ViewData["FishingEquipment"];
+    List<BoatImage> boatImages = (List<BoatImage>)ViewData["BoatImages"];
 }
 
 <h4>Prikaz informacija o brodu</h4>
@@ -203,3 +204,19 @@
         }
 </div>
 <hr />
+<div class="row">
+
+    @foreach (var item in boatImages)
+    {
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+
+            <a class="thumbnail" href="@item.ImageUrl">
+                <img class="img-responsive" src="@item.ImageUrl" style="height: 100%;width:100%;" alt="">
+            </a>
+
+        </div>
+
+
+    }
+</div>
+
