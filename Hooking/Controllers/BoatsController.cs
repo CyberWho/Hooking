@@ -222,16 +222,40 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var boatTmp = await _context.Boat.FindAsync(id);
-                    boatTmp.Name = boat.Name;
-                    boatTmp.Address = boat.Address;
-                    boatTmp.City = boat.City;
-                    boatTmp.Country = boat.Country;
-                    boatTmp.Description = boat.Description;
-                    boatTmp.RegularPrice = boat.RegularPrice;
-                    boatTmp.WeekendPrice = boat.WeekendPrice;
-                    _context.Update(boatTmp);
-                    await _context.SaveChangesAsync();
+                    string boatId = id.ToString();
+                    List<BoatReservation> futureReservations = new List<BoatReservation>();
+                    List<BoatReservation> boatReservations = _context.BoatReservation.Where(m => m.BoatId == boatId).ToList();
+                    List<BoatSpecialOffer> reservedSpecialOffers = new List<BoatSpecialOffer>();
+                    List<BoatSpecialOffer> boatSpecialOffers = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList();
+                    foreach(BoatSpecialOffer boatSpecialOffer in boatSpecialOffers)
+                    {
+                        if(boatSpecialOffer.IsReserved && boatSpecialOffer.StartDate >= DateTime.Now)
+                        {
+                            reservedSpecialOffers.Add(boatSpecialOffer);
+                        }
+
+                    }
+                    foreach(BoatReservation boatReservation in boatReservations)
+                    {
+                        if(boatReservation.StartDate >= DateTime.Now)
+                        {
+                            futureReservations.Add(boatReservation);
+                        }
+                    }
+                    if(futureReservations.Count == 0 && reservedSpecialOffers.Count == 0)
+                    {
+                        var boatTmp = await _context.Boat.FindAsync(id);
+                        boatTmp.Name = boat.Name;
+                        boatTmp.Address = boat.Address;
+                        boatTmp.City = boat.City;
+                        boatTmp.Country = boat.Country;
+                        boatTmp.Description = boat.Description;
+                        boatTmp.RegularPrice = boat.RegularPrice;
+                        boatTmp.WeekendPrice = boat.WeekendPrice;
+                        _context.Update(boatTmp);
+                        await _context.SaveChangesAsync();
+                    }
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -273,8 +297,32 @@ namespace Hooking.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var boat = await _context.Boat.FindAsync(id);
-            _context.Boat.Remove(boat);
-            await _context.SaveChangesAsync();
+            string boatId = id.ToString();
+            List<BoatReservation> futureReservations = new List<BoatReservation>();
+            List<BoatReservation> boatReservations = _context.BoatReservation.Where(m => m.BoatId == boatId).ToList();
+            List<BoatSpecialOffer> reservedSpecialOffers = new List<BoatSpecialOffer>();
+            List<BoatSpecialOffer> boatSpecialOffers = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList();
+            foreach (BoatSpecialOffer boatSpecialOffer in boatSpecialOffers)
+            {
+                if (boatSpecialOffer.IsReserved)
+                {
+                    reservedSpecialOffers.Add(boatSpecialOffer);
+                }
+
+            }
+            foreach (BoatReservation boatReservation in boatReservations)
+            {
+                if (boatReservation.StartDate >= DateTime.Now)
+                {
+                    futureReservations.Add(boatReservation);
+                }
+            }
+            if (futureReservations.Count == 0 && reservedSpecialOffers.Count == 0)
+            {
+                _context.Boat.Remove(boat);
+                await _context.SaveChangesAsync();
+            }
+           
             return RedirectToAction(nameof(Index));
         }
         [HttpPost("/Boats/UploadImage/{id}")]
