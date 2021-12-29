@@ -1,14 +1,14 @@
 ﻿@page
-@model Hooking.Areas.Identity.Pages.Account.Manage.BoatReservationsHistoryModel
+@model Hooking.Areas.Identity.Pages.Account.Manage.BoatReservationsModel
 @{
-    ViewData["Title"] = "Istorija rezervacija";
-    ViewData["ActivePage"] = ManageNavPages.BoatReservationsHistory;
+    ViewData["Title"] = "Rezervacije";
+    ViewData["ActivePage"] = ManageNavPages.BoatReservations;
 }
-@{ 
+@{
     List<string> boatNames = (List<string>)ViewData["BoatNames"];
     var index = 0;
 }
-<h4>Istorija rezervacija</h4>
+<h4>Rezervacije</h4>
 <table class="table">
     <thead>
         <tr>
@@ -52,10 +52,7 @@
                     @Html.DisplayFor(modelItem => item.PersonCount)
                 </td>
                 <td>
-                    @if (!item.IsReviewed)
-                    {
-                        <a href="@Url.Action("Create", "BoatReservationReviews", new { Id = @item.Id })">Recenzija</a>
-                    }
+                    
                     <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži još</a>
                 </td>
                 @{
@@ -65,5 +62,7 @@
         }
     </tbody>
 </table>
+
+
 
 

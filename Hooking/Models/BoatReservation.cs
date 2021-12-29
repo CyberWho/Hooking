@@ -18,6 +18,7 @@ namespace Hooking.Models
         public double Price { get; set; }
         [DisplayName("Broj gostiju")]
         public int PersonCount { get; set; }
+        public bool IsReviewed { get; set; }
      
     }
 }
