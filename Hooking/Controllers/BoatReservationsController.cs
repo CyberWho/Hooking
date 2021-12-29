@@ -66,11 +66,22 @@ namespace Hooking.Controllers
 
             var boatReservation = await _context.BoatReservation
                 .FirstOrDefaultAsync(m => m.Id == id);
+            Guid boatId = Guid.Parse(boatReservation.BoatId);
+            Guid userId = Guid.Parse(boatReservation.UserDetailsId);
+            var boat = _context.Boat.Where(m => m.Id == boatId).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == boatReservation.UserDetailsId).FirstOrDefault<UserDetails>();
+            Guid identityUserId = Guid.Parse(userDetails.IdentityUserId);
+            var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
+            string email = identityUser.Email;
+            string phoneNumber = identityUser.PhoneNumber;
             if (boatReservation == null)
             {
                 return NotFound();
             }
-
+            ViewData["Boat"] = boat;
+            ViewData["UserDetails"] = userDetails;
+            ViewData["Email"] = email;
+            ViewData["PhoneNumber"] = phoneNumber;
             return View(boatReservation);
         }
 
