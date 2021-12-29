@@ -159,6 +159,13 @@ namespace Hooking.Controllers
         {
             return Redirect("/BoatSpecialOffers");
         }
+        [HttpGet("/Boats/BoatsForSpecialOffer")]
+        public async Task<IActionResult> BoatsForSpecialOffer()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            return View(boats);
+        }
 
         // POST: Boats/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

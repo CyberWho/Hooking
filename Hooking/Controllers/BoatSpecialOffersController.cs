@@ -52,16 +52,17 @@ namespace Hooking.Controllers
         // POST: BoatSpecialOffers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("BoatSpecialOffers/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
         {
             if (ModelState.IsValid)
             {
                 boatSpecialOffer.Id = Guid.NewGuid();
+                boatSpecialOffer.BoatId = id.ToString();
                 _context.Add(boatSpecialOffer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
             }
             return View(boatSpecialOffer);
         }
