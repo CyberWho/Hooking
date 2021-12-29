@@ -4,11 +4,10 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Obriši brod</h1>
+<h4>Obriši brod</h4>
 
-<h3>Da li zaista želite da pošaljete zahtev za uklanjanje broda iz ponude?</h3>
+<h5>Da li zaista želite da pošaljete zahtev za uklanjanje broda iz ponude?</h5>
 <div>
-    <h4>Boat</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -71,12 +70,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Country)
         </dd>
-        <dt class = "col-sm-2" hidden>
-            @Html.DisplayNameFor(model => model.CancelationPolicyId)
-        </dt>
-        <dd class = "col-sm-10" hidden>
-            @Html.DisplayFor(model => model.CancelationPolicyId)
-        </dd>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -101,17 +95,11 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.WeekendPrice)
         </dd>
-        <dt class = "col-sm-2" hidden>
-            @Html.DisplayNameFor(model => model.RowVersion)
-        </dt>
-        <dd class = "col-sm-10" hidden>
-            @Html.DisplayFor(model => model.RowVersion)
-        </dd>
+       
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Pošalji zahtev za brisanje broda" class="btn btn-danger" /> |
-        <a asp-action="Index">Povratak na pregled brodova</a>
+        <input type="submit" value="Pošalji zahtev za brisanje broda" class="btn btn-danger" /> 
     </form>
 </div>
