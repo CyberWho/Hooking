@@ -47,7 +47,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public static string AdventureReservationsHistory => "AdventureReservationsHistory";
         public static string AdventureReservations => "AdventureReservations";
         public static string UserAdventureFavorites => "UserAdventureFavorites";
-
+        public static string BoatReservationsHistory => "BoatReservationsHistory";
 
 
 
@@ -92,6 +92,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public static string AdventureReservationsNavClass(ViewContext viewContext) => PageNavClass(viewContext, AdventureReservations);
         public static string UserAdventureFavoritesNavClass(ViewContext viewContext) => PageNavClass(viewContext, UserAdventureFavorites);
+        public static string BoatReservationsHistoryNavClass(ViewContext viewContext) => PageNavClass(viewContext, BoatReservationsHistory);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

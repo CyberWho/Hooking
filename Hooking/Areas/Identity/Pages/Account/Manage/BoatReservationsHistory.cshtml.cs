@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hooking.Data;
-using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Hooking.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hooking.Areas.Identity.Pages.Account.Manage
 {
@@ -15,59 +14,36 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        public List<BoatReservation> myBoatReservations = new List<BoatReservation>();
+        public List<BoatReservation> boatReservations { get; set; }
+        public List<string> boatNames { get; set; } 
         public BoatReservationsHistoryModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
-        public List<BoatReservation> btReservations { get; set; }
-        public string StartDateSort { get; set; }
-        public string PriceSort { get; set; }
-        public async Task<IActionResult> OnGetAsync(string sortOrder="")
+        public async Task<IActionResult> OnGetAsync()
         {
-            StartDateSort = sortOrder == "StartDate" ? "date_desc" : "StartDate";
-            PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
-
-            IQueryable<BoatReservation> reservationToSort = from s in _context.BoatReservation
-                                                            select s;
-            switch (sortOrder)
-            {
-                case "StartDate":
-                    reservationToSort = reservationToSort.OrderBy(s => s.StartDate);
-                    break;
-                case "date_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.StartDate);
-                    break;
-                case "Price":
-                    reservationToSort = reservationToSort.OrderBy(s => s.Price);
-                    break;
-                case "price_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.Price);
-                    break;
-            }
-            btReservations = await reservationToSort.AsNoTracking().ToListAsync();
-
             var user = await _userManager.GetUserAsync(User);
-
-            foreach (var btReservation in btReservations)
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            boatReservations = new List<BoatReservation>();
+            boatNames = new List<string>();
+            foreach(Boat boat in boats)
             {
-                if (btReservation.UserDetailsId == user.Id)
+                string boatId = boat.Id.ToString();
+                List<BoatReservation> myBoatReservations = _context.BoatReservation.Where(m => m.BoatId == boatId).ToList<BoatReservation>();
+                if(myBoatReservations.Count != 0)
                 {
-                    myBoatReservations.Add(btReservation);
+                    foreach(BoatReservation boatReservation in myBoatReservations)
+                    {
+                        if(boatReservation.StartDate <= DateTime.Now)
+                        {
+                            boatReservations.Add(boatReservation);
+                            boatNames.Add(boat.Name);
+                        }
+                    }
                 }
             }
-
-            //  myBoatReservations = await _context.BoatReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
-            List<Boat> myBoats = new List<Boat>();
-            foreach (var myBoatReservation in myBoatReservations)
-            {
-
-                Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(myBoatReservation.BoatId)).FirstOrDefault<Boat>();
-                myBoats.Add(bt);
-
-            }
-            ViewData["Boat"] = myBoats;
+            ViewData["BoatNames"] = boatNames;
             return Page();
         }
     }
