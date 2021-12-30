@@ -8,9 +8,10 @@
 @{
     var boat = (Boat)ViewData["Boat"];
 }
+<h4>Kalendar dostupnosti broda @boat.Name</h4>
 @if (_signInManager.IsSignedIn(User))
 {
-    @if (User.IsInRole("Vlasnik"))
+    @if (User.IsInRole("Vlasnik broda"))
     {
         <a href="@Url.Action("Create","BoatNotAvailablePeriods",new { id = boat.Id})">Definiši period nedostupnosti</a>
     }

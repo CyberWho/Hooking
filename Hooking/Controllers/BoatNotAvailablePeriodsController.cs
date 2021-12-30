@@ -94,16 +94,17 @@ namespace Hooking.Controllers
         // POST: BoatNotAvailablePeriods/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/BoatNotAvailablePeriods/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoatId,StartTime,EndTime,Id,RowVersion")] BoatNotAvailablePeriod boatNotAvailablePeriod)
+        public async Task<IActionResult> Create(Guid id, [Bind("StartTime,EndTime,Id,RowVersion")] BoatNotAvailablePeriod boatNotAvailablePeriod)
         {
             if (ModelState.IsValid)
             {
                 boatNotAvailablePeriod.Id = Guid.NewGuid();
+                boatNotAvailablePeriod.BoatId = id.ToString();
                 _context.Add(boatNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "BoatNotAvailablePeriods", new { id = id });
             }
             return View(boatNotAvailablePeriod);
         }

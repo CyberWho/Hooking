@@ -114,7 +114,7 @@ namespace Hooking.Controllers
         }
         [HttpPost("/BoatReservations/CreateView/{id}/{cId}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateView(Guid id, Guid cId, [Bind("StartDate,EndDate,Price,PersonCount,Id,RowVersion")] BoatReservation boatReservation)
+        public async Task<IActionResult> CreateView(Guid id, Guid cId, [Bind("StartDate,EndDate,PersonCount,Id,RowVersion")] BoatReservation boatReservation)
         {
             if (ModelState.IsValid)
             {

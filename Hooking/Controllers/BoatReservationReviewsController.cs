@@ -82,6 +82,9 @@ namespace Hooking.Controllers
                 }
                 _context.Add(boatReservationReview);
                 await _context.SaveChangesAsync();
+                boatReservation.IsReviewed = true;
+                _context.BoatReservation.Update(boatReservation);
+                await _context.SaveChangesAsync();
                 return RedirectToPage("/Account/Manage/BoatReservationsHistory", new { area = "Identity" });
             }
             return View(boatReservationReview);

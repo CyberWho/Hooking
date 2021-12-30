@@ -142,7 +142,7 @@ namespace Hooking.Controllers
                 
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
+                return RedirectToAction("Index","CottageNotAvailablePeriods", new { id = id });
             }
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
