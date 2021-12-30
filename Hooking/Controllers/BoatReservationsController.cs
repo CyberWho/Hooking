@@ -69,7 +69,8 @@ namespace Hooking.Controllers
             Guid boatId = Guid.Parse(boatReservation.BoatId);
             Guid userId = Guid.Parse(boatReservation.UserDetailsId);
             var boat = _context.Boat.Where(m => m.Id == boatId).FirstOrDefault();
-            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == boatReservation.UserDetailsId).FirstOrDefault<UserDetails>();
+            Guid userDetailsId = Guid.Parse(boatReservation.UserDetailsId);
+            var userDetails = _context.UserDetails.Where(m => m.Id == userDetailsId).FirstOrDefault<UserDetails>();
             Guid identityUserId = Guid.Parse(userDetails.IdentityUserId);
             var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
             string email = identityUser.Email;
@@ -104,6 +105,37 @@ namespace Hooking.Controllers
                 _context.Add(boatReservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            return View(boatReservation);
+        }
+        public IActionResult CreateView(Guid id, Guid cId)
+        {
+            return View();
+        }
+        [HttpPost("/BoatReservations/CreateView/{id}/{cId}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateView(Guid id, Guid cId, [Bind("StartDate,EndDate,Price,PersonCount,Id,RowVersion")] BoatReservation boatReservation)
+        {
+            if (ModelState.IsValid)
+            {
+                boatReservation.Id = Guid.NewGuid();
+                var boat = await _context.Boat
+                     .FirstOrDefaultAsync(m => m.Id == cId);
+                double numberOfDays = (boatReservation.EndDate - boatReservation.StartDate).TotalDays;
+                boatReservation.Price = numberOfDays * boat.RegularPrice;
+                boatReservation.UserDetailsId = id.ToString();
+                boatReservation.BoatId = cId.ToString();
+                boatReservation.IsReviewed = false;
+                _context.Add(boatReservation);
+                await _context.SaveChangesAsync();
+                BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
+                boatNotAvailablePeriod.Id = Guid.NewGuid();
+                boatNotAvailablePeriod.BoatId = boatReservation.BoatId;
+                boatNotAvailablePeriod.StartTime = boatReservation.StartDate;
+                boatNotAvailablePeriod.EndTime = boatReservation.EndDate;
+                _context.Add(boatNotAvailablePeriod);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/BoatReservations", new { area = "Identity" });
             }
             return View(boatReservation);
         }
