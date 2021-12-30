@@ -71,6 +71,8 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.AdventureAppeal> AdventureAppeal { get; set; }
         public DbSet<Hooking.Models.InstructorNotAvailablePeriod> InstructorNotAvailablePeriod { get; set; }
         public DbSet<Hooking.Models.AdventureImage> AdventureImage { get; set; }
+        public DbSet<Hooking.Models.BoatImage> BoatImage { get; set; }
+        public DbSet<Hooking.Models.BoatNotAvailablePeriod> BoatNotAvailablePeriod { get; set; }
         
     }
 }

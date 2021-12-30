@@ -67,8 +67,7 @@
                     @Html.DisplayFor(modelItem => item.AverageGrade)
                 </td>
                 <td>
-                    <a href="@Url.Action("Edit", "Boats", new { Id = @item.Id })">Izmeni informacije o brodu</a> |
-                    <a href="@Url.Action("Details", "Boats", new { Id = @item.Id })">Prikaži još</a> |
+                    <a href="@Url.Action("MyBoatDetails", "Boats", new { Id = @item.Id })">Prikaži još</a> |
                     <a href="@Url.Action("Delete", "Boats", new { Id = @item.Id })">Ukloni</a>
                 </td>
             </tr>

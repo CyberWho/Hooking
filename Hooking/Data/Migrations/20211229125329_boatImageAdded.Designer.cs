@@ -4,14 +4,16 @@ using Hooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hooking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229125329_boatImageAdded")]
+    partial class boatImageAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -581,31 +583,6 @@ namespace Hooking.Data.Migrations
                     b.ToTable("BoatImage");
                 });
 
-            modelBuilder.Entity("Hooking.Models.BoatNotAvailablePeriod", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BoatId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BoatNotAvailablePeriod");
-                });
-
             modelBuilder.Entity("Hooking.Models.BoatOwner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -680,9 +657,6 @@ namespace Hooking.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsReviewed")
-                        .HasColumnType("bit");
-
                     b.Property<int>("PersonCount")
                         .HasColumnType("int");
 
@@ -715,9 +689,6 @@ namespace Hooking.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("DidntShow")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReviewedByAdmin")
                         .HasColumnType("bit");
 
                     b.Property<bool>("ReceivedPenalty")
@@ -809,9 +780,6 @@ namespace Hooking.Data.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsReserved")
-                        .HasColumnType("bit");
 
                     b.Property<int>("MaxPersonCount")
                         .HasColumnType("int");

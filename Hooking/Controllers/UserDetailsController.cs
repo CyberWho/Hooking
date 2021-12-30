@@ -96,6 +96,13 @@ namespace Hooking.Controllers
             var allUsers = await _context.UserDetails.ToListAsync();
             return View(allUsers);
         }
+        [HttpGet("/Users/ShowUsers/{id}")]
+        public async Task<IActionResult> ShowUsers(Guid id)
+        {
+            ViewData["BoatId"] = id;
+            var allUsers = await _context.UserDetails.ToListAsync();
+            return View(allUsers);
+        }
         // POST: UserDetails/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

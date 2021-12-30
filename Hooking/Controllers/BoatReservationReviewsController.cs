@@ -52,16 +52,40 @@ namespace Hooking.Controllers
         // POST: BoatReservationReviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/BoatReservationReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoatReservationId,Review,DidntShow,ReceivedPenalty,Id,RowVersion")] BoatReservationReview boatReservationReview)
+        public async Task<IActionResult> Create(Guid id, [Bind("Review,DidntShow,ReceivedPenalty,Id,RowVersion")] BoatReservationReview boatReservationReview)
         {
             if (ModelState.IsValid)
             {
                 boatReservationReview.Id = Guid.NewGuid();
+                boatReservationReview.BoatReservationId = id.ToString();
+                boatReservationReview.IsReviewedByAdmin = false;
+                Guid reservationId = Guid.Parse(boatReservationReview.BoatReservationId);
+                BoatReservation boatReservation = _context.BoatReservation.Where(m => m.Id == reservationId).FirstOrDefault();
+                if (!boatReservationReview.DidntShow)
+                {
+                    Guid userId = Guid.Parse(boatReservation.UserDetailsId);
+                    UserDetails userDetails = _context.UserDetails.Where(m => m.Id == userId).FirstOrDefault<UserDetails>();
+                    userDetails.PenaltyCount++;
+                    _context.Update(userDetails);
+                    await _context.SaveChangesAsync();
+
+                }
+                if (boatReservationReview.ReceivedPenalty)
+                {
+                    boatReservationReview.IsReviewedByAdmin = false;
+                }
+                else
+                {
+                    boatReservationReview.IsReviewedByAdmin = true;
+                }
                 _context.Add(boatReservationReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                boatReservation.IsReviewed = true;
+                _context.BoatReservation.Update(boatReservation);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Account/Manage/BoatReservationsHistory", new { area = "Identity" });
             }
             return View(boatReservationReview);
         }

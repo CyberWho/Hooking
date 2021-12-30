@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hooking.Controllers
 {
@@ -16,12 +20,16 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
-        public BoatsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly BlobUtility _utility;
+        public BoatsController(ApplicationDbContext context,
+                                UserManager<IdentityUser> userManager, 
+                                RoleManager<IdentityRole> roleManager
+                                )
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _utility = new BlobUtility();
         }
 
         // GET: Boats
@@ -82,13 +90,65 @@ namespace Hooking.Controllers
 
             var boat = await _context.Boat
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var boatId = boat.Id.ToString();
+            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
+            Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
+            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
+            Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
             if (boat == null)
             {
                 return NotFound();
             }
-
+            List<BoatImage> boatImages = _context.BoatImage.Where(m => m.BoatId == boatId).ToList<BoatImage>();
+            ViewData["BoatOwner"] = boatOwnerUser;
+            ViewData["FullAddress"] = fullAddress;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["FishingEquipment"] = fishingEquipment;
+            ViewData["BoatImages"] = boatImages;
+            ViewData["Amenities"] = amenities;
             return View(boat);
         }
+        [HttpGet("/Boats/MyBoatDetails/{id}")]
+        public async Task<IActionResult> MyBoatDetails(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var boat = await _context.Boat
+                .FirstOrDefaultAsync(m => m.Id == id);
+            var boatId = boat.Id.ToString();
+            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
+            Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
+            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
+            Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
+            if (boat == null)
+            {
+                return NotFound();
+            }
+            List<BoatImage> boatImages = _context.BoatImage.Where(m => m.BoatId == boatId).ToList<BoatImage>();
+            ViewData["BoatOwner"] = boatOwnerUser;
+            ViewData["FullAddress"] = fullAddress;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["FishingEquipment"] = fishingEquipment;
+            ViewData["BoatImages"] = boatImages;
+            ViewData["Amenities"] = amenities;
+            return View(boat);
+        }
+
 
         // GET: Boats/Create
         public IActionResult Create()
@@ -99,7 +159,20 @@ namespace Hooking.Controllers
         {
             return Redirect("/BoatSpecialOffers");
         }
-
+        [HttpGet("/Boats/BoatsForSpecialOffer")]
+        public async Task<IActionResult> BoatsForSpecialOffer()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            return View(boats);
+        }
+        [HttpGet("/Boats/BoatsForReservation")]
+        public async Task<IActionResult> BoatsForReservation()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            return View(boats);
+        }
         // POST: Boats/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -117,7 +190,7 @@ namespace Hooking.Controllers
                 boat.GradeCount = 0;
                 _context.Add(boat);
                 await _context.SaveChangesAsync();
-                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+                return RedirectToAction("Create", "BoatRules", new { id = boat.Id });
             }
             return View(boat);
         }
@@ -155,16 +228,40 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    var boatTmp = await _context.Boat.FindAsync(id);
-                    boatTmp.Name = boat.Name;
-                    boatTmp.Address = boat.Address;
-                    boatTmp.City = boat.City;
-                    boatTmp.Country = boat.Country;
-                    boatTmp.Description = boat.Description;
-                    boatTmp.RegularPrice = boat.RegularPrice;
-                    boatTmp.WeekendPrice = boat.WeekendPrice;
-                    _context.Update(boatTmp);
-                    await _context.SaveChangesAsync();
+                    string boatId = id.ToString();
+                    List<BoatReservation> futureReservations = new List<BoatReservation>();
+                    List<BoatReservation> boatReservations = _context.BoatReservation.Where(m => m.BoatId == boatId).ToList();
+                    List<BoatSpecialOffer> reservedSpecialOffers = new List<BoatSpecialOffer>();
+                    List<BoatSpecialOffer> boatSpecialOffers = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList();
+                    foreach(BoatSpecialOffer boatSpecialOffer in boatSpecialOffers)
+                    {
+                        if(boatSpecialOffer.IsReserved && boatSpecialOffer.StartDate >= DateTime.Now)
+                        {
+                            reservedSpecialOffers.Add(boatSpecialOffer);
+                        }
+
+                    }
+                    foreach(BoatReservation boatReservation in boatReservations)
+                    {
+                        if(boatReservation.StartDate >= DateTime.Now)
+                        {
+                            futureReservations.Add(boatReservation);
+                        }
+                    }
+                    if(futureReservations.Count == 0 && reservedSpecialOffers.Count == 0)
+                    {
+                        var boatTmp = await _context.Boat.FindAsync(id);
+                        boatTmp.Name = boat.Name;
+                        boatTmp.Address = boat.Address;
+                        boatTmp.City = boat.City;
+                        boatTmp.Country = boat.Country;
+                        boatTmp.Description = boat.Description;
+                        boatTmp.RegularPrice = boat.RegularPrice;
+                        boatTmp.WeekendPrice = boat.WeekendPrice;
+                        _context.Update(boatTmp);
+                        await _context.SaveChangesAsync();
+                    }
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -206,11 +303,79 @@ namespace Hooking.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var boat = await _context.Boat.FindAsync(id);
-            _context.Boat.Remove(boat);
-            await _context.SaveChangesAsync();
+            string boatId = id.ToString();
+            List<BoatReservation> futureReservations = new List<BoatReservation>();
+            List<BoatReservation> boatReservations = _context.BoatReservation.Where(m => m.BoatId == boatId).ToList();
+            List<BoatSpecialOffer> reservedSpecialOffers = new List<BoatSpecialOffer>();
+            List<BoatSpecialOffer> boatSpecialOffers = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList();
+            foreach (BoatSpecialOffer boatSpecialOffer in boatSpecialOffers)
+            {
+                if (boatSpecialOffer.IsReserved)
+                {
+                    reservedSpecialOffers.Add(boatSpecialOffer);
+                }
+
+            }
+            foreach (BoatReservation boatReservation in boatReservations)
+            {
+                if (boatReservation.StartDate >= DateTime.Now)
+                {
+                    futureReservations.Add(boatReservation);
+                }
+            }
+            if (futureReservations.Count == 0 && reservedSpecialOffers.Count == 0)
+            {
+                _context.Boat.Remove(boat);
+                await _context.SaveChangesAsync();
+            }
+           
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost("/Boats/UploadImage/{id}")]
+        public async Task<ActionResult> UploadImage(Guid id, IFormFile file)
+        {
+            if (file != null)
+            {
+                string ContainerName = "boat"; //hardcoded container name
+                string fileName = Path.GetFileName(file.FileName);
+                using (var fileStream = file.OpenReadStream())
+                {
+                    string UserConnectionString = string.Format("DefaultEndpointsProtocol=https;AccountName=hookingstorage;AccountKey=+v8L5XkQZ7Z2CTfdTd03pngWlA4xu02caFJDGUkvGlo/rv8uZnM9CQQYleH3lpb+3Z8sefUOlC0EaoXWIquyDg==;EndpointSuffix=core.windows.net");
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(UserConnectionString);
+                    CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobClient.GetContainerReference(ContainerName.ToLower());
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                    try
+                    {
+                        await blockBlob.UploadFromStreamAsync(fileStream);
 
+                    }
+                    catch (Exception e)
+                    {
+                        var r = e.Message;
+                        return null;
+                    }
+
+                    if (blockBlob != null)
+                    {
+                        BoatImage boatImage = new BoatImage();
+                        boatImage.Id = Guid.NewGuid();
+                        boatImage.BoatId = id.ToString();
+                        boatImage.ImageUrl = blockBlob.Uri.ToString();
+                        _context.BoatImage.Add(boatImage);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+            }
+            else
+            {
+                return RedirectToPage("/Account/Manage/MyBoats", new { area = "Identity" });
+            }
+
+
+        }
         private bool BoatExists(Guid id)
         {
             return _context.Boat.Any(e => e.Id == id);

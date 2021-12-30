@@ -69,7 +69,27 @@ namespace Hooking.Controllers
             }
             return View(cancelationPolicy);
         }
-
+        public IActionResult CreateForBoat()
+        {
+            return View();
+        }
+        [HttpPost("CancelationPolicies/CreateForBoat/{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateForBoat(Guid id, [Bind("FreeUntil,PenaltyPercentage,Id,RowVersion")] CancelationPolicy cancelationPolicy)
+        {
+            if (ModelState.IsValid)
+            {
+                cancelationPolicy.Id = Guid.NewGuid();
+                _context.Add(cancelationPolicy);
+                await _context.SaveChangesAsync();
+                var boat = _context.Boat.Where(m => m.Id == id).FirstOrDefault<Boat>();
+                boat.CancelationPolicyId = cancelationPolicy.Id.ToString();
+                _context.Update(boat);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Create", "FishingEquipments", new { id = boat.Id });
+            }
+            return View(cancelationPolicy);
+        }
         // GET: CancelationPolicies/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {

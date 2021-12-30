@@ -114,7 +114,11 @@
 
     </dl>
 </div>
-
+<hr />
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Izmeni informacije o brodu</a> |
+    <a href="@Url.Action("Index","BoatNotAvailablePeriods",new { id = @Model.Id})">Kalendar dostupnosti</a>
+</div>
 <hr />
 <h4>Lokacija</h4>
 <div name="GoogleMap">
@@ -160,7 +164,10 @@
         </dd>
     </dl>
 </div>
-
+<hr />
+<div>
+    <a asp-action="Edit" asp-controller="CancelationPolicies" asp-route-id="@cancelationPolicy.Id">Izmeni pravila otkazivanja</a>
+</div>
 <hr />
 <div>
     <h4>Oprema za pecanje</h4>
@@ -203,6 +210,10 @@
                 <span style="font-family: wingdings; font-size: 100%; color:green">&#10004;</span>
             </dd>
         }
+</div>
+<hr />
+<div>
+    <a asp-action="Edit" asp-controller="FishingEquipments" asp-route-id="@fishingEquipment.Id">Izmeni opremu za pecanje</a>
 </div>
 <hr />
 <div>
@@ -266,19 +277,50 @@
         }
 </div>
 <hr />
-<div class="row">
-
-    @foreach (var item in boatImages)
-    {
-        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
-
-            <a class="thumbnail" href="@item.ImageUrl">
-                <img class="img-responsive" src="@item.ImageUrl" style="height: 100%;width:100%;" alt="">
-            </a>
-
-        </div>
-
-
-    }
+<div>
+    <a asp-action="Edit" asp-controller="Amenities" asp-route-id="@amenities.Id">Izmeni opremu</a>
 </div>
+<hr />
+<div class="container">
 
+    <div class="row">
+
+        @foreach (var item in boatImages)
+        {
+            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+
+                <a class="thumbnail" href="@item.ImageUrl">
+                    <img class="img-responsive" src="@item.ImageUrl" style="height: 100%;width: 100%" alt="">
+                </a>
+
+
+            </div>
+
+
+        }
+    </div>
+    <br />
+    <div class="row">
+        @using (Html.BeginForm("UploadImage", "Boats", new { id = @Model.Id }, FormMethod.Post, true, new { enctype = "multipart/form-data" }))
+        {
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Dodaj novu sliku</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <input id="Otpremi" type="file" name="file" class="btn btn-primary" />
+                            <br />
+                            <br />
+                            <input type="submit" class="btn btn-primary" value="Sačuvaj" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
+<hr />

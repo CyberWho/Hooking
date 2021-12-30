@@ -1,9 +1,5 @@
 ﻿@page
 @model Hooking.Areas.Identity.Pages.Account.Manage.MyBoatReservationsModel
-@{
-    ViewData["Title"] = "Moje rezervacije brodova";
-    ViewData["ActivePage"] = ManageNavPages.MyBoatReservations;
-}
 @using Hooking.Models;
 
 @{
@@ -14,6 +10,8 @@
     List<Boat> boats = (List<Boat>)ViewData["Boat"];
     int i = 0;
 }
+<h4>Pregled rezervacija</h4>
+<a href="@Url.Action("BoatsForReservation", "Boats")">Napravi novu rezervaciju</a>
 <table class="table">
     <thead>
         <tr>
@@ -57,8 +55,8 @@
             </td>
 
             <td>
-                <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikazi vise</a>
-                <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
+                <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži više</a>
+                <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkaži rezervaciju</a>
             </td>
 
 

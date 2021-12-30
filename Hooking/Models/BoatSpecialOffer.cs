@@ -19,5 +19,6 @@ namespace Hooking.Models
         public int MaxPersonCount { get; set; }
         [DisplayName("Opis specijalne ponude")]
         public string Description { get; set; } // max 300 char
+        public bool IsReserved { get; set; }
     }
 }
