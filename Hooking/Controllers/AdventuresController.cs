@@ -21,25 +21,22 @@ namespace Hooking.Controllers
 {
     public class AdventuresController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IAdventureService _adventureService;
         private readonly UserManager<IdentityUser> _userManager;
         public List<AdventureImage> adventureImages = new List<AdventureImage>();
         private readonly BlobUtility utility;
-        public AdventuresController(ApplicationDbContext context, 
-            IAdventureService adventureService,
+        public AdventuresController(IAdventureService adventureService,
             UserManager<IdentityUser> userManager)
         {
-            _context = context;
             _adventureService = adventureService;
             _userManager = userManager;
             utility = new BlobUtility();
         }
 
         // GET: Adventures
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Adventure.ToListAsync());
+            return View(_adventureService.GetAdventures());
         }
 
         public IActionResult InstructorIndex()
@@ -57,11 +54,12 @@ namespace Hooking.Controllers
             return View(adventures);
         }
         [HttpGet("/Adventures/ShowAllUsers/{id}")]
-        public async Task<IActionResult> ShowAllUsers(Guid id)
+        public IActionResult ShowAllUsers(Guid id)
         {
             var adventureId = id;
             ViewData["AdventureId"] = adventureId;
-            var allUsers = await _context.UserDetails.ToListAsync();
+
+            var allUsers = _adventureService.GetAllUserDetails();
             
             return View(allUsers);
         }
@@ -79,8 +77,7 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
-            string adventureIds = adventureId.ToString();
-            adventureImages = _context.AdventureImage.Where(m => m.AdventureId == adventureIds).ToList();
+            adventureImages = _adventureService.GetAdventureImages(adventureId ?? throw new NullReferenceException()).ToList();
             ViewData["AdventureImages"] = adventureImages;
             return View(dto);
         }
@@ -111,12 +108,7 @@ namespace Hooking.Controllers
 
                     if (blockBlob != null)
                     {
-                        AdventureImage adventureImage = new AdventureImage();
-                        adventureImage.Id = Guid.NewGuid();
-                        adventureImage.AdventureId = id.ToString();
-                        adventureImage.ImageUrl = blockBlob.Uri.ToString();
-                        _context.AdventureImage.Add(adventureImage);
-                        await _context.SaveChangesAsync();
+                        _adventureService.AddAdventureImage(id, blockBlob);
                     }
 
                 }
@@ -149,9 +141,7 @@ namespace Hooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                adventure.Id = Guid.NewGuid();
-                _context.Add(adventure);
-                await _context.SaveChangesAsync();
+                _adventureService.AddAdventure(adventure);
                 return RedirectToAction(nameof(InstructorIndex));
             }
             return View(adventure);
@@ -165,7 +155,7 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var adventure = await _context.Adventure.FindAsync(id);
+            var adventure = _adventureService.FindAdventureById(id ?? throw new NullReferenceException());
             if (adventure == null)
             {
                 return NotFound();
@@ -189,9 +179,7 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    Adventure updatedAdventure = await _context.Adventure.FindAsync(adventure.Id);
-                    _context.Entry(updatedAdventure).CurrentValues.SetValues(adventure);
-                    await _context.SaveChangesAsync();
+                    _adventureService.UpdateAdventure(adventure);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -208,17 +196,9 @@ namespace Hooking.Controllers
             }
             return View(adventure);
         }
-        public async Task<IActionResult> AdventureForSpecialOffer()
+        public IActionResult AdventureForSpecialOffer()
         {
-            var user = await _userManager.GetUserAsync(User);
-
-            Guid userId = Guid.Parse(user.Id);
-            System.Diagnostics.Debug.WriteLine(userId);
-            UserDetails userDetails = await _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefaultAsync<UserDetails>();
-            var userDetailsId = userDetails.Id.ToString();
-            Instructor instructor = await _context.Instructor.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefaultAsync<Instructor>();
-            string instructorId = instructor.Id.ToString();
-            List<Adventure> adventures = await _context.Adventure.Where(m => m.InstructorId == instructorId).ToListAsync<Adventure>();
+            List<Adventure> adventures = _adventureService.GetAdventuresForSpecialOffer(User).ToList();
             return View(adventures);
         }
         // GET: Adventures/Delete/5
@@ -229,8 +209,7 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var adventure = await _context.Adventure
-                .FirstOrDefaultAsync(m => m.Id == adventureId);
+            var adventure = _adventureService.FindAdventureById(adventureId ?? throw new NullReferenceException());
             if (adventure == null)
             {
                 return NotFound();
@@ -244,29 +223,14 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var adventure = await _context.Adventure.FindAsync(id);
-            List<AdventureRealisation> adventureRealisations = new List<AdventureRealisation>();
-            string adventureId = adventure.Id.ToString();
-            adventureRealisations = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId).ToListAsync();
-            if(adventureRealisations.Count == 0)
-            {
-                _context.Adventure.Remove(adventure);
-                await _context.SaveChangesAsync();
-            }
-            List<AdventureSpecialOffer> adventureSpecialOffers = new List<AdventureSpecialOffer>();
-            adventureSpecialOffers = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureId).ToListAsync();
-            if(adventureSpecialOffers.Count == 0)
-            {
-                _context.Adventure.Remove(adventure);
-                await _context.SaveChangesAsync();
-            }
+            
            
             return RedirectToAction(nameof(InstructorIndex));
         }
 
         private bool AdventureExists(Guid id)
         {
-            return _context.Adventure.Any(e => e.Id == id);
+            return _adventureService.AdventureExists(id);
         }
     }
 }
