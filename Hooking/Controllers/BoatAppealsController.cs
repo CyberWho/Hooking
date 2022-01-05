@@ -52,13 +52,14 @@ namespace Hooking.Controllers
         // POST: BoatAppeals/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/BoatAppeals/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoatId,AppealContent,Id,RowVersion")] BoatAppeal boatAppeal)
+        public async Task<IActionResult> Create(Guid id,[Bind("BoatId,AppealContent,Id,RowVersion")] BoatAppeal boatAppeal)
         {
             if (ModelState.IsValid)
             {
                 boatAppeal.Id = Guid.NewGuid();
+                boatAppeal.BoatId = id.ToString();
                 _context.Add(boatAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -52,13 +52,14 @@ namespace Hooking.Controllers
         // POST: CottageAppeals/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CottageAppeals/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
+        public async Task<IActionResult> Create(Guid id,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
         {
             if (ModelState.IsValid)
             {
                 cottageAppeal.Id = Guid.NewGuid();
+                cottageAppeal.CottageId = id.ToString();
                 _context.Add(cottageAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
