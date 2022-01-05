@@ -30,14 +30,20 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             myBoatFavorites = await _context.BoatFavorites.Where(m => m.UserDetailsId == user.Id).ToListAsync();
         //    myCottages = await _context.Cottage.ToListAsync();
             List<Boat> boatData = new List<Boat>();
+            List<Guid> boatFavoritesId = new List<Guid>();
+
             foreach (BoatFavorites boatFavorite in myBoatFavorites)
             {
                 Guid guid = new Guid(boatFavorite.BoatId);
                 Boat bt = _context.Boat.Where(m => m.Id == guid).FirstOrDefault<Boat>();
                 boatData.Add(bt);
+                boatFavoritesId.Add(boatFavorite.Id);
+
             }
 
             ViewData["BoatData"] = boatData;
+            ViewData["BoatFavoritesId"] = boatFavoritesId;
+
 
             return Page();
         }

@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class AdventureFavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdventureFavoritesController(ApplicationDbContext context)
+
+        public AdventureFavoritesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: AdventureFavorites
@@ -52,13 +57,18 @@ namespace Hooking.Controllers
         // POST: AdventureFavorites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/AdventureFavorites/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserDetailsId,AdventureId,Id,RowVersion")] AdventureFavorites adventureFavorites)
+        public async Task<IActionResult> Create(Guid id, [Bind("Id,RowVersion")] AdventureFavorites adventureFavorites)
         {
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine(id);
                 adventureFavorites.Id = Guid.NewGuid();
+                adventureFavorites.AdventureId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                System.Diagnostics.Debug.WriteLine(user.Id);
+                adventureFavorites.UserDetailsId = user.Id.ToString();
                 _context.Add(adventureFavorites);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

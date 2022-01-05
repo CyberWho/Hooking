@@ -33,14 +33,17 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             myCottageFavorites = await _context.CottageFavorites.Where(m => m.UserDetailsId == user.Id).ToListAsync();
             myCottages = await _context.Cottage.ToListAsync();
             List<Cottage> cottageData = new List<Cottage>();
+            List<Guid> cottageFavoritesId = new List<Guid>();
             foreach(CottageFavorites cottageFavorite in myCottageFavorites)
             {
                 Guid guid = new Guid(cottageFavorite.CottageId);
                 Cottage ctg = _context.Cottage.Where(m =>  m.Id == guid).FirstOrDefault<Cottage>();
                 cottageData.Add(ctg);
+                cottageFavoritesId.Add(cottageFavorite.Id);
             }
 
             ViewData["CottageData"] = cottageData;
+            ViewData["CottageFavoritesId"] = cottageFavoritesId;
 
             return Page();
         }
