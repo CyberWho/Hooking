@@ -102,6 +102,7 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+
                     @if (_signInManager.IsSignedIn(User))
                     {
                         @if (User.IsInRole("Admin"))

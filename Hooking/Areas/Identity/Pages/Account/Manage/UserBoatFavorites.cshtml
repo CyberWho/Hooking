@@ -6,6 +6,8 @@
     ViewData["Title"] = "Omiljeni brodovi";
     ViewData["ActivePage"] = ManageNavPages.UserBoatFavorites;
     List<Boat> boatData = (List<Boat>)ViewData["BoatData"];
+    List<Guid> boatFavoritesId = (List<Guid>)ViewData["BoatFavoritesId"];
+    int i = 0;
 
 }
 <table class="table">
@@ -52,7 +54,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.AverageGrade)
                 </td>
+                <td>
+                    <a href="@Url.Action("Delete", "BoatFavorites", new { Id = boatFavoritesId[i] })">Otkazi pretplatu</a>
+
+                </td>
             </tr>
+            i++;
         }
     </tbody>
 </table>

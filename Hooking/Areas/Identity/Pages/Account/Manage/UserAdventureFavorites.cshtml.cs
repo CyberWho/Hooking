@@ -32,14 +32,20 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             myAdventureFavorites = await _context.AdventureFavorites.Where(m => m.UserDetailsId == user.Id).ToListAsync();
             myAdventures = await _context.Adventure.ToListAsync();
             List<Adventure> adventureData = new List<Adventure>();
+            List<Guid> adventureFavoritesId = new List<Guid>();
+
             foreach (AdventureFavorites adventureFavorite in myAdventureFavorites)
             {
                 Guid guid = new Guid(adventureFavorite.AdventureId);
                 Adventure ad = _context.Adventure.Where(m => m.Id == guid).FirstOrDefault<Adventure>();
                 adventureData.Add(ad);
+                adventureFavoritesId.Add(adventureFavorite.Id);
+
             }
 
             ViewData["AdventureData"] = adventureData;
+            ViewData["AdventureFavoritesId"] = adventureFavoritesId;
+
 
             return Page();
         }

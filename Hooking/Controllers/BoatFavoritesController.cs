@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class BoatFavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BoatFavoritesController(ApplicationDbContext context)
+        public BoatFavoritesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: BoatFavorites
@@ -52,13 +55,22 @@ namespace Hooking.Controllers
         // POST: BoatFavorites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/BoatFavorites/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserDetailsId,BoatId,Id,RowVersion")] BoatFavorites boatFavorites)
+        public async Task<IActionResult> Create(Guid id, [Bind("Id,RowVersion")] BoatFavorites boatFavorites)
         {
             if (ModelState.IsValid)
             {
+                /*boatFavorites.Id = Guid.NewGuid();
+                _context.Add(boatFavorites);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));*/
+                System.Diagnostics.Debug.WriteLine(id);
                 boatFavorites.Id = Guid.NewGuid();
+                boatFavorites.BoatId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                System.Diagnostics.Debug.WriteLine(user.Id);
+                boatFavorites.UserDetailsId = user.Id.ToString();
                 _context.Add(boatFavorites);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
