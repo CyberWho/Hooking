@@ -35,33 +35,36 @@
     <tbody>
         @foreach (var item in Model.boatReservations)
         {
-            <tr>
-                <th>
-                    @boatNames[index]
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PersonCount)
-                </td>
-                <td>
-                    @if (!item.IsReviewed)
-                    {
-                        <a href="@Url.Action("Create", "BoatReservationReviews", new { Id = @item.Id })">Recenzija</a>
-                    }
-                    <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži još</a>
-                </td>
-                @{
-                    index++;
+        <tr>
+            <th>
+                @boatNames[index]
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonCount)
+            </td>
+            <td>
+                <a href="@Url.Action("Create", "BoatAppeals", new { Id = @item.BoatId })">Prilozi zalbu</a>
+            </td>
+            <td>
+                @if (!item.IsReviewed)
+                {
+                    <a href="@Url.Action("Create", "BoatReservationReviews", new { Id = @item.Id })">Recenzija</a>
                 }
-            </tr>
+                <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži još</a>
+            </td>
+            @{
+                index++;
+            }
+        </tr>
         }
     </tbody>
 </table>
