@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class AdventureReviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdventureReviewsController(ApplicationDbContext context)
+        public AdventureReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: AdventureReviews
@@ -52,13 +55,16 @@ namespace Hooking.Controllers
         // POST: AdventureReviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/AdventureReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdventureId,UserDetailsId,Review,Grade,IsApproved,Id,RowVersion")] AdventureReview adventureReview)
+        public async Task<IActionResult> Create(Guid id, [Bind("AdventureId,UserDetailsId,Review,Grade,IsApproved,Id,RowVersion")] AdventureReview adventureReview)
         {
             if (ModelState.IsValid)
             {
                 adventureReview.Id = Guid.NewGuid();
+                adventureReview.AdventureId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                adventureReview.UserDetailsId = user.Id.ToString();
                 _context.Add(adventureReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

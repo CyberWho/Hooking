@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class CottageReviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CottageReviewsController(ApplicationDbContext context)
+
+        public CottageReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: CottageReviews
@@ -52,13 +57,16 @@ namespace Hooking.Controllers
         // POST: CottageReviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/CottageReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CottageId,UserDetailsId,Review,Grade,IsApproved,Id,RowVersion")] CottageReview cottageReview)
+        public async Task<IActionResult> Create(Guid id,[Bind("CottageId,UserDetailsId,Review,Grade,IsApproved,Id,RowVersion")] CottageReview cottageReview)
         {
             if (ModelState.IsValid)
             {
                 cottageReview.Id = Guid.NewGuid();
+                cottageReview.CottageId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                cottageReview.UserDetailsId = user.Id.ToString();
                 _context.Add(cottageReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
