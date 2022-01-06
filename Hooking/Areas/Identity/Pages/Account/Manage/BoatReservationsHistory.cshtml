@@ -59,6 +59,8 @@
                 {
                     <a href="@Url.Action("Create", "BoatReservationReviews", new { Id = @item.Id })">Recenzija</a>
                 }
+                <a href="@Url.Action("Create", "BoatReviews", new { Id = @item.BoatId })">Oceni</a>
+
                 <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži još</a>
             </td>
             @{

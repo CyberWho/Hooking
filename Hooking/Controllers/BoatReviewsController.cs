@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class BoatReviewsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BoatReviewsController(ApplicationDbContext context)
+
+        public BoatReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: BoatReviews
@@ -52,13 +57,16 @@ namespace Hooking.Controllers
         // POST: BoatReviews/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/BoatReviews/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoatId,UserDetailsId,Review,Grade,IsApproved,Id,RowVersion")] BoatReview boatReview)
+        public async Task<IActionResult> Create(Guid id,[Bind("BoatId,UserDetailsId,Review,Grade,IsApproved,Id,RowVersion")] BoatReview boatReview)
         {
             if (ModelState.IsValid)
             {
                 boatReview.Id = Guid.NewGuid();
+                boatReview.BoatId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                boatReview.UserDetailsId = user.Id.ToString();
                 _context.Add(boatReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

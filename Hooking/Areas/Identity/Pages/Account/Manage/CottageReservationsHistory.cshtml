@@ -42,31 +42,34 @@
         {
             @if (DateTime.Compare(item.StartDate, DateTime.Now) < 0)
             {
-                <tr>
-                    <td>
-                            @cottages[i].Name
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MaxPersonCount)
-                    </td>
+        <tr>
+            <td>
+                @cottages[i].Name
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
+            </td>
 
-                    <td>
-                        <a href="@Url.Action("Create", "CottageAppeals", new { Id = @item.CottageId })">Prilozi zalbu</a>
-
-
-                    </td>
+            <td>
+                <a href="@Url.Action("Create", "CottageAppeals", new { Id = @item.CottageId })">Prilozi zalbu</a>
 
 
-                </tr>
+            </td>
+            <td>
+            <a href="@Url.Action("Create", "CottageReviews", new { Id = @item.CottageId })">Oceni</a>
+                </td>
+
+
+        </tr>
 
             }
 
