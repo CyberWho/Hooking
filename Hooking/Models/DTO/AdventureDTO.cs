@@ -27,8 +27,9 @@ namespace Hooking.Models.DTO
         public string Country { get; set; }
         [Display(Name = "Opis")]
         public string Description { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Molimo unesite pozitivan broj")]
         [Display(Name = "Maksimalan broj osoba")]
-        public string MaxPersonCount { get; set; }
+        public int MaxPersonCount { get; set; }
         public string CancellationPolicyId { get; set; }
         [Display(Name = "Otkazivanje")]
         public string CancelationPolicyDescription { get; set; }
@@ -38,15 +39,23 @@ namespace Hooking.Models.DTO
         public string FishingEquipment { get; set; }
         [Display(Name="Pravila")]
         public string Rules { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Molimo unesite pozitivan broj")]
         [Display(Name = "Cena")]
-        public string Price { get; set; }
-
+        public int Price { get; set; }
+        [Display(Name= "Za decu")]
+        public bool ChildFriendly { get; set; }
+        [Display(Name = "Zadržavanje ulova")]
+        public bool YouKeepCatch { get; set; }
+        [Display(Name = "Uhvati-baci")]
+        public bool CatchAndReleaseAllowed { get; set; }
+        [Display(Name = "Pušenje u kabini")] 
+        public bool CabinSmoking { get; set; }
         public AdventureDTO(){}
 
         public AdventureDTO(Adventure adventure)
         {
             AdventureId = adventure.Id.ToString();
-            RowVersion = adventure.RowVersion.ToString();
+            RowVersion = adventure.RowVersion == null ? "" : adventure.RowVersion.ToString();
             InstructorId = adventure.InstructorId;
             Name = adventure.Name;
             Address = adventure.Address;
@@ -54,10 +63,10 @@ namespace Hooking.Models.DTO
             Country = adventure.Country;
             FullAddress = $"{Address},{City},{Country}";
             Description = adventure.Description;
-            MaxPersonCount = adventure.MaxPersonCount.ToString();
+            MaxPersonCount = adventure.MaxPersonCount;
             CancellationPolicyId = adventure.CancellationPolicyId;
             AverageGrade = adventure.AverageGrade.ToString();
-            Price = adventure.Price.ToString();
+            Price = adventure.Price;
         }
 
         public void PopulateFieldsFromCancellationPolicy(CancelationPolicy policy)

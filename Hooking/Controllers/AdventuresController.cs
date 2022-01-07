@@ -137,7 +137,7 @@ namespace Hooking.Controllers
             {
                 InstructorId = instructorId
             };
-            return View(newAdventure);
+            return View(new AdventureDTO(newAdventure));
         }
 
         // POST: Adventures/Create
@@ -145,16 +145,14 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancellationPolicyId,AverageGrade,Price,Id,RowVersion")] Adventure adventure)
+        public IActionResult Create([Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancellationPolicyId,ChildFriendly,YouKeepCatch,CatchAndReleaseAllowed,CabinSmoking,AverageGrade,Price")] AdventureDTO dto)
         {
             if (ModelState.IsValid)
             {
-                adventure.Id = Guid.NewGuid();
-                _context.Add(adventure);
-                await _context.SaveChangesAsync();
+                _adventureService.Create(dto);
                 return RedirectToAction(nameof(InstructorIndex));
             }
-            return View(adventure);
+            return View(dto);
         }
 
         // GET: Adventures/Edit/5

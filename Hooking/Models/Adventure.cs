@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Hooking.Models.DTO;
 
 namespace Hooking.Models
 {
@@ -29,5 +30,27 @@ namespace Hooking.Models
         public double AverageGrade { get; set; }
         [DisplayName("Cena")]
         public int Price { get; set; }
+
+        public Adventure(){}
+        public Adventure(AdventureDTO dto)
+        {
+            InstructorId = dto.InstructorId;
+            Name = dto.Name;
+            Address = dto.Address;
+            City = dto.City;
+            Country = dto.Country;
+            Description = dto.Description;
+            MaxPersonCount = dto.MaxPersonCount;
+            CancellationPolicyId = dto.CancellationPolicyId;
+            if (dto.AverageGrade == null)
+            {
+                AverageGrade = 0;
+            }
+            else
+            {
+                AverageGrade = double.Parse(dto.AverageGrade);
+            }
+            Price = dto.Price;
+        }
     }
 }

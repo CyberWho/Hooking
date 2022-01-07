@@ -14,5 +14,6 @@ namespace Hooking.Services
         IEnumerable<AdventureDTO> GetInstructorAdventures(string userId);
         bool AdventureEditable(Guid adventureId);
         AdventureDTO GetAdventureDto(Guid adventureId);
+        void Create(AdventureDTO dto);
     }
 }

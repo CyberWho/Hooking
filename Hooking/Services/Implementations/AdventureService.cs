@@ -6,6 +6,7 @@ using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
@@ -164,6 +165,42 @@ namespace Hooking.Services.Implementations
             dto.PopulateFieldsFromFishingEquipment(equipment);
             dto.PopulateFieldsFromRulesWithFishing(rules);
             return dto;
+        }
+
+        private AdventureRules FindExistingRules(AdventureDTO dto)
+        {
+            return _context.AdventureRules.FirstOrDefault(r =>
+                r.CabinSmoking == dto.CabinSmoking && r.CatchAndReleaseAllowed == dto.CatchAndReleaseAllowed &&
+                r.ChildFriendly == dto.ChildFriendly && r.YouKeepCatch == dto.YouKeepCatch);
+        }
+
+        public void Create(AdventureDTO dto)
+        {
+            Adventure adventure = new Adventure(dto);
+            adventure.Id = Guid.NewGuid();
+            _context.Add(adventure);
+
+            AdventureRules rules = FindExistingRules(dto);
+
+            if (rules == null)
+            {
+                rules = new AdventureRules
+                {
+                    CabinSmoking = dto.CabinSmoking,
+                    CatchAndReleaseAllowed = dto.CatchAndReleaseAllowed,
+                    ChildFriendly = dto.ChildFriendly,
+                    YouKeepCatch = dto.YouKeepCatch
+                };
+                _context.Add(rules);
+            }
+
+            _context.Add(new AdventuresAdventureRules
+            {
+                AdventureId = adventure.Id.ToString(),
+                AdventureRulesId = rules.Id.ToString()
+            });
+
+            _context.SaveChanges();
         }
 
         private string GetInstructorNameFromId(Guid instructorId)
