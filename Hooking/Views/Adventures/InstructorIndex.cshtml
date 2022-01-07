@@ -81,17 +81,17 @@
                 @Html.DisplayFor(modelItem => item.CancelationPolicyDescription)
             </td>
             <td>
-                <a asp-action="Details" asp-route-adventureId="@item.AdventureId">Detalji</a> |
+                <a asp-action="Details" asp-route-adventureId="@item.AdventureId">Detalji</a>
                 @if (_adventureService.AdventureEditable(Guid.Parse(item.AdventureId)))
                 {
-                    <a asp-action="Edit" asp-route-id="@item.AdventureId">Ažuriraj | </a>
+                    <a asp-action="Edit" asp-route-id="@item.AdventureId">Ažuriraj</a>
                     <a asp-action="Delete" asp-route-adventureId="@item.AdventureId" asp-route-instructorId="@Guid.Parse(item.InstructorId)">Obriši</a>
                 }
                 else
                 {
 
-                    <a>Ažuriraj | </a>
-                    <a>Obriši</a>
+                    <a title="Za izabranu avanturu postoje rezervacije, pa ju je nemoguće izmeniti.">Ažuriraj</a>
+                    <a title="Za izabranu avanturu postoje rezervacije, pa ju je nemoguće obrisati.">Obriši</a>
                 }
             </td>
         </tr>
