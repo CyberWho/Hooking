@@ -249,15 +249,18 @@ namespace Hooking.Controllers
             if(adventureRealisations.Count == 0)
             {
                 _context.Adventure.Remove(adventure);
-                await _context.SaveChangesAsync();
             }
             List<AdventureSpecialOffer> adventureSpecialOffers = new List<AdventureSpecialOffer>();
             adventureSpecialOffers = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureId).ToListAsync();
             if(adventureSpecialOffers.Count == 0)
             {
                 _context.Adventure.Remove(adventure);
+                AdventuresAdventureRules rules = _context.AdventuresAdventureRules.FirstOrDefault(r => r.AdventureId == adventureId);
+                _context.AdventuresAdventureRules.Remove(rules);
                 await _context.SaveChangesAsync();
             }
+            
+
            
             return RedirectToAction(nameof(InstructorIndex));
         }
