@@ -7,16 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.IO;
+using Newtonsoft.Json;
+using System.Text.Encodings.Web;
 
 namespace Hooking.Controllers
 {
     public class BoatSpecialOffersController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public BoatSpecialOffersController(ApplicationDbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
+        public BoatSpecialOffersController(ApplicationDbContext context,
+                                            UserManager<IdentityUser> userManager,
+                                            RoleManager<IdentityRole> roleManager,
+                                            IEmailSender emailSender)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _emailSender = emailSender;
+            using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
+            {
+                string json = reader.ReadToEnd();
+                _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
+            }
         }
 
         // GET: BoatSpecialOffers
@@ -35,11 +53,13 @@ namespace Hooking.Controllers
 
             var boatSpecialOffer = await _context.BoatSpecialOffer
                 .FirstOrDefaultAsync(m => m.Id == id);
+            Guid boatId = Guid.Parse(boatSpecialOffer.BoatId);
+            Boat boat = _context.Boat.Where(m => m.Id == boatId).FirstOrDefault();
             if (boatSpecialOffer == null)
             {
                 return NotFound();
             }
-
+            ViewData["Boat"] = boat;
             return View(boatSpecialOffer);
         }
 
@@ -60,8 +80,21 @@ namespace Hooking.Controllers
             {
                 boatSpecialOffer.Id = Guid.NewGuid();
                 boatSpecialOffer.BoatId = id.ToString();
+                boatSpecialOffer.IsReserved = false;
                 _context.Add(boatSpecialOffer);
                 await _context.SaveChangesAsync();
+                string boatId = id.ToString();
+                List<BoatFavorites> boatFavorites = _context.BoatFavorites.Where(m => m.BoatId == boatId).ToList();
+                foreach (var subscribe in boatFavorites)
+                {
+                    UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == subscribe.UserDetailsId).FirstOrDefault<UserDetails>();
+                    var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
+                    var callbackUrl = Url.Action("Details", "BoatSpecialOffers", new { id = boatSpecialOffer.Id });
+
+                    await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o specijalnoj akciji",
+                               $"Poštovani,<br><br> upravo je objavljena specijalna akcija za brod na koju ste pretplaćeni! Za više detalja kliknite na sledeći link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
+
+                }
                 return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
             }
             return View(boatSpecialOffer);
@@ -88,7 +121,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
         {
             if (id != boatSpecialOffer.Id)
             {
@@ -99,7 +132,19 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(boatSpecialOffer);
+                    var boatSpecialOfferTemp = _context.BoatSpecialOffer.Where(m => m.Id == id).FirstOrDefault();
+                    if(!boatSpecialOfferTemp.IsReserved)
+                    {
+                        return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
+                    }
+                    boatSpecialOfferTemp.Id = id;
+                    boatSpecialOfferTemp.StartDate = boatSpecialOffer.StartDate;
+                    boatSpecialOfferTemp.EndDate = boatSpecialOffer.EndDate;
+                    boatSpecialOfferTemp.Price = boatSpecialOffer.Price;
+                    boatSpecialOfferTemp.MaxPersonCount = boatSpecialOffer.MaxPersonCount;
+                    boatSpecialOfferTemp.Description = boatSpecialOffer.Description;
+                    boatSpecialOfferTemp.IsReserved = boatSpecialOffer.IsReserved;
+                    _context.Update(boatSpecialOfferTemp);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -113,7 +158,7 @@ namespace Hooking.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
             }
             return View(boatSpecialOffer);
         }

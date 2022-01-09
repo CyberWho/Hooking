@@ -164,6 +164,10 @@ namespace Hooking.Controllers
                 try
                 {
                     var cottageSpecialOfferTmp = await _context.CottageSpecialOffer.FindAsync(id);
+                    if(!cottageSpecialOfferTmp.IsReserved)
+                    {
+                        return RedirectToPage("/Account/Manage/MySpecialOffers", new { area = "Identity" });
+                    }
                     cottageSpecialOfferTmp.Id = id;
                     cottageSpecialOfferTmp.CottageId = cottageSpecialOffer.CottageId;
                     cottageSpecialOfferTmp.StartDate = cottageSpecialOffer.StartDate;

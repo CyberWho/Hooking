@@ -3,59 +3,82 @@
 @{
     ViewData["Title"] = "Details";
 }
+@{ 
+    var boat = (Boat)ViewData["Boat"];
+}
 
-<h1>Specijalna ponuda</h1>
+<h4>Specijalna ponuda</h4>
 
 <div>
-    <h4>Informacije</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2" hidden>
-            @Html.DisplayNameFor(model => model.BoatId)
+        <dt class="col-sm-2">
+            Naziv broda
         </dt>
-        <dd class = "col-sm-10" hidden>
-            @Html.DisplayFor(model => model.BoatId)
+        <dd class="col-sm-10">
+            <a href="@Url.Action("Details","Boats",new { id = @boat.Id })">@boat.Name</a>
         </dd>
-       
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            Država
+        </dt>
+        <dd class="col-sm-10">
+            @boat.Country
+        </dd>
+        <dt class="col-sm-2">
+            Grad
+        </dt>
+        <dd class="col-sm-10">
+            @boat.City
+        </dd>
+        <dt class="col-sm-2">
+            Adresa
+        </dt>
+        <dd class="col-sm-10">
+            @boat.Address
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxPersonCount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.MaxPersonCount)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2" hidden>
-            @Html.DisplayNameFor(model => model.RowVersion)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsReserved)
         </dt>
-        <dd class = "col-sm-10" hidden>
-            @Html.DisplayFor(model => model.RowVersion)
+        <dd class="col-sm-10">
+            @if (Model.IsReserved)
+            {
+                @Html.Raw("Da");
+            }
+            else
+            {
+                @Html.Raw("Ne");
+            }
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

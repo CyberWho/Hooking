@@ -16,7 +16,7 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public Guid cottageId;
+       
         public UserDetailsController(ApplicationDbContext context,
                                      UserManager<IdentityUser> userManager,
                                      RoleManager<IdentityRole> roleManager)
@@ -91,17 +91,37 @@ namespace Hooking.Controllers
         [HttpGet("/Users/ShowAllUsers/{id}")]
         public async Task<IActionResult> ShowAllUsers(Guid id)
         {
-            cottageId = id;
-            ViewData["CottageId"] = cottageId;
-            var allUsers = await _context.UserDetails.ToListAsync();
-            return View(allUsers);
+            
+            string cId = id.ToString();
+            List<UserDetails> userDetails = new List<UserDetails>();
+            List<CottageReservation> cottageReservations = _context.CottageReservation.Where(m => m.CottageId == cId).ToList();
+            foreach (CottageReservation cottageReservation in cottageReservations)
+            {
+                if (cottageReservation.StartDate <= DateTime.Now && cottageReservation.EndDate >= DateTime.Now)
+                {
+                    UserDetails user = _context.UserDetails.Where(m => m.IdentityUserId == cottageReservation.UserDetailsId).FirstOrDefault<UserDetails>();
+                    userDetails.Add(user);
+                }
+            }
+            ViewData["CottageId"] = id;
+            return View(userDetails);
         }
         [HttpGet("/Users/ShowUsers/{id}")]
         public async Task<IActionResult> ShowUsers(Guid id)
         {
+            string bId = id.ToString();
+            List<UserDetails> userDetails = new List<UserDetails>();
+            List<BoatReservation> boatReservations = _context.BoatReservation.Where(m => m.BoatId == bId).ToList();
+            foreach(BoatReservation boatReservation in boatReservations)
+            {
+                if(boatReservation.StartDate <= DateTime.Now && boatReservation.EndDate >= DateTime.Now)
+                {
+                    UserDetails user = _context.UserDetails.Where(m => m.IdentityUserId == boatReservation.UserDetailsId).FirstOrDefault();
+                    userDetails.Add(user);
+                }
+            }
             ViewData["BoatId"] = id;
-            var allUsers = await _context.UserDetails.ToListAsync();
-            return View(allUsers);
+            return View(userDetails);
         }
         // POST: UserDetails/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

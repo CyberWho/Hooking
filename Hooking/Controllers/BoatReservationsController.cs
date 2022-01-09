@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Hooking.Controllers
 {
@@ -15,11 +18,22 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-
-        public BoatReservationsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
+        public BoatReservationsController(ApplicationDbContext context,
+                                            UserManager<IdentityUser> userManager,
+                                            RoleManager<IdentityRole> roleManager,
+                                            IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
+            _emailSender = emailSender;
+            using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
+            {
+                string json = reader.ReadToEnd();
+                _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
+            }
         }
 
         // GET: BoatReservations
@@ -135,6 +149,13 @@ namespace Hooking.Controllers
                 boatNotAvailablePeriod.EndTime = boatReservation.EndDate;
                 _context.Add(boatNotAvailablePeriod);
                 await _context.SaveChangesAsync();
+                string userId = id.ToString();
+                UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == userId).FirstOrDefault<UserDetails>();
+                var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
+
+                await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o rezervaciji",
+                           $"Poštovani,<br><br>Potvrđujemo Vam rezervaciju koju ste napravili u dogovoru sa vlasnikom broda na kom trenutno boravite!");
+
                 return RedirectToPage("/Account/Manage/BoatReservations", new { area = "Identity" });
             }
             return View(boatReservation);
