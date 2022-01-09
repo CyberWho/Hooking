@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Hooking.Controllers
 {
@@ -16,17 +19,26 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IEmailSender _emailSender;
         public Cottage cottage;
         public UserDetails userDetails;
 
         public CottageReservationsController(ApplicationDbContext context, 
                                              UserManager<IdentityUser> userManager,
-                                             RoleManager<IdentityRole> roleManager)
+                                             RoleManager<IdentityRole> roleManager,
+                                             IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _emailSender = emailSender;
+            using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
+            {
+                string json = reader.ReadToEnd();
+                _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
+            }
         }
+
 
         // GET: CottageReservations
         public async Task<IActionResult> Index()
@@ -101,6 +113,13 @@ namespace Hooking.Controllers
                 cottageNotAvailablePeriod.EndTime = cottageReservation.EndDate;
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
+                string userId = id.ToString();
+                UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == userId).FirstOrDefault<UserDetails>();
+                var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
+               
+                await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o rezervaciji",
+                           $"Poštovani,<br><br>Potvrđujemo Vam rezervaciju koju ste napravili u dogovoru sa vlasnikom objekta gde trenutno boravite!");
+
                 return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
             }
             return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
