@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace UnitTests
 {
-    public class Class1
+    public class Tests
     {
+       
+        public void Test1()
+        {
+
+        }
     }
 }
