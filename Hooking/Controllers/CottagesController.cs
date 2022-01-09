@@ -92,9 +92,19 @@ namespace Hooking.Controllers
         public async Task<IActionResult> ShowAllUsers(Guid id)
         {
             cottageId = id;
+            string cId = cottageId.ToString();
+            List<UserDetails> userDetails = new List<UserDetails>();
+            List<CottageReservation> cottageReservations = _context.CottageReservation.Where(m => m.CottageId == cId).ToList();
+            foreach(CottageReservation cottageReservation in cottageReservations)
+            {
+                if(cottageReservation.StartDate <= DateTime.Now && cottageReservation.EndDate >= DateTime.Now)
+                {
+                    UserDetails user = _context.UserDetails.Where(m => m.IdentityUserId == cottageReservation.UserDetailsId).FirstOrDefault<UserDetails>();
+                    userDetails.Add(user);
+                }
+            }
             ViewData["CottageId"] = cottageId;
-            var allUsers = _context.UserDetails.ToListAsync();
-            return View(allUsers);
+            return View(userDetails);
         }
 
 
