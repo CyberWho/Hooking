@@ -20,5 +20,9 @@ namespace Hooking.Models
         [DisplayName("Opis ponude")]
         public string Description { get; set; } // max 300 char
         public bool IsReserved { get; set; }
+        [DisplayName("Specijalna ponuda važi od")]
+        public DateTime ValidFrom { get; set; }
+        [DisplayName("Specijalna ponuda važi do")]
+        public DateTime ValidTo { get; set; }
     }
 }

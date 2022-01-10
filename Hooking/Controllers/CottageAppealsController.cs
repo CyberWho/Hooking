@@ -62,7 +62,7 @@ namespace Hooking.Controllers
                 cottageAppeal.Id = Guid.NewGuid();
                 cottageAppeal.CottageId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
-                cottageAppeal.UserEmail = user.Email;
+                cottageAppeal.Email = user.Email;
                 _context.Add(cottageAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
