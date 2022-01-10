@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Hooking.Models;
 using Hooking.Models.DTO;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Services
 {
@@ -15,5 +17,6 @@ namespace Hooking.Services
         bool AdventureEditable(Guid adventureId);
         AdventureDTO GetAdventureDto(Guid adventureId);
         void Create(AdventureDTO dto);
+        void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser);
     }
 }

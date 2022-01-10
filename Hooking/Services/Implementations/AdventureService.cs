@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Newtonsoft.Json;
 
 namespace Hooking.Services.Implementations
 {
@@ -20,6 +25,10 @@ namespace Hooking.Services.Implementations
         public AdventureService(ApplicationDbContext context)
         {
             _context = context;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         public IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId)
@@ -200,6 +209,19 @@ namespace Hooking.Services.Implementations
                 AdventureRulesId = rules.Id.ToString()
             });
 
+            _context.SaveChanges();
+        }
+        
+        public void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser)
+        {            
+            favorite.Id = Guid.NewGuid();
+            favorite.AdventureId = adventureId.ToString();
+
+            UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == identityUser.Id);
+
+            favorite.UserDetailsId = userDetails.Id.ToString();
+
+            _context.Add(favorite);
             _context.SaveChanges();
         }
 

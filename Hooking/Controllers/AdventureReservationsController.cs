@@ -105,7 +105,7 @@ namespace Hooking.Controllers
             return Redirect("/Adventures/Index");
 
         }
-        public async Task<IActionResult> AdventureReservationHistory()
+        public IActionResult AdventureReservationHistory()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == userId);

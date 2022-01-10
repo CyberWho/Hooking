@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,22 +8,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Newtonsoft.Json;
 
 namespace Hooking.Controllers
 {
     public class AdventureSpecialOffersController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAdventureService _adventureService;
+        private readonly IEmailSender _emailSender;
         public AdventureSpecialOffersController(ApplicationDbContext context,
-                                                SignInManager<IdentityUser> signInManager,
-                                                UserManager<IdentityUser> userManager)
+                                                UserManager<IdentityUser> userManager, 
+                                                IAdventureService adventureService, 
+                                                IEmailSender emailSender)
         {
             _context = context;
-            _signInManager = signInManager;
             _userManager = userManager;
+            _adventureService = adventureService;
+            _emailSender = emailSender;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         // GET: AdventureSpecialOffers
@@ -44,7 +55,8 @@ namespace Hooking.Controllers
                 string adventureId = adventure.Id.ToString();
                 List<AdventureSpecialOffer> adventureSpecials = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureId).ToListAsync<AdventureSpecialOffer>();
                 adventureSpecialOffers.AddRange(adventureSpecials);
-                adventureNames.Add(adventure.Name);
+                for(int i = 0; i < adventureSpecials.Count; i++)
+                    adventureNames.Add(adventure.Name);
             }
             ViewData["AdventureNames"] = adventureNames;
             return View(adventureSpecialOffers);
@@ -87,6 +99,20 @@ namespace Hooking.Controllers
                 adventureSpecialOffer.AdventureId = id.ToString();
                 adventureSpecialOffer.IsReserved = false;
                 _context.Add(adventureSpecialOffer);
+
+
+                Adventure adventure = _context.Adventure.Find(id);
+
+                var favorites = _context.AdventureFavorites.Where(f =>
+                    f.AdventureId == id.ToString()).ToList();
+
+                foreach (AdventureFavorites favorite in favorites)
+                {
+                    UserDetails user = _context.UserDetails.Find(Guid.Parse(favorite.UserDetailsId));
+                    IdentityUser iUser = await _userManager.FindByIdAsync(user.IdentityUserId);
+                    await _emailSender.SendEmailAsync(iUser.Email, "Avantura koju pratite je na akciji", $"Avanatura {adventure.Name} je na specijalnoj akciji po ceni od {adventureSpecialOffer.Price} za najviše {adventureSpecialOffer.MaxPersonCount} ljudi, a sa početkom {adventureSpecialOffer.StartDate}!\n\nNe propustite ovu sjajnu priliku!");
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

@@ -259,9 +259,7 @@ namespace Hooking.Controllers
                 _context.AdventuresAdventureRules.Remove(rules);
                 await _context.SaveChangesAsync();
             }
-            
 
-           
             return RedirectToAction(nameof(InstructorIndex));
         }
 
