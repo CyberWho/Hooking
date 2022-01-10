@@ -76,7 +76,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("/CottageSpecialOffers/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
+        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,ValidFrom,ValidTo,Price,MaxPersonCount,Description,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
         {
             if (ModelState.IsValid)
             {
@@ -84,6 +84,8 @@ namespace Hooking.Controllers
                 cottageSpecialOffer.CottageId = id.ToString();
                 cottageSpecialOffer.StartDate = cottageSpecialOffer.StartDate.Date;
                 cottageSpecialOffer.EndDate = cottageSpecialOffer.EndDate.Date;
+                cottageSpecialOffer.ValidFrom = cottageSpecialOffer.ValidFrom.Date;
+                cottageSpecialOffer.ValidTo = cottageSpecialOffer.ValidTo.Date;
                 cottageSpecialOffer.IsReserved = false;
                 _context.Add(cottageSpecialOffer);
                 await _context.SaveChangesAsync();
@@ -149,7 +151,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CottageId,StartDate,EndDate,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CottageId,StartDate,EndDate,ValidFrom,ValidTo,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] CottageSpecialOffer cottageSpecialOffer)
         {
             if (id != cottageSpecialOffer.Id)
             {
@@ -167,8 +169,10 @@ namespace Hooking.Controllers
                     }
                     cottageSpecialOfferTmp.Id = id;
                     cottageSpecialOfferTmp.CottageId = cottageSpecialOffer.CottageId;
-                    cottageSpecialOfferTmp.StartDate = cottageSpecialOffer.StartDate;
-                    cottageSpecialOfferTmp.EndDate = cottageSpecialOffer.EndDate;
+                    cottageSpecialOfferTmp.StartDate = cottageSpecialOffer.StartDate.Date;
+                    cottageSpecialOfferTmp.EndDate = cottageSpecialOffer.EndDate.Date;
+                    cottageSpecialOfferTmp.ValidFrom = cottageSpecialOffer.ValidFrom.Date;
+                    cottageSpecialOfferTmp.ValidTo = cottageSpecialOffer.ValidTo.Date;
                     cottageSpecialOfferTmp.Price = cottageSpecialOffer.Price;
                     cottageSpecialOfferTmp.MaxPersonCount = cottageSpecialOffer.MaxPersonCount;
                     cottageSpecialOfferTmp.Description = cottageSpecialOffer.Description;

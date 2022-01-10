@@ -13,5 +13,6 @@ namespace Hooking.Models
         public DateTime CreationTime { get; } = DateTime.Now;
         [DisplayName("Zalba")]
         public string AppealContent { get; set; } // limited to 300 chars
+        public string Email { get; set; }
     }
 }

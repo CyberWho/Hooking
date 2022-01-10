@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class BoatAppealsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private readonly UserManager<IdentityUser> _userManager;
         public BoatAppealsController(ApplicationDbContext context)
         {
             _context = context;
@@ -60,6 +61,8 @@ namespace Hooking.Controllers
             {
                 boatAppeal.Id = Guid.NewGuid();
                 boatAppeal.BoatId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                boatAppeal.Email = user.Email;
                 _context.Add(boatAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

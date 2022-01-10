@@ -33,7 +33,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 List<BoatSpecialOffer> boatSpecialOffersTemp = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList<BoatSpecialOffer>();
                 foreach (BoatSpecialOffer boatSpecialOffer in  boatSpecialOffersTemp)
                 {
-                    if (boatSpecialOffer.StartDate >= DateTime.Now)
+                    if (boatSpecialOffer.ValidFrom <= DateTime.Now && boatSpecialOffer.ValidTo >= DateTime.Now)
                     {
                         boatSpecialOffers.Add(boatSpecialOffer);
                         boatNames.Add(boat.Name);

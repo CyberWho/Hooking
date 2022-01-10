@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class CottageAppealsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        private readonly UserManager<IdentityUser> _userManager;
         public CottageAppealsController(ApplicationDbContext context)
         {
             _context = context;
@@ -60,6 +61,8 @@ namespace Hooking.Controllers
             {
                 cottageAppeal.Id = Guid.NewGuid();
                 cottageAppeal.CottageId = id.ToString();
+                var user = await _userManager.GetUserAsync(User);
+                cottageAppeal.Email = user.Email;
                 _context.Add(cottageAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
