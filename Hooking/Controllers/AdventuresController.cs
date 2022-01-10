@@ -22,15 +22,14 @@ namespace Hooking.Controllers
     public class AdventuresController : Controller
     {
         private readonly IAdventureService _adventureService;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ApplicationDbContext _context;
         public List<AdventureImage> adventureImages = new List<AdventureImage>();
-        private readonly BlobUtility utility;
-        public AdventuresController(IAdventureService adventureService,
-            UserManager<IdentityUser> userManager)
+
+        public AdventuresController(IAdventureService adventureService, 
+            ApplicationDbContext context)
         {
             _adventureService = adventureService;
-            _userManager = userManager;
-            utility = new BlobUtility();
+            _context = context;
         }
 
         // GET: Adventures
@@ -142,7 +141,6 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 _adventureService.Create(dto);
-                _adventureService.AddAdventure(adventure);
 
                 return RedirectToAction(nameof(InstructorIndex));
             }
