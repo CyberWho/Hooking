@@ -33,8 +33,10 @@
     <PackageReference Include="GoogleMaps.LocationServices" Version="1.2.0.5" />
     <PackageReference Include="jQuery.Fullcalendar" Version="3.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.20" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.21" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="3.1.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.21" />
@@ -52,6 +54,8 @@
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.13.2" />
     <PackageReference Include="NUnit.Extension.NUnitProjectLoader" Version="3.7.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.0" />
+    <PackageReference Include="OpenQA.Selenium.Winium" Version="1.0.0.4" />
+    <PackageReference Include="System.Web.Http.Common" Version="4.0.20126.16343" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
