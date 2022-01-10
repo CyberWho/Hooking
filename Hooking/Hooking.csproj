@@ -27,6 +27,8 @@
     <Compile Remove="Data\Migrations\20211210152513_updateAdv.Designer.cs" />
     <Compile Remove="Data\Migrations\20211210161224_changes.cs" />
     <Compile Remove="Data\Migrations\20211210161224_changes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20220110202108_AddedEmailToAppeals.cs" />
+    <Compile Remove="Data\Migrations\20220110202108_AddedEmailToAppeals.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

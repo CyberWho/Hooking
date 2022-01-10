@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class AdventureAppealsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AdventureAppealsController(ApplicationDbContext context)
         {
@@ -60,7 +62,8 @@ namespace Hooking.Controllers
             {
                 adventureAppeal.Id = Guid.NewGuid();
                 adventureAppeal.AdventureId = id.ToString();
-
+                var user = await _userManager.GetUserAsync(User);
+                adventureAppeal.UserEmail = user.Email;
                 _context.Add(adventureAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
