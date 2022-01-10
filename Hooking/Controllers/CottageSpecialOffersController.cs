@@ -21,18 +21,15 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         public Cottage cottage;
 
         public CottageSpecialOffersController(ApplicationDbContext context,
                                               UserManager<IdentityUser> userManager,
-                                              RoleManager<IdentityRole> roleManager,
                                               IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
-            _roleManager = roleManager;
             _emailSender = emailSender;
             using (StreamReader reader = new StreamReader("./Data/emailCredentials.json"))
             {
@@ -164,6 +161,10 @@ namespace Hooking.Controllers
                 try
                 {
                     var cottageSpecialOfferTmp = await _context.CottageSpecialOffer.FindAsync(id);
+                    if(!cottageSpecialOfferTmp.IsReserved)
+                    {
+                        return RedirectToPage("/Account/Manage/MySpecialOffers", new { area = "Identity" });
+                    }
                     cottageSpecialOfferTmp.Id = id;
                     cottageSpecialOfferTmp.CottageId = cottageSpecialOffer.CottageId;
                     cottageSpecialOfferTmp.StartDate = cottageSpecialOffer.StartDate;

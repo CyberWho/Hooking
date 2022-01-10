@@ -15,20 +15,30 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using Newtonsoft.Json;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Nito.AsyncEx.Synchronous;
 
 namespace Hooking.Services.Implementations
 {
     public class AdventureService : IAdventureService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public AdventureService(ApplicationDbContext context)
+        public AdventureService(ApplicationDbContext context, 
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
 
             using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
             string json = reader.ReadToEnd();
             JsonConvert.DeserializeObject<EmailSender>(json);
+            _userManager = userManager;
+        }
+
+        public IEnumerable<Adventure> GetAdventures()
+        {
+            return _context.Adventure.ToList();
         }
 
         public IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId)
@@ -98,8 +108,75 @@ namespace Hooking.Services.Implementations
                 }
             }
 
-
             return retVal;
+        }
+
+        public void AddAdventure(Adventure adventure)
+        {
+            adventure.Id = Guid.NewGuid();
+            _context.Add(adventure);
+            _context.SaveChanges();
+        }
+
+        public Adventure FindAdventureById(Guid id)
+        {
+            return _context.Adventure.Find(id);
+        }
+
+        public void UpdateAdventure(Adventure adventure)
+        {
+            Adventure updatedAdventure = FindAdventureById(adventure.Id);
+            _context.Entry(updatedAdventure).CurrentValues.SetValues(adventure);
+            _context.SaveChanges();
+        }
+
+        public void RemoveAdventure(Guid id)
+        {
+            var adventure = FindAdventureById(id);
+            List<AdventureRealisation> adventureRealisations = new List<AdventureRealisation>();
+            string adventureId = adventure.Id.ToString();
+            adventureRealisations = GetAdventureRealiastions(id).ToList();
+            if (adventureRealisations.Count == 0)
+            {
+                _context.Adventure.Remove(adventure);
+                _context.SaveChanges();
+            }
+            List<AdventureSpecialOffer> adventureSpecialOffers = new List<AdventureSpecialOffer>();
+            adventureSpecialOffers = _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureId).ToList();
+            if (adventureSpecialOffers.Count == 0)
+            {
+                _context.Adventure.Remove(adventure);
+                _context.SaveChanges();
+            }
+        }
+
+        public IEnumerable<Adventure> GetAdventuresForSpecialOffer(ClaimsPrincipal User)
+        {
+            var user = _userManager.GetUserAsync(User).WaitAndUnwrapException();
+
+            Guid userId = Guid.Parse(user.Id);
+            System.Diagnostics.Debug.WriteLine(userId);
+            UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            Instructor instructor = _context.Instructor.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
+            string instructorId = instructor.Id.ToString();
+            List<Adventure> adventures = _context.Adventure.Where(m => m.InstructorId == instructorId).ToList();
+            return adventures;
+        }
+
+        public IEnumerable<AdventureImage> GetAdventureImages(Guid adventureId)
+        {
+            return _context.AdventureImage.Where(m => m.AdventureId == adventureId.ToString()).ToList();
+        }
+
+        public void AddAdventureImage(Guid adventureId, CloudBlockBlob blockBlob)
+        {
+            AdventureImage adventureImage = new AdventureImage();
+            adventureImage.Id = Guid.NewGuid();
+            adventureImage.AdventureId = adventureId.ToString();
+            adventureImage.ImageUrl = blockBlob.Uri.ToString();
+            _context.AdventureImage.Add(adventureImage);
+            _context.SaveChanges();
         }
 
         public IEnumerable<AdventureDTO> GetInstructorAdventures(string userId)
@@ -223,6 +300,19 @@ namespace Hooking.Services.Implementations
 
             _context.Add(favorite);
             _context.SaveChanges();
+        public IEnumerable<UserDetails> GetAllUserDetails()
+        {
+            return _context.UserDetails.ToList();
+        }
+
+        public IEnumerable<AdventureRealisation> GetAdventureRealiastions(Guid id)
+        {
+            return _context.AdventureRealisation.Where(m => m.AdventureId == id.ToString()).ToList();
+        }
+
+        public bool AdventureExists(Guid id)
+        {
+            return _context.Adventure.Any(e => e.Id == id);
         }
 
         private string GetInstructorNameFromId(Guid instructorId)

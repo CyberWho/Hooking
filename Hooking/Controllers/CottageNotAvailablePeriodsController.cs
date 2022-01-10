@@ -15,20 +15,12 @@ namespace Hooking.Controllers
     public class CottageNotAvailablePeriodsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         public Cottage cottage;
         public List<CalendarHelper> calendarHelpers;
-        public CottageNotAvailablePeriodsController(ApplicationDbContext context,
-                                                    UserManager<IdentityUser> userManager,
-                                                    RoleManager<IdentityRole> roleManager,
-                                                    SignInManager<IdentityUser> signInManager)
+        public CottageNotAvailablePeriodsController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _signInManager = signInManager;
+            
         }
 
         // GET: CottageNotAvailablePeriods
