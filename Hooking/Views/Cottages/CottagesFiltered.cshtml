@@ -4,34 +4,14 @@
 
 @{
     ViewData["Title"] = "Vikendice";
+    DateTime startDate = (DateTime)ViewData["StartDate"];
+    DateTime endDate = (DateTime)ViewData["EndDate"];
+    int MaxPersonCount = (int)ViewData["MaxPersonCount"];
+
 }
 
 <h1>Vikendice</h1>
 
-<a asp-controller="CottageSpecialOffers" asp-action="Index">Specijalne ponude</a>
-<br>
-<a asp-controller="CottageReservations" asp-action="CottageFiltering">Napravi novu rezervaciju</a>
-
-<div class="row">
-    <div class="col-md-2">
-    </div>
-    <div class="col-md-8">
-        <form asp-controller="Cottages" asp-action="Index" class="form-inline">
-            <p>
-                Pretraži po: @Html.TextBox("SearchString")
-
-                <select name="filter" id="filter" style="background-color: transparent;">
-                    <option value="Name" class="option">Nazivu</option>
-                    <option value="City" class="option">Gradu</option>
-                    <option value="Country" class="option">Državi</option>
-                </select>
-                <input type="submit" value="Pretraži" />
-            </p>
-        </form>
-    </div>
-    <div class="col-md-2">
-    </div>
-</div>
 <table class="table">
     <thead>
         <tr>
@@ -65,7 +45,7 @@
             <th hidden>
                 @Html.DisplayNameFor(model => model.CancelationPolicyId)
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.RegularPrice)
             </th>
             <th hidden>
@@ -114,7 +94,7 @@
                 <th hidden>
                     @Html.DisplayFor(modelItem => item.CancelationPolicyId)
                 </th>
-                <th hidden>
+                <th>
                     @Html.DisplayFor(modelItem => item.RegularPrice)
                 </th>
                 <th hidden>
@@ -128,8 +108,8 @@
                 </td>
                 <td>
 
-                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još | </a>
-                    <a asp-action="Create" asp-controller="CottageFavorites" asp-route-id="@item.Id">Pretplati se</a>
+                    <a href="@Url.Action("FinishCottageReservation", "Cottages", new { Id = @item.Id, StartDate=startDate, EndDate=endDate, MaxPersonCount = MaxPersonCount })">Rezervisi</a>
+
                     @if (_signInManager.IsSignedIn(User))
                     {
                         @if (User.IsInRole("Admin"))

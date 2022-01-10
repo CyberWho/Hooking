@@ -250,5 +250,47 @@ namespace Hooking.Controllers
         {
             return _context.CottageReservation.Any(e => e.Id == id);
         }
+
+        [HttpGet("/CottageReservations/CottageFiltering")]
+        public async Task<IActionResult> CottageFiltering()
+        {
+            var cottages = await _context.CottageReservation.FirstOrDefaultAsync();
+            return View(cottages);
+        }
+        [HttpGet("/CottageReservations/CottageReservationFinished")]
+        public async Task<IActionResult> CottageReservationFinished(String CottageId,DateTime StartDate,DateTime EndDate,Double Price,int MaxPersonCount)
+        {
+            CottageReservation cottageReservation = new CottageReservation();
+           // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
+
+            if (ModelState.IsValid)
+            {
+                cottageReservation.Id = Guid.NewGuid();
+                cottageReservation.IsReviewed = false;
+                cottageReservation.CottageId = CottageId;
+                cottageReservation.StartDate = StartDate;
+                cottageReservation.EndDate = EndDate;
+                cottageReservation.Price = Price;
+                cottageReservation.MaxPersonCount = MaxPersonCount;
+                var user = await _userManager.GetUserAsync(User);
+                cottageReservation.UserDetailsId = user.Id;
+
+
+                _context.Add(cottageReservation);
+                await _context.SaveChangesAsync();
+                CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
+                cottageNotAvailablePeriod.Id = Guid.NewGuid();
+                cottageNotAvailablePeriod.CottageId = CottageId;
+                cottageNotAvailablePeriod.StartTime = StartDate;
+                cottageNotAvailablePeriod.EndTime = EndDate;
+                _context.Add(cottageNotAvailablePeriod);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+              //   return RedirectToPage("/Cottages/Index");
+            }
+
+            return View(cottageReservation);
+        }
     }
 }
