@@ -74,13 +74,17 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("BoatSpecialOffers/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,ValidFrom,ValidTo,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
         {
             if (ModelState.IsValid)
             {
                 boatSpecialOffer.Id = Guid.NewGuid();
                 boatSpecialOffer.BoatId = id.ToString();
                 boatSpecialOffer.IsReserved = false;
+                boatSpecialOffer.StartDate = boatSpecialOffer.StartDate.Date;
+                boatSpecialOffer.EndDate = boatSpecialOffer.EndDate.Date;
+                boatSpecialOffer.ValidFrom = boatSpecialOffer.ValidFrom.Date;
+                boatSpecialOffer.ValidTo = boatSpecialOffer.ValidTo.Date;
                 _context.Add(boatSpecialOffer);
                 await _context.SaveChangesAsync();
                 string boatId = id.ToString();
@@ -121,7 +125,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("StartDate,EndDate,ValidFrom,ValidTo,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
         {
             if (id != boatSpecialOffer.Id)
             {
@@ -138,8 +142,10 @@ namespace Hooking.Controllers
                         return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
                     }
                     boatSpecialOfferTemp.Id = id;
-                    boatSpecialOfferTemp.StartDate = boatSpecialOffer.StartDate;
-                    boatSpecialOfferTemp.EndDate = boatSpecialOffer.EndDate;
+                    boatSpecialOfferTemp.StartDate = boatSpecialOffer.StartDate.Date;
+                    boatSpecialOfferTemp.EndDate = boatSpecialOffer.EndDate.Date;
+                    boatSpecialOfferTemp.ValidFrom = boatSpecialOffer.ValidFrom.Date;
+                    boatSpecialOfferTemp.ValidTo = boatSpecialOffer.ValidTo.Date;
                     boatSpecialOfferTemp.Price = boatSpecialOffer.Price;
                     boatSpecialOfferTemp.MaxPersonCount = boatSpecialOffer.MaxPersonCount;
                     boatSpecialOfferTemp.Description = boatSpecialOffer.Description;
