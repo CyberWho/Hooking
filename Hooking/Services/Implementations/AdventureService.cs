@@ -288,9 +288,9 @@ namespace Hooking.Services.Implementations
 
             _context.SaveChanges();
         }
-        
+
         public void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser)
-        {            
+        {
             favorite.Id = Guid.NewGuid();
             favorite.AdventureId = adventureId.ToString();
 
@@ -300,6 +300,8 @@ namespace Hooking.Services.Implementations
 
             _context.Add(favorite);
             _context.SaveChanges();
+        }
+
         public IEnumerable<UserDetails> GetAllUserDetails()
         {
             return _context.UserDetails.ToList();

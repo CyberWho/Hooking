@@ -15,7 +15,6 @@ namespace Hooking.Services
         IEnumerable<Adventure> GetAdventures();
         IEnumerable<AdventureReservationDTO> GetAdventureReservations(Guid instructorId);
         IEnumerable<AdventureReservationDTO> GetAdventureReservationsHistory(Guid instructorId);
-        void AddAdventure(Adventure adventure);
         Adventure FindAdventureById(Guid id);
         void UpdateAdventure(Adventure adventure);
         void RemoveAdventure(Guid id);
