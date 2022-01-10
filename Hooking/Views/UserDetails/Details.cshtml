@@ -67,5 +67,12 @@
     </dl>
 </div>
 <div>
-    <a asp-controller="AdventureReservations" asp-action="Index">Nazad</a>
+    @if (User.IsInRole("Instruktor"))
+    {
+        <a asp-controller="AdventureReservations" asp-action="AdventureReservationHistory">Nazad</a>
+    }
+    else
+    {
+        <a asp-controller="AdventureReservations" asp-action="Index">Nazad</a>
+    }
 </div>

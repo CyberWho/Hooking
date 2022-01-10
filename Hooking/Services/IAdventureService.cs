@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Hooking.Models;
 using Hooking.Models.DTO;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Hooking.Services
@@ -24,6 +25,8 @@ namespace Hooking.Services
         IEnumerable<AdventureDTO> GetInstructorAdventures(string userId);
         bool AdventureEditable(Guid adventureId);
         AdventureDTO GetAdventureDto(Guid adventureId);
+        void Create(AdventureDTO dto);
+        void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser);
         IEnumerable<UserDetails> GetAllUserDetails();
         IEnumerable<AdventureRealisation> GetAdventureRealiastions(Guid id);
         bool AdventureExists(Guid id);

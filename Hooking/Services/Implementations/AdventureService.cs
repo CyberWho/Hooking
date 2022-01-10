@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,10 +8,13 @@ using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Nito.AsyncEx.Synchronous;
 
@@ -25,6 +29,10 @@ namespace Hooking.Services.Implementations
             UserManager<IdentityUser> userManager)
         {
             _context = context;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            JsonConvert.DeserializeObject<EmailSender>(json);
             _userManager = userManager;
         }
 
@@ -245,6 +253,53 @@ namespace Hooking.Services.Implementations
             return dto;
         }
 
+        private AdventureRules FindExistingRules(AdventureDTO dto)
+        {
+            return _context.AdventureRules.FirstOrDefault(r =>
+                r.CabinSmoking == dto.CabinSmoking && r.CatchAndReleaseAllowed == dto.CatchAndReleaseAllowed &&
+                r.ChildFriendly == dto.ChildFriendly && r.YouKeepCatch == dto.YouKeepCatch);
+        }
+
+        public void Create(AdventureDTO dto)
+        {
+            Adventure adventure = new Adventure(dto);
+            adventure.Id = Guid.NewGuid();
+            _context.Add(adventure);
+
+            AdventureRules rules = FindExistingRules(dto);
+
+            if (rules == null)
+            {
+                rules = new AdventureRules
+                {
+                    CabinSmoking = dto.CabinSmoking,
+                    CatchAndReleaseAllowed = dto.CatchAndReleaseAllowed,
+                    ChildFriendly = dto.ChildFriendly,
+                    YouKeepCatch = dto.YouKeepCatch
+                };
+                _context.Add(rules);
+            }
+
+            _context.Add(new AdventuresAdventureRules
+            {
+                AdventureId = adventure.Id.ToString(),
+                AdventureRulesId = rules.Id.ToString()
+            });
+
+            _context.SaveChanges();
+        }
+        
+        public void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser)
+        {            
+            favorite.Id = Guid.NewGuid();
+            favorite.AdventureId = adventureId.ToString();
+
+            UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == identityUser.Id);
+
+            favorite.UserDetailsId = userDetails.Id.ToString();
+
+            _context.Add(favorite);
+            _context.SaveChanges();
         public IEnumerable<UserDetails> GetAllUserDetails()
         {
             return _context.UserDetails.ToList();

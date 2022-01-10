@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Hooking.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Hooking.Controllers
 {
@@ -15,13 +17,16 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAdventureService _adventureService;
 
 
-        public AdventureFavoritesController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AdventureFavoritesController(ApplicationDbContext context, 
+            IAdventureService adventureService, 
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _adventureService = adventureService;
             _userManager = userManager;
-
         }
 
         // GET: AdventureFavorites
@@ -63,14 +68,8 @@ namespace Hooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                System.Diagnostics.Debug.WriteLine(id);
-                adventureFavorites.Id = Guid.NewGuid();
-                adventureFavorites.AdventureId = id.ToString();
-                var user = await _userManager.GetUserAsync(User);
-                System.Diagnostics.Debug.WriteLine(user.Id);
-                adventureFavorites.UserDetailsId = user.Id.ToString();
-                _context.Add(adventureFavorites);
-                await _context.SaveChangesAsync();
+                IdentityUser iUser = await _userManager.GetUserAsync(User);
+                _adventureService.Subscribe(id, adventureFavorites, iUser);
                 return RedirectToAction(nameof(Index));
             }
             return View(adventureFavorites);

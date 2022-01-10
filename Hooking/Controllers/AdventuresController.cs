@@ -129,7 +129,7 @@ namespace Hooking.Controllers
             {
                 InstructorId = instructorId
             };
-            return View(newAdventure);
+            return View(new AdventureDTO(newAdventure));
         }
 
         // POST: Adventures/Create
@@ -137,14 +137,16 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancellationPolicyId,AverageGrade,Price,Id,RowVersion")] Adventure adventure)
+        public IActionResult Create([Bind("InstructorId,Name,Address,City,Country,Description,MaxPersonCount,CancellationPolicyId,ChildFriendly,YouKeepCatch,CatchAndReleaseAllowed,CabinSmoking,AverageGrade,Price")] AdventureDTO dto)
         {
             if (ModelState.IsValid)
             {
+                _adventureService.Create(dto);
                 _adventureService.AddAdventure(adventure);
+
                 return RedirectToAction(nameof(InstructorIndex));
             }
-            return View(adventure);
+            return View(dto);
         }
 
         // GET: Adventures/Edit/5
@@ -223,9 +225,25 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            
-           
-            return RedirectToAction(nameof(InstructorIndex));
+            var adventure = await _context.Adventure.FindAsync(id);
+            List<AdventureRealisation> adventureRealisations = new List<AdventureRealisation>();
+            string adventureId = adventure.Id.ToString();
+            adventureRealisations = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId).ToListAsync();
+            if(adventureRealisations.Count == 0)
+            {
+                _context.Adventure.Remove(adventure);
+            }
+            List<AdventureSpecialOffer> adventureSpecialOffers = new List<AdventureSpecialOffer>();
+            adventureSpecialOffers = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureId).ToListAsync();
+            if(adventureSpecialOffers.Count == 0)
+            {
+                _context.Adventure.Remove(adventure);
+                AdventuresAdventureRules rules = _context.AdventuresAdventureRules.FirstOrDefault(r => r.AdventureId == adventureId);
+                _context.AdventuresAdventureRules.Remove(rules);
+                await _context.SaveChangesAsync();
+            }
+
+           return RedirectToAction(nameof(InstructorIndex));
         }
 
         private bool AdventureExists(Guid id)
