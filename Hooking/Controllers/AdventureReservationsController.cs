@@ -17,6 +17,8 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IAdventureService _adventureService;
+        private readonly UserManager<IdentityUser> _userManager;
+
 
         public AdventureReservationsController(ApplicationDbContext context, 
             IAdventureService adventureService, 
@@ -24,6 +26,7 @@ namespace Hooking.Controllers
         {
             _context = context;
             _adventureService = adventureService;
+            _userManager = userManager;
         }
 
         // GET: AdventureReservations
@@ -129,6 +132,36 @@ namespace Hooking.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        [HttpGet("/AdventureReservations/InstructorFiltering")]
+        public async Task<IActionResult> InstructorFiltering()
+        {
+            var ins = await _context.InstructorNotAvailablePeriod.FirstOrDefaultAsync();
+            return View(ins);
+        }
+
+        [HttpGet("/AdventureReservations/AdventureReservationFinished")]
+        public async Task<IActionResult> AdventureReservationFinished(String AdventureId)
+        {
+            AdventureReservation adventureReservation = new AdventureReservation();
+            var adventureRealisation = await _context.AdventureRealisation.Where(m => m.AdventureId == AdventureId).FirstOrDefaultAsync();
+            // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                adventureReservation.AdventureRealisationId = adventureRealisation.Id.ToString();
+                adventureReservation.UserDetailsId = user.Id;
+                adventureReservation.IsReviewed = false;
+                _context.Add(adventureReservation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+                //   return RedirectToPage("/Cottages/Index");
+            }
+
+            return View(adventureRealisation);
+        }
 
     }
 
