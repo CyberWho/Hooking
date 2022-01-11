@@ -14,7 +14,10 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.0" />
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 	<PackageReference Include="OpenQA.Selenium.Winium" Version="1.0.0.4" />
+	<PackageReference Include="Selenium.Chrome.WebDriver" Version="85.0.0" />
+	<PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
 	<PackageReference Include="System.Web.Http.Common" Version="4.0.20126.16343" />
+	<PackageReference Include="WebDriverManager" Version="2.12.3" />
   </ItemGroup>
 
   <ItemGroup>

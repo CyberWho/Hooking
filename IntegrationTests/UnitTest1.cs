@@ -12,6 +12,7 @@ using System.Threading;
 using OpenQA.Selenium.Chrome;
 using System.IO;
 using System.Reflection;
+using WebDriverManager;
 
 namespace IntegrationTests
 {
@@ -23,12 +24,16 @@ namespace IntegrationTests
         [SetUp]
         public void Setup()
         {
+            _webDriver = new ChromeDriver("C:\\chromedriver_win32\\");
+            _wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(_timeoutInSeconds));
         }
 
         [Test]
         public void Test1()
         {
-            Assert.Pass();
+           
+            
         }
+        
     }
 }
