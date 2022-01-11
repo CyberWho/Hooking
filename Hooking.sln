@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hooking", "Hooking\Hooking.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{5C8F2B22-F20D-45F5-A52F-B633A914BE10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{3A76815E-1C4E-492A-A611-197A041992B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{3A76815E-1C4E-492A-A611-197A041992B5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1FD7FA6C-0B71-47FB-818C-65AE77DE8FEC} = {1FD7FA6C-0B71-47FB-818C-65AE77DE8FEC}
 	EndProjectSection
