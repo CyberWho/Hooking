@@ -248,5 +248,97 @@ namespace Hooking.Controllers
         {
             return _adventureService.AdventureExists(id);
         }
+
+        [HttpPost("/Adventures/InstructorFiltered")]
+
+        public async Task<IActionResult> InstructorFiltered(DateTime StartTime, DateTime EndDate)
+        {
+            List<Instructor> instructors = await _context.Instructor.ToListAsync();
+            List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = await _context.InstructorNotAvailablePeriod.ToListAsync();
+
+            List<Instructor> filteredInstructors = new List<Instructor>();
+
+
+            foreach (InstructorNotAvailablePeriod insNotAvailable in instructorNotAvailablePeriods)
+            {
+
+                // System.Diagnostics.Debug.WriteLine("ctgNotAvailableID: " + ctgNotAvailable.CottageId.ToString());
+                foreach (Instructor ins in instructors)
+                {
+                    //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
+                    if (insNotAvailable.InstructorId != null)
+                    {
+                        if (ins.Id == Guid.Parse(insNotAvailable.InstructorId))
+                        {
+                            if ((insNotAvailable.StartTime >= StartTime && insNotAvailable.StartTime <= EndDate) && insNotAvailable.EndTime >= EndDate)
+                            {
+                                //  cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            }
+                            else if ((insNotAvailable.EndTime >= StartTime && insNotAvailable.EndTime <= EndDate) && insNotAvailable.StartTime <= StartTime)
+                            {
+                                // cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            }
+                            else
+                            {
+                                if (!filteredInstructors.Contains(ins))
+                                {
+                                    filteredInstructors.Add(ins);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (!filteredInstructors.Contains(ins))
+                            {
+                                filteredInstructors.Add(ins);
+                            }
+                        }
+                    }
+
+                }
+            }
+            ViewData["StartDate"] = StartTime;
+            ViewData["EndDate"] = EndDate;
+
+            List<UserDetails> userIns = await _context.UserDetails.ToListAsync();
+
+            var inses = filteredInstructors;
+
+            List<UserDetails> users = new List<UserDetails>();
+            foreach (Instructor instructor in inses)
+            {
+                Guid guid = new Guid(instructor.UserDetailsId);
+                UserDetails user = _context.UserDetails.Where(m => m.Id == guid).FirstOrDefault<UserDetails>();
+                foreach (var userIn in userIns)
+                {
+                    if (userIn.Id == user.Id && !users.Contains(user))
+                    {
+                        users.Add(user);
+                    }
+                }
+            }
+            ViewData["UserInstructors"] = users;
+
+            return View(filteredInstructors);
+        }
+        [HttpGet("/Adventures/FinishAdventureReservation")]
+        public async Task<IActionResult> FinishAdventureReservation(Guid? adventureId)
+        {
+            if (adventureId == null)
+            {
+                return NotFound();
+            }
+
+            AdventureDTO dto = _adventureService.GetAdventureDto((Guid)adventureId);
+            if (dto == null)
+            {
+                return NotFound();
+            }
+            adventureImages = _adventureService.GetAdventureImages(adventureId ?? throw new NullReferenceException()).ToList();
+            ViewData["AdventureImages"] = adventureImages;
+            return View(dto);
+
+        }
     }
 }
