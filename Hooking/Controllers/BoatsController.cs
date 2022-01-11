@@ -380,5 +380,107 @@ namespace Hooking.Controllers
         {
             return _context.Boat.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> BoatsFiltered(DateTime StartDate, DateTime EndDate, int PersonCount)
+        {
+            System.Diagnostics.Debug.WriteLine("boatfiltered");
+
+            System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
+            List<Boat> boats = await _context.Boat.ToListAsync();
+            List<BoatNotAvailablePeriod> boatNotAvailablePeriods = await _context.BoatNotAvailablePeriod.ToListAsync();
+
+            List<Boat> filteredBoats = new List<Boat>();
+
+
+            foreach (BoatNotAvailablePeriod btNotAvailable in boatNotAvailablePeriods)
+            {
+
+                // System.Diagnostics.Debug.WriteLine("ctgNotAvailableID: " + ctgNotAvailable.CottageId.ToString());
+                foreach (Boat bt in boats)
+                {
+                    //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
+                    if (btNotAvailable.BoatId != null)
+                    {
+                        if (bt.Id == Guid.Parse(btNotAvailable.BoatId))
+                        {
+                            if ((btNotAvailable.StartTime >= StartDate && btNotAvailable.StartTime <= EndDate) && btNotAvailable.EndTime >= EndDate)
+                            {
+                                //  cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            }
+                            else if ((btNotAvailable.EndTime >= StartDate && btNotAvailable.EndTime <= EndDate) && btNotAvailable.StartTime <= StartDate)
+                            {
+                                // cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            }
+                            else
+                            {
+                                if (!filteredBoats.Contains(bt))
+                                {
+                                    filteredBoats.Add(bt);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (!filteredBoats.Contains(bt))
+                            {
+                                filteredBoats.Add(bt);
+                            }
+                        }
+                    }
+
+                }
+            }
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+            ViewData["PersonCount"] = PersonCount;
+   
+
+
+            return View(filteredBoats);
+        }
+
+        [HttpGet("/Boats/FinishBoatReservation")]
+        public async Task<IActionResult> FinishBoatReservation(Guid? id, DateTime StartDate, DateTime EndDate, int PersonCount)
+        {
+            System.Diagnostics.Debug.WriteLine("finishboatres");
+
+            System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var boat = await _context.Boat
+                .FirstOrDefaultAsync(m => m.Id == id);
+            var boatId = boat.Id.ToString();
+            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
+            Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
+            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
+            Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
+            if (boat == null)
+            {
+                return NotFound();
+            }
+            List<BoatImage> boatImages = _context.BoatImage.Where(m => m.BoatId == boatId).ToList<BoatImage>();
+            ViewData["BoatOwner"] = boatOwnerUser;
+            ViewData["FullAddress"] = fullAddress;
+            ViewData["CancelationPolicy"] = cancelationPolicy;
+            ViewData["FishingEquipment"] = fishingEquipment;
+            ViewData["BoatImages"] = boatImages;
+            ViewData["Amenities"] = amenities;
+          
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+            ViewData["PersonCount"] = PersonCount;
+
+            return View(boat);
+        }
     }
 }

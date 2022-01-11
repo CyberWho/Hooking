@@ -4,34 +4,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    DateTime startDate = (DateTime)ViewData["StartDate"];
+    DateTime endDate = (DateTime)ViewData["EndDate"];
+    int PersonCount = (int)ViewData["PersonCount"];
 }
 
-<h1>Brodovi</h1>
-<a asp-controller="BoatSpecialOffers" asp-action="Index">Specijalne ponude</a>
-<br>
-<a asp-controller="BoatReservations" asp-action="BoatFiltering">Napravi novu rezervaciju</a>
 
-<div class="row">
-    <div class="col-md-2">
-    </div>
-    <div class="col-md-8">
-        <form asp-controller="Boats" asp-action="Index" class="form-inline">
-            <p>
-                Pretraži po: <input type="text" name="searchString" />
 
-                <select name="filter" id="filter" style="background-color: transparent;">
-                    <option value="Name" class="option">Nazivu</option>
-                    <option value="City" class="option">Gradu</option>
-                    <option value="Country" class="option">Državi</option>
-                    <option value="Capacity" class="option">Kapacitetu</option>
-                </select>
-                <input type="submit" value="Pretraži" />
-            </p>
-        </form>
-    </div>
-    <div class="col-md-2">
-    </div>
-</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -74,7 +54,7 @@
             <th data-defaultsort="asc">
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["AverageGrade"]">@Html.DisplayNameFor(model => model.AverageGrade)</a>
             </th>
-            <th hidden>
+            <th>
                 @Html.DisplayNameFor(model => model.RegularPrice)
             </th>
             <th hidden>
@@ -129,7 +109,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.AverageGrade)
                 </td>
-                <td hidden>
+                <td>
                     @Html.DisplayFor(modelItem => item.RegularPrice)
                 </td>
                 <td hidden>
@@ -140,8 +120,9 @@
                 </td>
                 <td>
 
-                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
-                    <a asp-action="Create" asp-controller="BoatFavorites" asp-route-id="@item.Id">Pretplati se</a>
+                    <a href="@Url.Action("FinishBoatReservation", "Boats", new { Id = @item.Id, StartDate=startDate, EndDate=endDate, PersonCount = PersonCount })">Rezervisi</a>
+
+                
 
                     @if (_signInManager.IsSignedIn(User))
                     {

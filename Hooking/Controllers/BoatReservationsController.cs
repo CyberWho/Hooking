@@ -245,5 +245,51 @@ namespace Hooking.Controllers
         {
             return _context.BoatReservation.Any(e => e.Id == id);
         }
+
+        [HttpGet("/BoatReservations/BoatFiltering")]
+        public async Task<IActionResult> BoatFiltering()
+        {
+            var boats = await _context.BoatReservation.FirstOrDefaultAsync();
+            return View(boats);
+        }
+
+        [HttpGet("/BoatReservations/BoatReservationFinished")]
+        public async Task<IActionResult> BoatReservationFinished(String BoatId, DateTime StartDate, DateTime EndDate, Double Price, int PersonCount)
+        {
+            BoatReservation boatReservation = new BoatReservation();
+            // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
+            System.Diagnostics.Debug.WriteLine("boatresfinished");
+
+            System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
+
+            if (ModelState.IsValid)
+            {
+                boatReservation.Id = Guid.NewGuid();
+                boatReservation.IsReviewed = false;
+                boatReservation.BoatId = BoatId;
+                boatReservation.StartDate = StartDate;
+                boatReservation.EndDate = EndDate;
+                boatReservation.Price = Price;
+                boatReservation.PersonCount = PersonCount;
+                var user = await _userManager.GetUserAsync(User);
+                boatReservation.UserDetailsId = user.Id;
+
+
+                _context.Add(boatReservation);
+                await _context.SaveChangesAsync();
+                BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
+                boatNotAvailablePeriod.Id = Guid.NewGuid();
+                boatNotAvailablePeriod.BoatId = BoatId;
+                boatNotAvailablePeriod.StartTime = StartDate;
+                boatNotAvailablePeriod.EndTime = EndDate;
+                _context.Add(boatNotAvailablePeriod);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+                //   return RedirectToPage("/Cottages/Index");
+            }
+
+            return View(boatReservation);
+        }
     }
 }
