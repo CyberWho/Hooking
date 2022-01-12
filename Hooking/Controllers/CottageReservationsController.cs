@@ -156,6 +156,14 @@ namespace Hooking.Controllers
                     return false;
                 }
             }
+            List<CottageSpecialOffer> cottageSpecialOffers = await _context.CottageSpecialOffer.Where(m => m.CottageId == cottageReservation.CottageId).ToListAsync();
+            foreach(CottageSpecialOffer cottageSpecialOffer in cottageSpecialOffers)
+            {
+                if(IsOverlapping(cottageReservation.StartDate,cottageReservation.EndDate,cottageSpecialOffer.StartDate,cottageSpecialOffer.EndDate))
+                {
+                    return false;
+                }
+            }
             foreach (var reservation in _context.CottageReservation.Local)
             {
                 if(reservation.CottageId == cottageReservation.CottageId)

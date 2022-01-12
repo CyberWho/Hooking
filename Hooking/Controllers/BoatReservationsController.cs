@@ -187,6 +187,14 @@ namespace Hooking.Controllers
                     return false;
                 }
             }
+            List<BoatSpecialOffer> boatSpecialOffers = await _context.BoatSpecialOffer.Where(m => m.BoatId == boatReservation.BoatId).ToListAsync();
+            foreach(BoatSpecialOffer boatSpecialOffer in boatSpecialOffers)
+            {
+                if(IsOverlapping(boatReservation.StartDate,boatReservation.EndDate,boatSpecialOffer.StartDate,boatSpecialOffer.EndDate))
+                {
+                    return false;
+                }
+            }
             foreach (var reservation in _context.BoatReservation.Local)
             {
                 if (reservation.BoatId == boatReservation.BoatId)
