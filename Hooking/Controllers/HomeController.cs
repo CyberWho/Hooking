@@ -26,6 +26,10 @@ namespace Hooking.Controllers
         {
             return View();
         }
+        public IActionResult ConcurrencyActionError()
+        {
+            return View();
+        }
         public IActionResult Cottages()
         {
             return Redirect("/Cottages");
