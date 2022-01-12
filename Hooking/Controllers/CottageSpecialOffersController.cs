@@ -87,6 +87,21 @@ namespace Hooking.Controllers
                 cottageSpecialOffer.ValidFrom = cottageSpecialOffer.ValidFrom.Date;
                 cottageSpecialOffer.ValidTo = cottageSpecialOffer.ValidTo.Date;
                 cottageSpecialOffer.IsReserved = false;
+                if(await IsPossible(cottageSpecialOffer))
+                {
+                    await CreateSpecialOffer(id, cottageSpecialOffer);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyActionError", "Home");
+                }
+                return RedirectToPage("/Account/Manage/MySpecialOffers", new { area = "Identity"});
+            }
+            return View(cottageSpecialOffer);
+        }
+        public async Task<bool> CreateSpecialOffer(Guid id, CottageSpecialOffer cottageSpecialOffer)
+        {
+            if(await IsPossible(cottageSpecialOffer))
+            {
                 _context.Add(cottageSpecialOffer);
                 await _context.SaveChangesAsync();
                 Cottage cottage = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
@@ -97,15 +112,57 @@ namespace Hooking.Controllers
                 {
                     UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == subscribe.UserDetailsId).FirstOrDefault<UserDetails>();
                     var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
-                    var callbackUrl = Url.Action( "Details", "CottageSpecialOffers", new { id = cottageSpecialOffer.Id });
+                    var callbackUrl = Url.Action("Details", "CottageSpecialOffers", new { id = cottageSpecialOffer.Id });
 
                     await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o specijalnoj akciji",
                                $"Poštovani,<br><br> upravo je objavljena specijalna akcija za vikendicu na koju ste pretplaćeni! Za više detalja kliknite na sledeći link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
 
                 }
-                return RedirectToPage("/Account/Manage/MySpecialOffers", new { area = "Identity"});
+                return true;
             }
-            return View(cottageSpecialOffer);
+            return false;
+        }
+        public async Task<bool> IsPossible(CottageSpecialOffer cottageSpecialOffer)
+        {
+           
+            List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageSpecialOffer.CottageId).ToListAsync();
+            foreach (CottageReservation cottageReservationTemp in cottageReservations)
+            {
+                if (IsOverlapping(cottageSpecialOffer.StartDate, cottageSpecialOffer.EndDate, cottageReservationTemp.StartDate, cottageReservationTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            List<CottageSpecialOffer> cottageSpecialOffers = await _context.CottageSpecialOffer.Where(m => m.CottageId == cottageSpecialOffer.CottageId).ToListAsync();
+            foreach (CottageSpecialOffer cottageSpecialOfferTemp in cottageSpecialOffers)
+            {
+                if (IsOverlapping(cottageSpecialOffer.StartDate, cottageSpecialOffer.EndDate, cottageSpecialOfferTemp.StartDate, cottageSpecialOfferTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.CottageReservation.Local)
+            {
+                if (reservation.CottageId == cottageSpecialOffer.CottageId)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+
         }
         private async void SendNotificationToSubscribers(Guid cottageId, Guid specialOfferId)
         {

@@ -85,6 +85,21 @@ namespace Hooking.Controllers
                 boatSpecialOffer.EndDate = boatSpecialOffer.EndDate.Date;
                 boatSpecialOffer.ValidFrom = boatSpecialOffer.ValidFrom.Date;
                 boatSpecialOffer.ValidTo = boatSpecialOffer.ValidTo.Date;
+                if(await IsPossible(boatSpecialOffer))
+                {
+                    await CreateSpecialOffer(id, boatSpecialOffer);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyActionError", "Home");
+                }
+                return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
+            }
+            return View(boatSpecialOffer);
+        }
+        public async Task<bool> CreateSpecialOffer(Guid id, BoatSpecialOffer boatSpecialOffer)
+        {
+            if(await IsPossible(boatSpecialOffer))
+            {
                 _context.Add(boatSpecialOffer);
                 await _context.SaveChangesAsync();
                 string boatId = id.ToString();
@@ -99,11 +114,52 @@ namespace Hooking.Controllers
                                $"Poštovani,<br><br> upravo je objavljena specijalna akcija za brod na koju ste pretplaćeni! Za više detalja kliknite na sledeći link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
 
                 }
-                return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
+                return true;
             }
-            return View(boatSpecialOffer);
+            return false;
+        }
+        public async Task<bool> IsPossible(BoatSpecialOffer boatSpecialOffer)
+        {
+
+            List<BoatReservation> boatReservations = await _context.BoatReservation.Where(m => m.BoatId == boatSpecialOffer.BoatId).ToListAsync();
+            foreach (BoatReservation boatReservationTemp in boatReservations)
+            {
+                if (IsOverlapping(boatSpecialOffer.StartDate, boatSpecialOffer.EndDate, boatReservationTemp.StartDate, boatReservationTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            List<BoatSpecialOffer> boatSpecialOffers = await _context.BoatSpecialOffer.Where(m => m.BoatId == boatSpecialOffer.BoatId).ToListAsync();
+            foreach (BoatSpecialOffer boatSpecialOfferTemp in boatSpecialOffers)
+            {
+                if (IsOverlapping(boatSpecialOffer.StartDate, boatSpecialOffer.EndDate, boatSpecialOfferTemp.StartDate, boatSpecialOfferTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.BoatReservation.Local)
+            {
+                if (reservation.BoatId == boatSpecialOffer.BoatId)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+
+        }
         // GET: BoatSpecialOffers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {

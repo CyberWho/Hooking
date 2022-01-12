@@ -101,9 +101,29 @@ namespace Hooking.Controllers
                      .FirstOrDefaultAsync(m => m.Id == cId);
                 double numberOfDays = (cottageReservation.EndDate - cottageReservation.StartDate).TotalDays;
                 cottageReservation.Price = numberOfDays * cottage.RegularPrice;
+                cottageReservation.StartDate = cottageReservation.StartDate.Date;
+                cottageReservation.EndDate = cottageReservation.EndDate.Date;
                 cottageReservation.UserDetailsId = id.ToString();
                 cottageReservation.CottageId = cId.ToString();
                 cottageReservation.IsReviewed = false;
+                if(await IsPossible(cottageReservation))
+                {
+                    await CreateReservation(id, cottageReservation);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+                }
+                     
+                return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
+
+            }
+            return View();
+            
+        }
+        public async Task<bool> CreateReservation(Guid id,CottageReservation cottageReservation)
+        {
+            if (await IsPossible(cottageReservation))
+            {
                 _context.Add(cottageReservation);
                 await _context.SaveChangesAsync();
                 CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
@@ -114,18 +134,62 @@ namespace Hooking.Controllers
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
                 string userId = id.ToString();
-                UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == userId).FirstOrDefault<UserDetails>();
+                UserDetails userDetails = _context.UserDetails.Where(m => m.Id == id).FirstOrDefault<UserDetails>();
                 var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
-               
+
                 await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o rezervaciji",
                            $"Poštovani,<br><br>Potvrđujemo Vam rezervaciju koju ste napravili u dogovoru sa vlasnikom objekta gde trenutno boravite!");
 
-                return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
+                return true;
             }
-            return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
-            
+            return false;
         }
-       
+        public async Task<bool> IsPossible(CottageReservation cottageReservation)
+        {
+            Guid cottageId = Guid.Parse(cottageReservation.CottageId);
+            Cottage cottage = await _context.Cottage.FirstOrDefaultAsync(m => m.Id == cottageId);
+            List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageReservation.CottageId).ToListAsync();
+            foreach(CottageReservation cottageReservationTemp in cottageReservations)
+            {
+                if(IsOverlapping(cottageReservation.StartDate,cottageReservation.EndDate,cottageReservationTemp.StartDate,cottageReservationTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            List<CottageSpecialOffer> cottageSpecialOffers = await _context.CottageSpecialOffer.Where(m => m.CottageId == cottageReservation.CottageId).ToListAsync();
+            foreach(CottageSpecialOffer cottageSpecialOffer in cottageSpecialOffers)
+            {
+                if(IsOverlapping(cottageReservation.StartDate,cottageReservation.EndDate,cottageSpecialOffer.StartDate,cottageSpecialOffer.EndDate))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.CottageReservation.Local)
+            {
+                if(reservation.CottageId == cottageReservation.CottageId)
+                {
+                    if(IsOverlapping(reservation.StartDate,reservation.EndDate,cottageReservation.StartDate,cottageReservation.EndDate))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+           
+        }
         // GET: CottageReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
