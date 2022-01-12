@@ -140,6 +140,21 @@ namespace Hooking.Controllers
                 boatReservation.UserDetailsId = id.ToString();
                 boatReservation.BoatId = cId.ToString();
                 boatReservation.IsReviewed = false;
+                if(await IsPossible(boatReservation))
+                {
+                    await CreateReservation(id, boatReservation);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+                }
+                return RedirectToPage("/Account/Manage/BoatReservations", new { area = "Identity" });
+            }
+            return View(boatReservation);
+        }
+        public async Task<bool> CreateReservation(Guid id, BoatReservation boatReservation)
+        {
+            if(await IsPossible(boatReservation))
+            {
                 _context.Add(boatReservation);
                 await _context.SaveChangesAsync();
                 BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
@@ -156,9 +171,47 @@ namespace Hooking.Controllers
                 await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o rezervaciji",
                            $"Poštovani,<br><br>Potvrđujemo Vam rezervaciju koju ste napravili u dogovoru sa vlasnikom broda na kom trenutno boravite!");
 
-                return RedirectToPage("/Account/Manage/BoatReservations", new { area = "Identity" });
+                return true;
             }
-            return View(boatReservation);
+            return false;
+        }
+        public async Task<bool> IsPossible(BoatReservation boatReservation)
+        {
+            Guid boatId = Guid.Parse(boatReservation.BoatId);
+            Boat boat = await _context.Boat.FirstOrDefaultAsync(m => m.Id == boatId);
+            List<BoatReservation> boatReservations = await _context.BoatReservation.Where(m => m.BoatId == boatReservation.BoatId).ToListAsync();
+            foreach (BoatReservation boatReservationTemp in boatReservations)
+            {
+                if (IsOverlapping(boatReservation.StartDate, boatReservation.EndDate, boatReservationTemp.StartDate, boatReservationTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.BoatReservation.Local)
+            {
+                if (reservation.BoatId == boatReservation.BoatId)
+                {
+                    if (IsOverlapping(reservation.StartDate, reservation.EndDate, boatReservation.StartDate, boatReservation.EndDate))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+
         }
 
         // GET: BoatReservations/Edit/5
