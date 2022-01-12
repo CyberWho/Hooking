@@ -24,6 +24,40 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             List<Cottage> cottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
+            List<string> cottageNames = new List<string>();
+            List<double> cottageIncomes = new List<double>();
+            List<int> cottageNumOfReservations = new List<int>();
+            foreach(Cottage cottage in cottages)
+            {
+                string cottageId = cottage.Id.ToString();
+                double income = 0;
+                int reservations = 0;
+                List<CottageReservation> cottageReservations = _context.CottageReservation.Where(m => m.CottageId == cottageId).ToList();
+                foreach (CottageReservation cottageReservation in cottageReservations)
+                {
+                    if (cottageReservation.EndDate <= DateTime.Now)
+                    {
+                        income += cottageReservation.Price;
+                        reservations++;
+                    }
+                }
+                List<CottageSpecialOffer> cottageSpecialOffers = _context.CottageSpecialOffer.Where(m => m.CottageId == cottageId).ToList();
+                foreach (CottageSpecialOffer cottageSpecialOffer in cottageSpecialOffers)
+                {
+                    if (cottageSpecialOffer.EndDate <= DateTime.Now && cottageSpecialOffer.IsReserved == true)
+                    {
+                        income += cottageSpecialOffer.Price;
+                        reservations++;
+                    }
+                }
+                cottageNames.Add(cottage.Name);
+                cottageIncomes.Add(income);
+                cottageNumOfReservations.Add(reservations);
+            }
+            ViewData["CottageNames"] = cottageNames;
+            ViewData["CottageIncomes"] = cottageIncomes;
+            ViewData["CottageNumOfReservations"] = cottageNumOfReservations;
+            ViewData["TotalNumOfCottages"] = cottages.Count();
             return Page();
         }
     }

@@ -25,6 +25,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList();
             double totalIncome = 0;
+            int totalReservations = 0;
             foreach(Boat boat in boats)
             {
                 string boatId = boat.Id.ToString();
@@ -34,6 +35,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                     if(boatReservation.EndDate <= DateTime.Now)
                     {
                         totalIncome += boatReservation.Price;
+                        totalReservations++;
                     }
                 }
                 List<BoatSpecialOffer> boatSpecialOffers = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList();
@@ -42,10 +44,12 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                     if(boatSpecialOffer.EndDate <= DateTime.Now && boatSpecialOffer.IsReserved == true)
                     {
                         totalIncome += boatSpecialOffer.Price;
+                        totalReservations++;
                     }
                 }
             }
-            ViewData["TotalIncome"] = totalIncome;
+            ViewData["TotalIncome"] = Math.Round(totalIncome,2);
+            ViewData["TotalReservations"] = totalReservations;
             return Page();
         }
     }

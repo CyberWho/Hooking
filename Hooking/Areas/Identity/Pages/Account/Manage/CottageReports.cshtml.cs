@@ -28,6 +28,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             List<Cottage> cottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
             double totalIncome = 0;
+            int totalReservations = 0;
             foreach(Cottage cottage in cottages)
             {
                 string cottageId = cottage.Id.ToString();
@@ -37,6 +38,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                     if(cottageReservation.EndDate <= DateTime.Now)
                     {
                         totalIncome += cottageReservation.Price;
+                        totalReservations++;
                     }
                 }
                 List<CottageSpecialOffer> cottageSpecialOffers = _context.CottageSpecialOffer.Where(m => m.CottageId == cottageId).ToList();
@@ -45,10 +47,12 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                     if(cottageSpecialOffer.EndDate <= DateTime.Now && cottageSpecialOffer.IsReserved == true)
                     {
                         totalIncome += cottageSpecialOffer.Price;
+                        totalReservations++;
                     }
                 }
             }
             ViewData["TotalIncome"] = totalIncome;
+            ViewData["TotalReservations"] = totalReservations;
             return Page();
         }
     }
