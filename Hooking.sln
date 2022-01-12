@@ -12,6 +12,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "Integra
 		{1FD7FA6C-0B71-47FB-818C-65AE77DE8FEC} = {1FD7FA6C-0B71-47FB-818C-65AE77DE8FEC}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConcurrencyDocuments", "ConcurrencyDocuments", "{2EB956E4-FD85-4665-AB7E-FDE3F08F2218}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\INTERNET SOFTVERSKE ARHITEKTURE\Concurrency_student2.pdf = ..\..\INTERNET SOFTVERSKE ARHITEKTURE\Concurrency_student2.pdf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
