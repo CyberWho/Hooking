@@ -20,6 +20,12 @@
                 Od
             </th>
             <th>
+                Važi od
+            </th>
+            <th>
+                Važi do
+            </th>
+            <th>
                 Trajanje
             </th>
             <th>
@@ -37,41 +43,47 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @adventureNames[index]
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Duration)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MaxPersonCount)
-                </td>
-                <td>
-                    @if (item.IsReserved)
-                    {
-                        @Html.Raw("Da");
-                    }
-                    else
-                    {
-                        @Html.Raw("Ne");
-                    }
-                </td>
-                <td>
-                    <a href="@Url.Action("Edit", "AdventureSpecialOffers", new { Id = @item.Id })">Izmeni</a> |
-                    <a href="@Url.Action("Details", "AdventureSpecialOffers", new { Id = @item.Id })">Prikaži još</a> |
-                    <a href="@Url.Action("Delete", "AdventureSpecialOffers", new { Id = @item.Id })">Ukloni</a>
-                </td>
-                @{
-                    index++;
+        <tr>
+            <td>
+                @adventureNames[index]
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPersonCount)
+            </td>
+            <td>
+                @if (item.IsReserved)
+                {
+                    @Html.Raw("Da");
                 }
-            </tr>
+                else
+                {
+                    @Html.Raw("Ne");
+                }
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "AdventureSpecialOffers", new { Id = @item.Id })">Izmeni</a> |
+                <a href="@Url.Action("Details", "AdventureSpecialOffers", new { Id = @item.Id })">Prikaži još</a> |
+                <a href="@Url.Action("Delete", "AdventureSpecialOffers", new { Id = @item.Id })">Ukloni</a>
+            </td>
+            @{
+                index++;
+            }
+        </tr>
         }
     </tbody>
 </table>
