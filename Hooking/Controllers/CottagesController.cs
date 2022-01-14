@@ -434,5 +434,120 @@ namespace Hooking.Controllers
             return _context.Cottage.Any(e => e.Id == id);
         }
 
+        [HttpPost("/Cottages/CottagesFiltered")]
+
+        public async Task<IActionResult> CottagesFiltered(DateTime StartDate,DateTime EndDate, int MaxPersonCount)
+        {
+            List<Cottage> cottages = await _context.Cottage.ToListAsync();
+            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = await _context.CottageNotAvailablePeriod.ToListAsync();
+
+            List<Cottage> filteredCottages = new List<Cottage>();
+   
+
+            foreach (CottageNotAvailablePeriod ctgNotAvailable in cottageNotAvailablePeriods)
+            {
+
+               // System.Diagnostics.Debug.WriteLine("ctgNotAvailableID: " + ctgNotAvailable.CottageId.ToString());
+                foreach(Cottage ctg in cottages)
+                {
+                    //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
+                    if (ctgNotAvailable.CottageId != null)
+                    {
+                        if (ctg.Id == Guid.Parse(ctgNotAvailable.CottageId))
+                        {
+                            if ((ctgNotAvailable.StartTime >= StartDate && ctgNotAvailable.StartTime <= EndDate) && ctgNotAvailable.EndTime >= EndDate)
+                            {
+                                //  cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            }
+                            else if ((ctgNotAvailable.EndTime >= StartDate && ctgNotAvailable.EndTime <= EndDate) && ctgNotAvailable.StartTime <= StartDate)
+                            {
+                                // cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            }
+                            else
+                            {
+                                if (!filteredCottages.Contains(ctg))
+                                {
+                                    filteredCottages.Add(ctg);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (!filteredCottages.Contains(ctg))
+                            {
+                                filteredCottages.Add(ctg);
+                            }
+                        }
+                    }
+                   
+                }
+            }
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+            ViewData["MaxPersonCount"] = MaxPersonCount;
+            System.Diagnostics.Debug.WriteLine("cottageFiltered");
+            System.Diagnostics.Debug.WriteLine(MaxPersonCount.ToString());
+
+
+            return View(filteredCottages);
+        }
+        [HttpGet("/Cottages/FinishCottageReservation")]
+        public async Task<IActionResult> FinishCottageReservation(Guid? id,DateTime StartDate,DateTime EndDate,int MaxPersonCount)
+        {
+            System.Diagnostics.Debug.WriteLine("finishCottageReservation");
+            System.Diagnostics.Debug.WriteLine(MaxPersonCount.ToString());
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cottage = await _context.Cottage
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (cottage == null)
+            {
+                return NotFound();
+            }
+            Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
+            var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
+
+            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            var cottageId = cottage.Id.ToString();
+            CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
+            Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
+            houseRules = _context.HouseRules.Where(m => m.Id == houseRulesId).FirstOrDefault<HouseRules>();
+            Guid cottageCancelationPolicyId = Guid.Parse(cottage.CancelationPolicyId);
+            cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == cottageCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
+            var cottagesFacilities = _context.CottagesFacilities.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesFacilities>();
+            Guid cottagesFacilitiesId = Guid.Parse(cottagesFacilities.FacilitiesId);
+            facilities = _context.Facilities.Where(m => m.Id == cottagesFacilitiesId).FirstOrDefault<Facilities>();
+            List<CottagesRooms> cottagesRooms = await _context.CottagesRooms.Where(m => m.CottageId == cottageId).ToListAsync<CottagesRooms>();
+            foreach (var cottagesRoom in cottagesRooms)
+            {
+                Guid cottageRoomId = Guid.Parse(cottagesRoom.CottageRoomId);
+                var cottageRoom = _context.CottageRoom.Where(m => m.Id == cottageRoomId).FirstOrDefault<CottageRoom>();
+                cottageRooms.Add(cottageRoom);
+            }
+
+            var fullAddress = cottage.Address + "," + cottage.City + "," + cottage.Country;
+
+            cottageImages = _context.CottageImages.Where(m => m.CottageId == cottageId).ToList();
+            ViewBag.PhotoCount = cottageImages.Count;
+            ViewData["CottageOwner"] = cottageOwner;
+            ViewData["HouseRules"] = houseRules;
+            ViewData["CancellationPolicyId"] = cancelationPolicy;
+            ViewData["Facilities"] = facilities;
+            ViewData["CottageRooms"] = cottageRooms;
+            ViewData["CottageImages"] = cottageImages;
+            ViewData["FullAddress"] = fullAddress;
+            System.Diagnostics.Debug.WriteLine(StartDate.ToString());
+            System.Diagnostics.Debug.WriteLine(EndDate.ToString());
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+            ViewData["MaxPersonCount"] = MaxPersonCount;
+
+            return View(cottage);
+        }
+
     }
 }

@@ -26,6 +26,12 @@
                 Do
             </th>
             <th>
+                Važi od
+            </th>
+            <th>
+                Važi do
+            </th>
+            <th>
                 Cena
             </th>
             <th>
@@ -49,6 +55,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidTo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)

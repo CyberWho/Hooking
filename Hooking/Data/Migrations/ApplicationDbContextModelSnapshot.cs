@@ -77,6 +77,9 @@ namespace Hooking.Data.Migrations
                     b.Property<string>("AppealContent")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -519,6 +522,9 @@ namespace Hooking.Data.Migrations
                     b.Property<string>("BoatId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -839,6 +845,12 @@ namespace Hooking.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ValidTo")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("BoatSpecialOffer");
@@ -975,6 +987,9 @@ namespace Hooking.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CottageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
@@ -1267,6 +1282,12 @@ namespace Hooking.Data.Migrations
                         .HasColumnType("rowversion");
 
                     b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

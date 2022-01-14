@@ -110,7 +110,8 @@ namespace Hooking.Controllers
             {
                 adventureAppeal.Id = Guid.NewGuid();
                 adventureAppeal.AdventureId = id.ToString();
-
+                var user = await _userManager.GetUserAsync(User);
+                adventureAppeal.Email = user.Email;
                 _context.Add(adventureAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

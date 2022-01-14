@@ -74,13 +74,32 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("BoatSpecialOffers/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Create(Guid id, [Bind("StartDate,EndDate,ValidFrom,ValidTo,Price,MaxPersonCount,Description,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
         {
             if (ModelState.IsValid)
             {
                 boatSpecialOffer.Id = Guid.NewGuid();
                 boatSpecialOffer.BoatId = id.ToString();
                 boatSpecialOffer.IsReserved = false;
+                boatSpecialOffer.StartDate = boatSpecialOffer.StartDate.Date;
+                boatSpecialOffer.EndDate = boatSpecialOffer.EndDate.Date;
+                boatSpecialOffer.ValidFrom = boatSpecialOffer.ValidFrom.Date;
+                boatSpecialOffer.ValidTo = boatSpecialOffer.ValidTo.Date;
+                if(await IsPossible(boatSpecialOffer))
+                {
+                    await CreateSpecialOffer(id, boatSpecialOffer);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyActionError", "Home");
+                }
+                return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
+            }
+            return View(boatSpecialOffer);
+        }
+        public async Task<bool> CreateSpecialOffer(Guid id, BoatSpecialOffer boatSpecialOffer)
+        {
+            if(await IsPossible(boatSpecialOffer))
+            {
                 _context.Add(boatSpecialOffer);
                 await _context.SaveChangesAsync();
                 string boatId = id.ToString();
@@ -95,11 +114,52 @@ namespace Hooking.Controllers
                                $"Poštovani,<br><br> upravo je objavljena specijalna akcija za brod na koju ste pretplaćeni! Za više detalja kliknite na sledeći link <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ovaj link</a>.");
 
                 }
-                return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
+                return true;
             }
-            return View(boatSpecialOffer);
+            return false;
+        }
+        public async Task<bool> IsPossible(BoatSpecialOffer boatSpecialOffer)
+        {
+
+            List<BoatReservation> boatReservations = await _context.BoatReservation.Where(m => m.BoatId == boatSpecialOffer.BoatId).ToListAsync();
+            foreach (BoatReservation boatReservationTemp in boatReservations)
+            {
+                if (IsOverlapping(boatSpecialOffer.StartDate, boatSpecialOffer.EndDate, boatReservationTemp.StartDate, boatReservationTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            List<BoatSpecialOffer> boatSpecialOffers = await _context.BoatSpecialOffer.Where(m => m.BoatId == boatSpecialOffer.BoatId).ToListAsync();
+            foreach (BoatSpecialOffer boatSpecialOfferTemp in boatSpecialOffers)
+            {
+                if (IsOverlapping(boatSpecialOffer.StartDate, boatSpecialOffer.EndDate, boatSpecialOfferTemp.StartDate, boatSpecialOfferTemp.EndDate))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.BoatReservation.Local)
+            {
+                if (reservation.BoatId == boatSpecialOffer.BoatId)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+
+        }
         // GET: BoatSpecialOffers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
@@ -121,7 +181,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BoatId,StartDate,EndDate,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
+        public async Task<IActionResult> Edit(Guid id, [Bind("StartDate,EndDate,ValidFrom,ValidTo,Price,MaxPersonCount,Description,IsReserved,Id,RowVersion")] BoatSpecialOffer boatSpecialOffer)
         {
             if (id != boatSpecialOffer.Id)
             {
@@ -138,8 +198,10 @@ namespace Hooking.Controllers
                         return RedirectToPage("/Account/Manage/BoatSpecialOffers", new { area = "Identity" });
                     }
                     boatSpecialOfferTemp.Id = id;
-                    boatSpecialOfferTemp.StartDate = boatSpecialOffer.StartDate;
-                    boatSpecialOfferTemp.EndDate = boatSpecialOffer.EndDate;
+                    boatSpecialOfferTemp.StartDate = boatSpecialOffer.StartDate.Date;
+                    boatSpecialOfferTemp.EndDate = boatSpecialOffer.EndDate.Date;
+                    boatSpecialOfferTemp.ValidFrom = boatSpecialOffer.ValidFrom.Date;
+                    boatSpecialOfferTemp.ValidTo = boatSpecialOffer.ValidTo.Date;
                     boatSpecialOfferTemp.Price = boatSpecialOffer.Price;
                     boatSpecialOfferTemp.MaxPersonCount = boatSpecialOffer.MaxPersonCount;
                     boatSpecialOfferTemp.Description = boatSpecialOffer.Description;

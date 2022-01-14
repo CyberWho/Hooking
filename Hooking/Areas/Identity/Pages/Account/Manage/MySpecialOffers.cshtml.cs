@@ -48,7 +48,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 List<CottageSpecialOffer> specialOffers = _context.CottageSpecialOffer.Where(m => m.CottageId == cottageId).ToList<CottageSpecialOffer>();
                 foreach(var specialOffer in specialOffers)
                 {
-                    if(specialOffer.StartDate >= DateTime.Now)
+                    if(specialOffer.ValidFrom <= DateTime.Now && specialOffer.ValidTo >= DateTime.Now)
                     {
                         cottageSpecialOffers.Add(specialOffer);
                         Guid cottageGuid = Guid.Parse(specialOffer.CottageId);

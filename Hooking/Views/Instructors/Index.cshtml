@@ -10,6 +10,8 @@
 }
 
 <h1>Instruktori</h1>
+<br>
+<a asp-controller="AdventureReservations" asp-action="InstructorFiltering">Napravi novu rezervaciju</a>
 
 
 <div class="row">
@@ -18,15 +20,15 @@
     <div class="col-md-8">
         <form asp-controller="Instructors" asp-action="Index" class="form-inline">
             <p>
-                 Pretraži po: @Html.TextBox("SearchString") 
+                Pretraži po: @Html.TextBox("SearchString")
 
-                             <select name="filter" id="filter" style="background-color: transparent;">
-                                 <option value="FirstName" class="option">Imenu</option>
-                                 <option value="LastName" class="option">Prezimenu</option>
-                                 <option value="AverageGrade" class="option">Prosecnoj oceni</option>
-                                 <option value="Country" class="option">Drzavi</option>
-                                 <option value="City" class="option">Gradu</option>
-                             </select>
+                <select name="filter" id="filter" style="background-color: transparent;">
+                    <option value="FirstName" class="option">Imenu</option>
+                    <option value="LastName" class="option">Prezimenu</option>
+                    <option value="AverageGrade" class="option">Prosecnoj oceni</option>
+                    <option value="Country" class="option">Drzavi</option>
+                    <option value="City" class="option">Gradu</option>
+                </select>
                 <input type="submit" value="Pretraži" />
             </p>
         </form>
@@ -53,13 +55,13 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["Country"]">Drzava</a>
             </th>
             <th>
-                  Prosecna ocena
+                Prosecna ocena
             </th>
             <th>
-                  Zbirna ocena
+                Zbirna ocena
             </th>
             <th>
-                  Biografija
+                Biografija
             </th>
 
             <th>
@@ -72,49 +74,49 @@
         @foreach (var item in Model)
         {
 
-        <tr>
-            @if (userInstructors.Count > 0 && i < userInstructors.Count)
-            {
+            <tr>
+                @if (userInstructors.Count > 0 && i < userInstructors.Count)
+                {
 
-                <td>
-                    @userInstructors[i].FirstName
-                </td>
-                <td>
-                    @userInstructors[i].LastName
-                </td>
-                <td>
-                    @userInstructors[i].Address
-                </td>
-                <td>
-                    @userInstructors[i].City
-                </td>
-                <td>
-                    @userInstructors[i].Country
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AverageGrade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GradeCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Biography)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+                    <td>
+                        @userInstructors[i].FirstName
+                    </td>
+                    <td>
+                        @userInstructors[i].LastName
+                    </td>
+                    <td>
+                        @userInstructors[i].Address
+                    </td>
+                    <td>
+                        @userInstructors[i].City
+                    </td>
+                    <td>
+                        @userInstructors[i].Country
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AverageGrade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GradeCount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Biography)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
 
-                    @if (_signInManager.IsSignedIn(User))
-                    {
-                        @if (User.IsInRole("Admin"))
+                        @if (_signInManager.IsSignedIn(User))
                         {
-                            <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
+                            }
                         }
-                    }
-                </td>
-            }
+                    </td>
+                }
 
 
-        </tr>
+            </tr>
             i++;
         }
     </tbody>

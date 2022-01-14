@@ -37,7 +37,8 @@
             <li class="nav-item"><a class="nav-link @ManageNavPages.BoatReservationsNavClass(ViewContext)" id="my-boat-reservations" asp-page="./BoatReservations">Pregled rezervacija</a></li>
 
             <li class="nav-item"><a class="nav-link @ManageNavPages.BoatReservationsHistoryNavClass(ViewContext)" id="my-boat-reservations-history" asp-page="./BoatReservationsHistory">Istorija rezervacija</a></li>
-            
+            <li class="nav-item"><a class="nav-link @ManageNavPages.BoatReportsNavClass(ViewContext)" id="boat-reports" asp-page="./BoatReports">Izveštaj o poslovanju</a></li>
+
         }
     }
     @if (SignInManager.IsSignedIn(User))
@@ -79,6 +80,8 @@
         @if (User.IsInRole("Vlasnik vikendice"))
         {
             <li class="nav-item"><a class="nav-link @ManageNavPages.CottagesReservationsHistoryNavClass(ViewContext)" id="cottages-reservations-history" asp-page="./CottagesReservationsHistory">Istorija rezervacija</a></li>
+            <li class="nav-item"><a class="nav-link @ManageNavPages.CottageReportsNavClass(ViewContext)" id="cottages-reports" asp-page="./CottageReports">Izveštaj o poslovanju</a></li>
+
         }
     }
 </ul>
