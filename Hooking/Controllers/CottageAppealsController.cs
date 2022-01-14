@@ -7,22 +7,63 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
+using Nito.AsyncEx.Synchronous;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Hooking.Controllers
 {
     public class CottageAppealsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public CottageAppealsController(ApplicationDbContext context)
+        public CottageAppealsController(ApplicationDbContext context,
+            UserManager<IdentityUser> userManager, 
+            IEmailSender emailSender)
         {
             _context = context;
+            _userManager = userManager;
+            _emailSender = emailSender;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         // GET: CottageAppeals
         public async Task<IActionResult> Index()
         {
             return View(await _context.CottageAppeal.ToListAsync());
+        }
+
+        public IActionResult AnswerAppeal(Guid id)
+        {
+            AdventureAppeal appeal = _context.AdventureAppeal.Find(id);
+            return View(appeal);
+        }
+
+        private string GetCottageOwnerEmailFromAppeal(CottageAppeal appeal)
+        {
+            Cottage cottage = _context.Cottage.Find(Guid.Parse(appeal.CottageId));
+            CottageOwner owner = _context.CottageOwner.Find(Guid.Parse(cottage.CottageOwnerId));
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(owner.UserDetailsId));
+            return _userManager.FindByIdAsync(userDetails.IdentityUserId).WaitAndUnwrapException().Email;
+        }
+
+        public async Task<IActionResult> SubmitAnswer([Bind("CottageId,AppealContent,UserEmail,Id,RowVersion")] CottageAppeal appeal, string answer)
+        {
+            await _emailSender.SendEmailAsync(appeal.UserEmail, "Odgovor na žalbu", answer);
+            string ownerEmail = GetCottageOwnerEmailFromAppeal(appeal);
+            await _emailSender.SendEmailAsync(ownerEmail, "Odgovor na žalbu", answer);
+            appeal = _context.CottageAppeal.FirstOrDefault(a => a.Id == appeal.Id);
+            _context.CottageAppeal.Remove(appeal);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: CottageAppeals/Details/5
