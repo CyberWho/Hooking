@@ -100,23 +100,91 @@ namespace Hooking.Controllers
                 adventureSpecialOffer.IsReserved = false;
                 _context.Add(adventureSpecialOffer);
 
-
-                Adventure adventure = _context.Adventure.Find(id);
-
-                var favorites = _context.AdventureFavorites.Where(f =>
-                    f.AdventureId == id.ToString()).ToList();
-
-                foreach (AdventureFavorites favorite in favorites)
+                if(await IsPossible(adventureSpecialOffer))
                 {
-                    UserDetails user = _context.UserDetails.Find(Guid.Parse(favorite.UserDetailsId));
-                    IdentityUser iUser = await _userManager.FindByIdAsync(user.IdentityUserId);
-                    await _emailSender.SendEmailAsync(iUser.Email, "Avantura koju pratite je na akciji", $"Avanatura {adventure.Name} je na specijalnoj akciji po ceni od {adventureSpecialOffer.Price} za najviše {adventureSpecialOffer.MaxPersonCount} ljudi, a sa početkom {adventureSpecialOffer.StartDate}!\n\nNe propustite ovu sjajnu priliku!");
+                    await CreateSpecialOffer(id, adventureSpecialOffer);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyActionError", "Home");
                 }
+               
 
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(adventureSpecialOffer);
+        }
+        public async Task<bool> CreateSpecialOffer(Guid id, AdventureSpecialOffer adventureSpecialOffer)
+        {
+            if (await IsPossible(adventureSpecialOffer))
+            {
+                _context.Add(adventureSpecialOffer);
+                await _context.SaveChangesAsync();
+                string adventureId = id.ToString();
+                Adventure adventure = _context.Adventure.Find(id);
+                List<AdventureFavorites> adventureFavorites = _context.AdventureFavorites.Where(m => m.AdventureId == adventureId).ToList();
+                foreach (var subscribe in adventureFavorites)
+                {
+                    UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == subscribe.UserDetailsId).FirstOrDefault<UserDetails>();
+                    var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
+                    var callbackUrl = Url.Action("Details", "BoatSpecialOffers", new { id = adventureSpecialOffer.Id });
+
+                    await _emailSender.SendEmailAsync(user.Email, "Avantura koju pratite je na akciji", $"Avanatura {adventure.Name} je na specijalnoj akciji po ceni od {adventureSpecialOffer.Price} za najviše {adventureSpecialOffer.MaxPersonCount} ljudi, a sa početkom {adventureSpecialOffer.StartDate}!\n\nNe propustite ovu sjajnu priliku!");
+
+                }
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> IsPossible(AdventureSpecialOffer adventureSpecialOffer)
+        {
+            Adventure adventure = _context.Adventure.Find(Guid.Parse(adventureSpecialOffer.AdventureId));
+            string adventureId = adventure.Id.ToString();
+            List<AdventureRealisation> adventureRealisations = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId).ToListAsync();
+            List<AdventureReservation> adventureReservations = new List<AdventureReservation>();
+            foreach(AdventureRealisation adventureRealisationTemp in adventureRealisations)
+            {
+                string realizationId = adventureRealisationTemp.ToString();
+                List<AdventureReservation> adventureReservationsTemp = await _context.AdventureReservation.Where(m => m.AdventureRealisationId == realizationId).ToListAsync();
+                adventureReservations.AddRange(adventureReservationsTemp);
+            }
+            foreach (AdventureReservation adventureReservationTemp in adventureReservations)
+            {
+                AdventureRealisation adventureRealisation = _context.AdventureRealisation.Find(Guid.Parse(adventureReservationTemp.AdventureRealisationId));
+                if (IsOverlapping(adventureSpecialOffer.StartDate, adventureSpecialOffer.StartDate.AddHours(adventureSpecialOffer.Duration), adventureRealisation.StartDate, adventureRealisation.StartDate.AddHours(adventureRealisation.Duration)))
+                {
+                    return false;
+                }
+            }
+            List<AdventureSpecialOffer> adventureSpecialOffers = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureSpecialOffer.AdventureId).ToListAsync();
+            foreach (AdventureSpecialOffer adventureSpecialOfferTemp in adventureSpecialOffers)
+            {
+                if (IsOverlapping(adventureSpecialOffer.StartDate, adventureSpecialOffer.StartDate.AddHours(adventureSpecialOffer.Duration), adventureSpecialOfferTemp.StartDate, adventureSpecialOfferTemp.StartDate.AddHours(adventureSpecialOfferTemp.Duration)))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.AdventureReservation.Local)
+            {
+                AdventureRealisation adventureRealisation = _context.AdventureRealisation.Find(Guid.Parse(reservation.AdventureRealisationId));
+                if(adventureRealisation.AdventureId == adventureSpecialOffer.AdventureId)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+
         }
 
         // GET: AdventureSpecialOffers/Edit/5
