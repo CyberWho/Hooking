@@ -10,6 +10,9 @@ using Hooking.Data;
 using Hooking.Models;
 using Hooking.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Hooking.Controllers
 {
@@ -18,15 +21,20 @@ namespace Hooking.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IAdventureService _adventureService;
         private readonly UserManager<IdentityUser> _userManager;
-
+        private readonly IEmailSender _emailSender;
 
         public AdventureReservationsController(ApplicationDbContext context, 
             IAdventureService adventureService, 
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            IEmailSender emailSender)
         {
             _context = context;
             _adventureService = adventureService;
             _userManager = userManager;
+            _emailSender = emailSender;
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         // GET: AdventureReservations
@@ -64,7 +72,89 @@ namespace Hooking.Controllers
             }
             return View(adventureReservation);
         }
+        public async Task<bool> CreateReservation(Guid id, AdventureReservation adventureReservation)
+        {
+            if (await IsPossible(adventureReservation))
+            {
+                _context.Add(adventureReservation);
+                await _context.SaveChangesAsync();
+                InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
+                instructorNotAvailablePeriod.Id = Guid.NewGuid();
+                AdventureRealisation adventureRealisation = _context.AdventureRealisation.Find(Guid.Parse(adventureReservation.AdventureRealisationId));
+                Adventure adventure = _context.Adventure.Find(Guid.Parse(adventureRealisation.AdventureId));
+                instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
+                instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
+                instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
+                _context.Add(instructorNotAvailablePeriod);
+                await _context.SaveChangesAsync();
+                string userId = id.ToString();
+                UserDetails userDetails = _context.UserDetails.Where(m => m.IdentityUserId == userId).FirstOrDefault<UserDetails>();
+                var user = await _context.Users.FindAsync(userDetails.IdentityUserId);
 
+                await _emailSender.SendEmailAsync(user.Email, "Obaveštenje o rezervaciji",
+                           $"Poštovani,<br><br>Potvrđujemo Vam rezervaciju koju ste napravili u dogovoru sa vlasnikom broda na kom trenutno boravite!");
+
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> IsPossible(AdventureReservation adventureReservation)
+        {
+            AdventureRealisation adventureRealisation = _context.AdventureRealisation.Find(Guid.Parse(adventureReservation.AdventureRealisationId));
+            Adventure adventure = _context.Adventure.Find(Guid.Parse(adventureRealisation.AdventureId));
+            string adventureId = adventure.Id.ToString();
+            List<AdventureRealisation> adventureRealisations = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId).ToListAsync();
+            List<AdventureReservation> adventureReservations = new List<AdventureReservation>();
+            foreach (AdventureRealisation adventureRealisationTemp in adventureRealisations)
+            {
+                string realizationId = adventureRealisationTemp.ToString();
+                List<AdventureReservation> adventureReservationsTemp = await _context.AdventureReservation.Where(m => m.AdventureRealisationId == realizationId).ToListAsync();
+                adventureReservations.AddRange(adventureReservationsTemp);
+            }
+            foreach (AdventureReservation adventureReservationTemp in adventureReservations)
+            {
+                AdventureRealisation adventureRealisationTemp = _context.AdventureRealisation.Find(Guid.Parse(adventureReservationTemp.AdventureRealisationId));
+                if (IsOverlapping(adventureRealisationTemp.StartDate, adventureRealisationTemp.StartDate.AddHours(adventureRealisationTemp.Duration), adventureRealisation.StartDate, adventureRealisation.StartDate.AddHours(adventureRealisation.Duration)))
+                {
+                    return false;
+                }
+            }
+            List<AdventureSpecialOffer> adventureSpecialOffers = await _context.AdventureSpecialOffer.Where(m => m.AdventureId == adventureRealisation.AdventureId).ToListAsync();
+            foreach (AdventureSpecialOffer adventureSpecialOfferTemp in adventureSpecialOffers)
+            {
+                if (IsOverlapping(adventureRealisation.StartDate, adventureRealisation.StartDate.AddHours(adventureRealisation.Duration), adventureSpecialOfferTemp.StartDate, adventureSpecialOfferTemp.StartDate.AddHours(adventureSpecialOfferTemp.Duration)))
+                {
+                    return false;
+                }
+            }
+            foreach (var reservation in _context.AdventureReservation.Local)
+            {
+                AdventureRealisation adventureRealisationTemp = _context.AdventureRealisation.Find(Guid.Parse(reservation.AdventureRealisationId));
+                if (adventureRealisation.AdventureId == adventureRealisationTemp.AdventureId)
+                {
+                    if (IsOverlapping(adventureRealisationTemp.StartDate, adventureRealisationTemp.StartDate.AddHours(adventureRealisationTemp.Duration), 
+                        adventureRealisation.StartDate, adventureRealisation.StartDate.AddHours(adventureRealisation.Duration)))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public bool IsOverlapping(DateTime start1, DateTime end1, DateTime start2, DateTime end2)
+        {
+            if (start1 > end1)
+                return true;
+
+            if (start2 > end2)
+                return true;
+
+            return ((end1 < start2 && start1 < start2) ||
+                        (end2 < start1 && start2 < start1));
+
+
+        }
 
         // GET: AdventureReservations/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
@@ -101,7 +191,13 @@ namespace Hooking.Controllers
                 adventureReservation.AdventureRealisationId = cId.ToString();
                 adventureReservation.UserDetailsId = id.ToString();
                 adventureReservation.IsReviewed = false;
-                await _context.SaveChangesAsync();
+                if(await IsPossible(adventureReservation))
+                {
+                    await CreateReservation(id, adventureReservation);
+                } else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+                }
 
                 return Redirect("/Adventures/Index");
             }
