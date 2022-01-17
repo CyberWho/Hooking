@@ -14,15 +14,12 @@ namespace Hooking.Controllers
     public class InstructorNotAvailablePeriodsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         public Instructor instructor;
         public InstructorNotAvailablePeriodsController(ApplicationDbContext context,
-                                                        SignInManager<IdentityUser> signInManager,
                                                         UserManager<IdentityUser> userManager)
         {
             _context = context;
-            _signInManager = signInManager;
             _userManager = userManager;
         }
 
@@ -98,7 +95,6 @@ namespace Hooking.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-
                 Guid userId = Guid.Parse(user.Id);
                 System.Diagnostics.Debug.WriteLine(userId);
                 UserDetails userDetails = await _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefaultAsync<UserDetails>();

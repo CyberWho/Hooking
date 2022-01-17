@@ -20,7 +20,7 @@
     {
         <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">Eksterno logovanje</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.UserDeleteRequestNavClass(ViewContext)" id="change-password" asp-page="./UserDeleteRequest">Zahtev za brisanje profila</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.UserDeleteRequestNavClass(ViewContext)" id="delete-request" asp-page="./UserDeleteRequest">Zahtev za brisanje profila</a></li>
     @if (SignInManager.IsSignedIn(User))
     {
         @if (User.IsInRole("Vlasnik vikendice"))
