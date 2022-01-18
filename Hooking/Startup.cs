@@ -35,7 +35,10 @@ namespace Hooking
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddStackExchangeRedisCache(options => {
+                 options.Configuration = Configuration.GetConnectionString("AzureRedisConnection");
+            });
+           
             services.AddScoped<IAdventureService, AdventureService>();
             services.AddControllersWithViews();
             services.AddAuthorization();

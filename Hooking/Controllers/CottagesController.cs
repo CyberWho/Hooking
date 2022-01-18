@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
+using System.Text.Json;
 using Hooking.Areas.Identity.Pages.Account.Manage;
 using System.IO;
 using System.Web;
@@ -17,6 +17,8 @@ using System.Runtime.Serialization.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using GoogleMaps.LocationServices;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text;
 
 namespace Hooking.Controllers
 {
@@ -26,6 +28,7 @@ namespace Hooking.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly BlobUtility utility;
+        private readonly IDistributedCache _cache;
         public UserDetails cottageOwner;
         public CancelationPolicy cancelationPolicy;
         public HouseRules houseRules;
@@ -36,12 +39,14 @@ namespace Hooking.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
-        public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public CottagesController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
+                                    IDistributedCache cache)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             utility = new BlobUtility();
+            _cache = cache;
 
         }
        
@@ -49,7 +54,14 @@ namespace Hooking.Controllers
         // GET: Cottages
         public async Task<IActionResult> Index(string searchString = "", string filter = "", string sortOrder = "")
         {
-            List<Cottage> cottages = await _context.Cottage.ToListAsync();
+            //List<Cottage> cottages = await _context.Cottage.ToListAsync();
+            var cottages = await _cache.GetAsync("Cottage");
+            if ((cottages?.Count() ?? 0) > 0)
+            {
+                var cottageString = Encoding.UTF8.GetString(cottages);
+                var generatedCottages = JsonSerializer.Deserialize<List<Cottage>>(cottageString);
+                return Ok(new { LoadedFromRedis = true, Data = generatedCottages });
+            }
             List<Cottage> filteredCottages = new List<Cottage>();
 
             ViewData["Name"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
