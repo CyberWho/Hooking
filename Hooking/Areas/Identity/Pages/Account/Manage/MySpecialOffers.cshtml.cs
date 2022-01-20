@@ -38,8 +38,11 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            var userId = Guid.Parse(user.Id);
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var cottageOwnerId = cottageOwner.Id.ToString();
             List<Cottage> myCottages = new List<Cottage>();
-            myCottages =   _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
+            myCottages =   _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToList();
             cottageSpecialOffers = new List<CottageSpecialOffer>();
             cottageNames = new List<string>();
             foreach(var cottage in myCottages)

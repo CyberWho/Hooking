@@ -26,7 +26,10 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Cottage> cottages = _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToList();
+            var userId = Guid.Parse(user.Id);
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var cottageOwnerId = cottageOwner.Id.ToString();
+            List<Cottage> cottages = _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToList();
             double totalIncome = 0;
             int totalReservations = 0;
             foreach(Cottage cottage in cottages)
