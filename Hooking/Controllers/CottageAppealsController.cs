@@ -37,12 +37,20 @@ namespace Hooking.Controllers
         // GET: CottageAppeals
         public async Task<IActionResult> Index()
         {
+            /*_context.Add(new CottageAppeal
+            {
+                AppealContent = "Zalba",
+                CottageId = "b7f99563-a2da-4b94-9440-429fcacc8acd",
+                UserEmail = "sykohoto@onekisspresave.com"
+            });
+            _context.SaveChanges();*/
+
             return View(await _context.CottageAppeal.ToListAsync());
         }
 
         public IActionResult AnswerAppeal(Guid id)
         {
-            AdventureAppeal appeal = _context.AdventureAppeal.Find(id);
+            CottageAppeal appeal = _context.CottageAppeal.Find(id);
             return View(appeal);
         }
 
@@ -60,7 +68,7 @@ namespace Hooking.Controllers
             string ownerEmail = GetCottageOwnerEmailFromAppeal(appeal);
             await _emailSender.SendEmailAsync(ownerEmail, "Odgovor na žalbu", answer);
             appeal = _context.CottageAppeal.FirstOrDefault(a => a.Id == appeal.Id);
-            _context.CottageAppeal.Remove(appeal);
+            _context.CottageAppeal.Remove(appeal ?? throw new ArgumentNullException(nameof(appeal)));
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
