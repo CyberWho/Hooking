@@ -101,7 +101,7 @@ namespace Hooking.Controllers
                 boatAppeal.Id = Guid.NewGuid();
                 boatAppeal.BoatId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
-                boatAppeal.Email = user.Email;
+                boatAppeal.UserEmail = user.Email;
                 _context.Add(boatAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
