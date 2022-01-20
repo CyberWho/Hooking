@@ -135,7 +135,7 @@ namespace Hooking.Controllers
                 return NotFound();
             }
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
-            var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
+            var cottageOwnerUser = _context.CottageOwner.Where(m => m.Id == cottageOwnerId).FirstOrDefault<CottageOwner>();
            
             cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
             var cottageId = cottage.Id.ToString();
@@ -179,7 +179,7 @@ namespace Hooking.Controllers
             var cottage = await _context.Cottage
                 .FirstOrDefaultAsync(m => m.Id == id);
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
-            var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
+            var cottageOwnerUser = _context.CottageOwner.Where(m => m.Id == cottageOwnerId).FirstOrDefault<CottageOwner>();
 
             cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
             var cottageId = cottage.Id.ToString();
@@ -225,7 +225,10 @@ namespace Hooking.Controllers
         public async Task<IActionResult> CottagesForSpecialOffer()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
+            var userId = Guid.Parse(user.Id);
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var cottageOwnerId = cottageOwner.Id.ToString();
+            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToListAsync();
             return View(myCottages);
         }
 
@@ -240,7 +243,10 @@ namespace Hooking.Controllers
             {
                 cottage.Id = Guid.NewGuid();
                 var user = await _userManager.GetUserAsync(User);
-                cottage.CottageOwnerId = user.Id;
+                var userId = Guid.Parse(user.Id);
+                var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+                
+                cottage.CottageOwnerId = cottageOwner.Id.ToString();
                 cottage.CancelationPolicyId = "0";
                 cottage.AverageGrade = 0;
                 cottage.GradeCount = 0;
@@ -354,7 +360,10 @@ namespace Hooking.Controllers
         public async Task<IActionResult> CottagesForReservation()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == user.Id).ToListAsync();
+            var userId = Guid.Parse(user.Id);
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var cottageOwnerId = cottageOwner.Id.ToString();
+            List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToListAsync();
             return View(myCottages);
         }
 
