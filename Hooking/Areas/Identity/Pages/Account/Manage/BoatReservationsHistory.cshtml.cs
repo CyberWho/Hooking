@@ -24,7 +24,10 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            var userId = Guid.Parse(user.Id);
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var boatOwnerId = boatOwner.Id.ToString();
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToList<Boat>();
             boatReservations = new List<BoatReservation>();
             boatNames = new List<string>();
             foreach(Boat boat in boats)

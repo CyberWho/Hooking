@@ -76,7 +76,10 @@ namespace Hooking.Controllers
         public async Task<IActionResult> ShowMyBoats()
         {
             var user = await _userManager.GetUserAsync(User);
-            var boats = await _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToListAsync();
+            var userId = Guid.Parse(user.Id);
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var boatOwnerId = boatOwner.Id.ToString();
+            var boats = await _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToListAsync();
             return View(boats);
         }
 
@@ -91,16 +94,18 @@ namespace Hooking.Controllers
             var boat = await _context.Boat
                 .FirstOrDefaultAsync(m => m.Id == id);
             var boatId = boat.Id.ToString();
-            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var boatOwnerId = Guid.Parse(boat.BoatOwnerId);
+            var boatOwner = _context.BoatOwner.Where(m => m.Id == boatOwnerId).FirstOrDefault();
+            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boatOwner.UserDetailsId).FirstOrDefault();
             var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
             Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
-            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
-            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
+            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault();
+            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault();
             Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
-            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
-            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault();
             Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
-            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault();
             if (boat == null)
             {
                 return NotFound();
@@ -125,16 +130,18 @@ namespace Hooking.Controllers
             var boat = await _context.Boat
                 .FirstOrDefaultAsync(m => m.Id == id);
             var boatId = boat.Id.ToString();
-            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var boatOwnerId = Guid.Parse(boat.BoatOwnerId);
+            var boatOwner = _context.BoatOwner.Where(m => m.Id == boatOwnerId).FirstOrDefault();
+            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boatOwner.UserDetailsId).FirstOrDefault();
             var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
             Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
-            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
-            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault<BoatFishingEquipment>();
+            CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault();
+            BoatFishingEquipment boatFishingEquipment = _context.BoatFishingEquipment.Where(m => m.BoatId == boatId).FirstOrDefault();
             Guid fishingEquipmentId = Guid.Parse(boatFishingEquipment.FishingEquipment);
-            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
-            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault<BoatAmenities>();
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault();
+            BoatAmenities boatAmenities = _context.BoatAmenities.Where(m => m.BoatId == boatId).FirstOrDefault();
             Guid amenitiesId = Guid.Parse(boatAmenities.AmanitiesId);
-            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault<Amenities>();
+            Amenities amenities = _context.Amenities.Where(m => m.Id == amenitiesId).FirstOrDefault();
             if (boat == null)
             {
                 return NotFound();
@@ -163,14 +170,20 @@ namespace Hooking.Controllers
         public async Task<IActionResult> BoatsForSpecialOffer()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            var userId = Guid.Parse(user.Id);
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var boatOwnerId = boatOwner.Id.ToString();
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToList<Boat>();
             return View(boats);
         }
         [HttpGet("/Boats/BoatsForReservation")]
         public async Task<IActionResult> BoatsForReservation()
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == user.Id).ToList<Boat>();
+            var userId = Guid.Parse(user.Id);
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var boatOwnerId = boatOwner.Id.ToString();
+            List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToList<Boat>();
             return View(boats);
         }
         // POST: Boats/Create
@@ -184,7 +197,10 @@ namespace Hooking.Controllers
             {
                 boat.Id = Guid.NewGuid();
                 var user = await _userManager.GetUserAsync(User);
-                boat.BoatOwnerId = user.Id;
+                var userId = Guid.Parse(user.Id);
+                var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+                
+                boat.BoatOwnerId = boatOwner.Id.ToString();
                 boat.CancelationPolicyId = "0";
                 boat.AverageGrade = 0;
                 boat.GradeCount = 0;
