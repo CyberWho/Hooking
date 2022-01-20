@@ -201,6 +201,33 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
+            List<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == id.ToString()).ToList();
+            List<AdventureRealisation> realizations = new List<AdventureRealisation>();
+            foreach (Adventure adventure in adventures)
+            {
+                foreach (AdventureRealisation realization in _context.AdventureRealisation.Where(r =>
+                    r.AdventureId == adventure.Id.ToString()))
+                {
+                    realizations.Add(realization);
+                }
+            }
+
+            List<AdventureReservation> reservations = new List<AdventureReservation>();
+            foreach (AdventureRealisation realization in realizations)
+            {
+                foreach (AdventureReservation reservation in _context.AdventureReservation.Where(r =>
+                    r.AdventureRealisationId == realization.Id.ToString()))
+                {
+                    reservations.Add(reservation);
+                }
+            }
+
+            if (reservations.Count != 0)
+            {
+                ViewData["StatusMessage"] = "Nije moguće obrisati izabranog instruktora jer ima rezervisane avanture.";
+                RedirectToAction(nameof(Index));
+            }
+
             return View(instructor);
         }
 
@@ -209,11 +236,14 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            
+
             var instructor = await _context.Instructor.FindAsync(id);
             _context.Instructor.Remove(instructor);
             UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
             _context.UserDetails.Remove(userDetails);
-            _
+            IdentityUser identityUser = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+            await _userManager.DeleteAsync(identityUser);
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
