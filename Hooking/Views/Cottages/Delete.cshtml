@@ -6,6 +6,9 @@
 }
 
 <h1>Obriši vikendicu</h1>
+
+<h4 style="color: red">@ViewData["StatusMessage"]</h4>
+
 <div>
     <h4>Vikendica</h4>
     <hr />
@@ -80,7 +83,14 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Pošalji zahtev za brisanje vikendice" class="btn btn-danger" /> |
+        @if (User.IsInRole("Admin"))
+        {
+            <input type="submit" value="Obriši vikendicu" class="btn btn-danger" />
+        }
+        else
+        {
+            <input type="submit" value="Pošalji zahtev za brisanje vikendice" class="btn btn-danger" />
+        }
         <a asp-action="Index">Povratak na pregled vikendica</a>
     </form>
 </div>

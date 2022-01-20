@@ -7,17 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class InstructorsController : Controller
     {
         private readonly ApplicationDbContext _context;
-               public UserDetails user;
+        public UserDetails user;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public InstructorsController(ApplicationDbContext context)
+        public InstructorsController(ApplicationDbContext context, 
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Instructors
@@ -207,6 +211,10 @@ namespace Hooking.Controllers
         {
             var instructor = await _context.Instructor.FindAsync(id);
             _context.Instructor.Remove(instructor);
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
+            _context.UserDetails.Remove(userDetails);
+            _
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
