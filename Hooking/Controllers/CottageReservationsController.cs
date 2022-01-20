@@ -202,7 +202,7 @@ namespace Hooking.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             Guid cottageId = Guid.Parse(cottageReservation.CottageId);
             cottage = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault<Cottage>();
-            userDetails = _context.UserDetails.Where(m => m.IdentityUserId == cottageReservation.UserDetailsId).FirstOrDefault<UserDetails>();
+            userDetails = _context.UserDetails.Where(m => m.IdentityUserId == cottageReservation.UserDetailsId).FirstOrDefault();
             Guid identityUserId = Guid.Parse(userDetails.IdentityUserId);
             var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
             string email = identityUser.Email;

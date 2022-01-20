@@ -84,7 +84,7 @@ namespace Hooking.Controllers
             Guid userId = Guid.Parse(boatReservation.UserDetailsId);
             var boat = _context.Boat.Where(m => m.Id == boatId).FirstOrDefault();
             Guid userDetailsId = Guid.Parse(boatReservation.UserDetailsId);
-            var userDetails = _context.UserDetails.Where(m => m.Id == userDetailsId).FirstOrDefault<UserDetails>();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == boatReservation.UserDetailsId).FirstOrDefault<UserDetails>();
             Guid identityUserId = Guid.Parse(userDetails.IdentityUserId);
             var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
             string email = identityUser.Email;
