@@ -12,14 +12,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CottageId)
-            </th>
+          
             <th>
                 @Html.DisplayNameFor(model => model.AppealContent)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
+                @Html.DisplayNameFor(model => model.UserEmail)
             </th>
             <th></th>
         </tr>
@@ -27,19 +25,15 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CottageId)
-            </td>
+          
             <td>
                 @Html.DisplayFor(modelItem => item.AppealContent)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
+                @Html.DisplayFor(modelItem => item.UserEmail)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-controller="CottageAppeals" asp-action="AnswerAppeal" asp-route-id="@item.Id">Odgovori</a>
             </td>
         </tr>
 }

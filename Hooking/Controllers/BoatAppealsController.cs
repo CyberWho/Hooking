@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,16 +9,29 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Newtonsoft.Json;
+using Nito.AsyncEx.Synchronous;
 
 namespace Hooking.Controllers
 {
     public class BoatAppealsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailSender _emailSender;
         private readonly UserManager<IdentityUser> _userManager;
-        public BoatAppealsController(ApplicationDbContext context)
+
+        public BoatAppealsController(ApplicationDbContext context,
+            IEmailSender emailSender,
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _emailSender = emailSender;
+            _userManager = userManager;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         // GET: BoatAppeals
@@ -44,6 +58,31 @@ namespace Hooking.Controllers
             return View(boatAppeal);
         }
 
+        public IActionResult AnswerAppeal(Guid id)
+        {
+            BoatAppeal appeal = _context.BoatAppeal.Find(id);
+            return View(appeal);
+        }
+
+        private string GetBoatOwnerEmailFromAppeal(BoatAppeal appeal)
+        {
+            Boat boat = _context.Boat.Find(Guid.Parse(appeal.BoatId));
+            BoatOwner owner = _context.BoatOwner.Find(Guid.Parse(boat.BoatOwnerId));
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(owner.UserDetailsId));
+            return _userManager.FindByIdAsync(userDetails.IdentityUserId).WaitAndUnwrapException().Email;
+        }
+        public async Task<IActionResult> SubmitAnswer([Bind("BoatId,AppealContent,UserEmail,Id,RowVersion")] BoatAppeal appeal, string answer)
+        {
+            await _emailSender.SendEmailAsync(appeal.UserEmail, "Odgovor na žalbu", answer);
+            string boatOwnerEmail = GetBoatOwnerEmailFromAppeal(appeal);
+            await _emailSender.SendEmailAsync(boatOwnerEmail, "Odgovor na žalbu", answer);
+            appeal = _context.BoatAppeal.FirstOrDefault(a => a.Id == appeal.Id);
+            _context.BoatAppeal.Remove(appeal);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: BoatAppeals/Create
         public IActionResult Create()
         {
@@ -62,7 +101,7 @@ namespace Hooking.Controllers
                 boatAppeal.Id = Guid.NewGuid();
                 boatAppeal.BoatId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
-                boatAppeal.Email = user.Email;
+                boatAppeal.UserEmail = user.Email;
                 _context.Add(boatAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

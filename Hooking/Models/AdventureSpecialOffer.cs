@@ -21,5 +21,9 @@ namespace Hooking.Models
         [DisplayName("Maksimalan broj gostiju")]
         public int MaxPersonCount { get; set; }
         public bool IsReserved { get; set; }
+        [DisplayName("Specijalna ponuda važi od")]
+        public DateTime ValidFrom { get; set; }
+        [DisplayName("Specijalna ponuda važi do")]
+        public DateTime ValidTo { get; set; }
     }
 }

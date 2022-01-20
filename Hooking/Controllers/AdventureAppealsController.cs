@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,23 +10,69 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Newtonsoft.Json;
+using Nito.AsyncEx.Synchronous;
 
 namespace Hooking.Controllers
 {
     public class AdventureAppealsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IEmailSender _emailSender;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AdventureAppealsController(ApplicationDbContext context)
+        public AdventureAppealsController(ApplicationDbContext context, 
+            IEmailSender emailSender, 
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _emailSender = emailSender;
+            _userManager = userManager;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         // GET: AdventureAppeals
         public async Task<IActionResult> Index()
         {
+            /*_context.Add(new AdventureAppeal
+            {
+                AdventureId = "713c6ee8-7a7a-4116-b020-2ea29ddc91d6",
+                AppealContent = "Zaaaaalbaaa",
+                UserEmail = "sykohoto@onekisspresave.com"
+            });*/
+            _context.SaveChanges();
+
             return View(await _context.AdventureAppeal.ToListAsync());
+        }
+
+        public IActionResult AnswerAppeal(Guid id)
+        {
+            AdventureAppeal appeal = _context.AdventureAppeal.Find(id);
+            return View(appeal);
+        }
+
+        private string GetInstructorEmailFromAppeal(AdventureAppeal appeal)
+        {
+            Adventure adventure = _context.Adventure.Find(Guid.Parse(appeal.AdventureId));
+            Instructor instructor = _context.Instructor.Find(Guid.Parse(adventure.InstructorId));
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
+            return _userManager.FindByIdAsync(userDetails.IdentityUserId).WaitAndUnwrapException().Email;
+        }
+
+        public async Task<IActionResult> SubmitAnswer([Bind("AdventureId,AppealContent,UserEmail,Id,RowVersion")] AdventureAppeal appeal, string answer)
+        {
+            await _emailSender.SendEmailAsync(appeal.UserEmail, "Odgovor na žalbu", answer);
+            string instructorEmail = GetInstructorEmailFromAppeal(appeal);
+            await _emailSender.SendEmailAsync(instructorEmail, "Odgovor na žalbu", answer);
+            appeal = _context.AdventureAppeal.FirstOrDefault(a => a.Id == appeal.Id);
+            _context.AdventureAppeal.Remove(appeal);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: AdventureAppeals/Details/5
@@ -63,7 +111,7 @@ namespace Hooking.Controllers
                 adventureAppeal.Id = Guid.NewGuid();
                 adventureAppeal.AdventureId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
-                adventureAppeal.Email = user.Email;
+                adventureAppeal.UserEmail = user.Email;
                 _context.Add(adventureAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

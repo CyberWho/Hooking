@@ -91,7 +91,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("AdventureSpecialOffers/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id,[Bind("StartDate,Duration,Price,MaxPersonCount,Description,Id,RowVersion")] AdventureSpecialOffer adventureSpecialOffer)
+        public async Task<IActionResult> Create(Guid id,[Bind("StartDate,ValidFrom,ValidTo,Duration,Price,MaxPersonCount,Description,Id,RowVersion")] AdventureSpecialOffer adventureSpecialOffer)
         {
             if (ModelState.IsValid)
             {
