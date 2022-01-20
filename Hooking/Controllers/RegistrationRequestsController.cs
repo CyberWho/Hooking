@@ -73,8 +73,6 @@ namespace Hooking.Controllers
         {
             var request = await _context.RegistrationRequest.FindAsync(id);
             _context.RegistrationRequest.Remove(request);
-            await _context.SaveChangesAsync();
-
             UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
             _context.UserDetails.Remove(userDetails);
             IdentityUser user = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
