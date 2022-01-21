@@ -8,9 +8,13 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<h4 style="color: red">@ViewData["Status"]</h4>
+
 <p>
     <a asp-action="Create" asp-route-instructorId="@ViewData["InstructorId"]">Dodaj novu avanturu</a>
 </p>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -93,6 +97,7 @@
                     <a title="Za izabranu avanturu postoje rezervacije, pa ju je nemoguće izmeniti.">Ažuriraj</a>
                     <a title="Za izabranu avanturu postoje rezervacije, pa ju je nemoguće obrisati.">Obriši</a>
                 }
+                <a asp-controller="AdventureRealisations" asp-action="Create" asp-route-adventureId="@item.AdventureId">Dodaj termin</a>
             </td>
         </tr>
 }

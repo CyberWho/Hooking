@@ -66,8 +66,9 @@ namespace Hooking.Controllers
         }
 
         // GET: AdventureRealisations/Create
-        public IActionResult Create()
+        public IActionResult Create(string adventureId)
         {
+            ViewData["AdventureId"] = adventureId;
             return View();
         }
 
@@ -80,7 +81,6 @@ namespace Hooking.Controllers
         {
             if (ModelState.IsValid)
             {
-                adventureRealisation.Id = Guid.NewGuid();
                 _context.Add(adventureRealisation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

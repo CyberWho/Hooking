@@ -46,7 +46,14 @@
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
-                <a href="@Url.Action("ShowAllUsers","Adventures",new { id = @item.AdventureId })">Odaberi</a> |
+                @if (User.IsInRole("Instruktor"))
+                {
+                    <a href="@Url.Action("Delete", "AdventureRealisations", new {id = @item.AdventureId})">Obriši</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("ShowAllUsers", "Adventures", new {id = @item.AdventureId})">Odaberi</a>
+                }
 
             </td>
             @{

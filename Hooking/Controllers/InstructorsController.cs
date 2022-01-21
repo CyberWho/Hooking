@@ -25,7 +25,7 @@ namespace Hooking.Controllers
         }
 
         // GET: Instructors
-        public async Task<IActionResult> Index(string searchString="",string sortOrder="")
+        public async Task<IActionResult> Index(string searchString="", string sortOrder="", bool triedToDelete=false)
         {
            
             var ins = from b in _context.UserDetails
@@ -74,6 +74,12 @@ namespace Hooking.Controllers
                 }
             }
             ViewData["UserInstructors"] = users;
+
+            if (triedToDelete)
+            {
+                ViewData["StatusMessage"] = "Nije moguće obrisati izabranog instruktora jer ima rezervisane avanture.";
+            }
+
             return View(await _context.Instructor.ToListAsync());
         }
 
@@ -224,8 +230,7 @@ namespace Hooking.Controllers
 
             if (reservations.Count != 0)
             {
-                ViewData["StatusMessage"] = "Nije moguće obrisati izabranog instruktora jer ima rezervisane avanture.";
-                RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { triedToDelete = true });
             }
 
             return View(instructor);
@@ -244,6 +249,17 @@ namespace Hooking.Controllers
             _context.UserDetails.Remove(userDetails);
             IdentityUser identityUser = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
             await _userManager.DeleteAsync(identityUser);
+
+            List<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == id.ToString()).ToList();
+
+            foreach (Adventure adventure in adventures)
+            {
+                foreach(AdventureRealisation realization in _context.AdventureRealisation.Where(r => r.AdventureId == adventure.Id.ToString()))
+                {
+                    _context.Remove(realization);
+                }
+                _context.Remove(adventure);
+            }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
