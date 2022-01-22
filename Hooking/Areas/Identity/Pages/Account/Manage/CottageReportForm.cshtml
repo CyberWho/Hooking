@@ -5,6 +5,7 @@
     List<string> cottageNames = (List<string>)ViewData["CottageNames"];
     List<double> cottageIncomes = (List<double>)ViewData["CottageIncomes"];
     List<int> cottageNumOfReservations = (List<int>)ViewData["CottageNumOfReservations"];
+    List<double> averageGrades = (List<double>)ViewData["AverageGrades"];
     int totalNumOfCottages = (int)ViewData["TotalNumOfCottages"];
     int index = 0;
 }
@@ -15,6 +16,9 @@
         <tr>
             <th>
                 Naziv vikendice
+            </th>
+            <th>
+                Prosečna ocena
             </th>
             <th>
                 Ukupna zarada
@@ -28,21 +32,24 @@
     <tbody>
         @for(int i = 0; i<totalNumOfCottages; i++)
         {
-            <tr>
-                <td>
-                    @cottageNames[index]
-                </td>
-                <td>
-                    @cottageIncomes[index]
-                </td>
-                <td>
-                    @cottageNumOfReservations[index]
-                </td>
+        <tr>
+            <td>
+                @cottageNames[index]
+            </td>
+            <td>
+                @averageGrades[index]
+            </td>
+            <td>
+                @cottageIncomes[index]
+            </td>
+            <td>
+                @cottageNumOfReservations[index]
+            </td>
 
-                @{
-                    index++;
-                }
-            </tr>
+            @{
+                index++;
+            }
+        </tr>
         }
         </tbody>
 </table>

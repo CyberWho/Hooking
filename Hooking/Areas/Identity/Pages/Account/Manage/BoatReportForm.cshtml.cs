@@ -32,6 +32,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             List<string> boatNames = new List<string>();
             List<double> boatIncomes = new List<double>();
             List<int> boatNumOfReservations = new List<int>();
+            List<double> averageGrades = new List<double>();
             foreach (Boat boat in boats)
             {
                 string boatId = boat.Id.ToString();
@@ -58,11 +59,13 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 boatNames.Add(boat.Name);
                 boatIncomes.Add(income);
                 boatNumOfReservations.Add(reservations);
+                averageGrades.Add(boat.AverageGrade);
             }
             ViewData["BoatNames"] = boatNames;
             ViewData["BoatIncomes"] = boatIncomes;
             ViewData["BoatNumOfReservations"] = boatNumOfReservations;
             ViewData["TotalNumOfBoats"] = boats.Count();
+            ViewData["AverageGrades"] = averageGrades;
             return Page();
         }
     }

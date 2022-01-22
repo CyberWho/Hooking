@@ -4,6 +4,7 @@
     List<string> boatNames = (List<string>)ViewData["BoatNames"];
     List<double> boatIncomes = (List<double>)ViewData["BoatIncomes"];
     List<int> boatNumOfReservations = (List<int>)ViewData["BoatNumOfReservations"];
+    List<double> averageGrades = (List<double>)ViewData["AverageGrades"];
     int totalNumOfBoats = (int)ViewData["TotalNumOfBoats"];
     int index = 0;
 }
@@ -14,6 +15,9 @@
         <tr>
             <th>
                 Naziv broda
+            </th>
+            <th>
+                Prosečna ocena
             </th>
             <th>
                 Ukupna zarada
@@ -27,21 +31,24 @@
     <tbody>
         @for (int i = 0; i < totalNumOfBoats; i++)
         {
-            <tr>
-                <td>
-                    @boatNames[index]
-                </td>
-                <td>
-                    @boatIncomes[index]
-                </td>
-                <td>
-                    @boatNumOfReservations[index]
-                </td>
+        <tr>
+            <td>
+                @boatNames[index]
+            </td>
+            <td>
+                @averageGrades[index]
+            </td>
+            <td>
+                @boatIncomes[index]
+            </td>
+            <td>
+                @boatNumOfReservations[index]
+            </td>
 
-                @{
-                    index++;
-                }
-            </tr>
+            @{
+                index++;
+            }
+        </tr>
         }
     </tbody>
 </table>

@@ -32,6 +32,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             List<string> cottageNames = new List<string>();
             List<double> cottageIncomes = new List<double>();
             List<int> cottageNumOfReservations = new List<int>();
+            List<double> averageGrades = new List<double>();
             foreach(Cottage cottage in cottages)
             {
                 string cottageId = cottage.Id.ToString();
@@ -58,11 +59,13 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 cottageNames.Add(cottage.Name);
                 cottageIncomes.Add(income);
                 cottageNumOfReservations.Add(reservations);
+                averageGrades.Add(cottage.AverageGrade);
             }
             ViewData["CottageNames"] = cottageNames;
             ViewData["CottageIncomes"] = cottageIncomes;
             ViewData["CottageNumOfReservations"] = cottageNumOfReservations;
             ViewData["TotalNumOfCottages"] = cottages.Count();
+            ViewData["AverageGrades"] = averageGrades;
             return Page();
         }
     }
