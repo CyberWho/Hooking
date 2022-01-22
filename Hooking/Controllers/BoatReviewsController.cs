@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Hooking.Controllers
 {
@@ -15,12 +16,16 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-
-        public BoatReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public BoatReviewsController(ApplicationDbContext context,
+            UserManager<IdentityUser> userManager, 
+            IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _emailSender = emailSender;
+
 
         }
 
@@ -28,6 +33,43 @@ namespace Hooking.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.BoatReview.ToListAsync());
+        }
+
+        public async Task<IActionResult> Approve(Guid id)
+        {
+            BoatReview review = await _context.BoatReview.FindAsync(id);
+            if (review == null) return NotFound();
+
+            review.IsReviewed = true;
+            review.IsApproved = true;
+
+            Boat boat = _context.Boat.Find(Guid.Parse(review.BoatId));
+
+            BoatOwner owner = _context.BoatOwner.Find(Guid.Parse(boat.BoatOwnerId));
+
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(owner.UserDetailsId));
+
+            IdentityUser iUser = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+
+            await _emailSender.SendEmailAsync(iUser.Email, "Odobrena revizija",
+                $"Revizija sa sadržajem '{review.Review}' i ocenom {review.Grade} je podneta za Vas.");
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Deny(Guid id)
+        {
+            BoatReview review = await _context.BoatReview.FindAsync(id);
+            if (review == null) return NotFound();
+
+            review.IsReviewed = true;
+            review.IsApproved = false;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: BoatReviews/Details/5
