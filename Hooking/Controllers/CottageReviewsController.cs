@@ -58,6 +58,21 @@ namespace Hooking.Controllers
             await _emailSender.SendEmailAsync(iUser.Email, "Odobrena revizija",
                 $"Revizija sa sadržajem '{review.Review}' i ocenom {review.Grade} je podneta za Vas.");
 
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Deny(Guid id)
+        {
+            CottageReview review = await _context.CottageReview.FindAsync(id);
+            if (review == null) return NotFound();
+
+            review.IsReviewed = true;
+            review.IsApproved = false;
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
