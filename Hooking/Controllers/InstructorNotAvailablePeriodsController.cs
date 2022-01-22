@@ -48,11 +48,23 @@ namespace Hooking.Controllers
                     codeForFront += ",";
                 }
 
-
-
                 codeForFront += "{ title: '" + notAvailable.title + "', allDay : '" + true + "', start: '" +
-                   notAvailable.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
-                   "end: '" + notAvailable.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+                                notAvailable.StartTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
+                                "end: '" + notAvailable.EndTime.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+            }
+
+            var adventures = _context.Adventure.Where(a => a.InstructorId == instructorId).ToList();
+
+            foreach (Adventure adventure in adventures)
+            {
+                foreach (AdventureSpecialOffer offer in _context.AdventureSpecialOffer.Where(o =>
+                    o.AdventureId == adventure.Id.ToString()))
+                {
+                    codeForFront += ",";
+                    codeForFront += "{ title: '" + adventure.Name + "', allDay : '" + true + "', start: '" +
+                                offer.StartDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
+                                "end: '" + offer.StartDate.AddDays(offer.Duration).ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+                }
             }
             codeForFront += "]";
             codeForFront = codeForFront.Replace("‘", "").Replace("’", "");
