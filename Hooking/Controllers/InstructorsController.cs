@@ -7,21 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hooking.Controllers
 {
     public class InstructorsController : Controller
     {
         private readonly ApplicationDbContext _context;
-               public UserDetails user;
+        public UserDetails user;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public InstructorsController(ApplicationDbContext context)
+        public InstructorsController(ApplicationDbContext context, 
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Instructors
-        public async Task<IActionResult> Index(string searchString="",string sortOrder="")
+        public async Task<IActionResult> Index(string searchString="", string sortOrder="", bool triedToDelete=false)
         {
            
             var ins = from b in _context.UserDetails
@@ -70,6 +74,12 @@ namespace Hooking.Controllers
                 }
             }
             ViewData["UserInstructors"] = users;
+
+            if (triedToDelete)
+            {
+                ViewData["StatusMessage"] = "Nije moguće obrisati izabranog instruktora jer ima rezervisane avanture.";
+            }
+
             return View(await _context.Instructor.ToListAsync());
         }
 
@@ -197,6 +207,32 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
+            List<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == id.ToString()).ToList();
+            List<AdventureRealisation> realizations = new List<AdventureRealisation>();
+            foreach (Adventure adventure in adventures)
+            {
+                foreach (AdventureRealisation realization in _context.AdventureRealisation.Where(r =>
+                    r.AdventureId == adventure.Id.ToString()))
+                {
+                    realizations.Add(realization);
+                }
+            }
+
+            List<AdventureReservation> reservations = new List<AdventureReservation>();
+            foreach (AdventureRealisation realization in realizations)
+            {
+                foreach (AdventureReservation reservation in _context.AdventureReservation.Where(r =>
+                    r.AdventureRealisationId == realization.Id.ToString()))
+                {
+                    reservations.Add(reservation);
+                }
+            }
+
+            if (reservations.Count != 0)
+            {
+                return RedirectToAction(nameof(Index), new { triedToDelete = true });
+            }
+
             return View(instructor);
         }
 
@@ -205,8 +241,26 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            
+
             var instructor = await _context.Instructor.FindAsync(id);
             _context.Instructor.Remove(instructor);
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
+            _context.UserDetails.Remove(userDetails);
+            IdentityUser identityUser = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+            await _userManager.DeleteAsync(identityUser);
+
+            List<Adventure> adventures = _context.Adventure.Where(a => a.InstructorId == id.ToString()).ToList();
+
+            foreach (Adventure adventure in adventures)
+            {
+                foreach(AdventureRealisation realization in _context.AdventureRealisation.Where(r => r.AdventureId == adventure.Id.ToString()))
+                {
+                    _context.Remove(realization);
+                }
+                _context.Remove(adventure);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

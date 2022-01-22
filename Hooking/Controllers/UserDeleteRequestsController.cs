@@ -10,7 +10,11 @@ using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.IO;
+using Hooking.Models.DTO;
 using Newtonsoft.Json;
+using Nito.AsyncEx.Synchronous;
+using OpenQA.Selenium.DevTools.V85.Debugger;
+using OpenQA.Selenium.Interactions;
 
 namespace Hooking.Controllers
 {
@@ -44,7 +48,136 @@ namespace Hooking.Controllers
         // GET: UserDeleteRequests
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserDeleteRequest.ToListAsync());
+            var requests = await _context.UserDeleteRequest.ToListAsync();
+            return View(requests.OrderBy(r => r.isReviewed));
+        }
+
+        public async Task<IActionResult> AnswerRequest(DeleteRequestDTO dto)
+        {
+            return View(dto);
+        }
+
+        public async Task<IActionResult> GrantRequest(Guid id)
+        {
+            UserDeleteRequest request = _context.UserDeleteRequest.Find(id);
+            return RedirectToAction(nameof(AnswerRequest),new DeleteRequestDTO
+            {
+                UserDetailsId = request.UserDetailsId,
+                Type = request.Type,
+                IsApproved = true
+            });
+        }
+
+        public async Task<IActionResult> DenyRequest(Guid id)
+        {
+            UserDeleteRequest request = _context.UserDeleteRequest.Find(id);
+            return RedirectToAction(nameof(AnswerRequest), new DeleteRequestDTO
+            {
+                UserDetailsId = request.UserDetailsId,
+                Type = request.Type,
+                
+                IsApproved = false
+            });
+        }
+
+        private string GetEmailFromUserDetailsId(string userDetailsId)
+        {
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(userDetailsId));
+            IdentityUser iUser = _userManager.FindByIdAsync(userDetails.IdentityUserId).WaitAndUnwrapException();
+            if (iUser != null) return iUser.Email;
+            return "";
+        }
+        private void DeleteBoatOwner(UserDeleteRequest request)
+        {
+            BoatOwner boatOwner = _context.BoatOwner.FirstOrDefault(i => i.UserDetailsId == request.UserDetailsId);
+            _context.Remove(boatOwner);
+            foreach (Boat boat in _context.Boat.Where(b => b.BoatOwnerId == boatOwner.Id.ToString()))
+            {
+                foreach(BoatReservation reservation in _context.BoatReservation.Where(r => r.StartDate < DateTime.Now).ToList())
+                {
+                    _context.Remove(reservation);
+                    _emailSender.SendEmailAsync(GetEmailFromUserDetailsId(reservation.UserDetailsId), "Otkazivanje rezervacija", $"Nažalost, sve buduće rezervacije u vezi sa brodom {boat.Name} su otkazane zbog brisanja profila vlasnika.")
+                        .WaitAndUnwrapException();
+                }
+            }
+            
+            _context.SaveChanges();
+        }
+        private void DeleteCottageOwner(UserDeleteRequest request)
+        {
+            CottageOwner cottageOwner = _context.CottageOwner.FirstOrDefault(i => i.UserDetailsId == request.UserDetailsId);
+            _context.Remove(cottageOwner);
+            foreach (Cottage cottage in _context.Cottage.Where(b => b.CottageOwnerId == cottageOwner.Id.ToString()))
+            {
+                foreach (CottageReservation reservation in _context.CottageReservation.Where(r => r.StartDate < DateTime.Now).ToList())
+                {
+                    _context.Remove(reservation);
+                    _emailSender.SendEmailAsync(GetEmailFromUserDetailsId(reservation.UserDetailsId), "Otkazivanje rezervacija", $"Nažalost, sve buduće rezervacije u vezi sa brodom {cottage.Name} su otkazane zbog brisanja profila vlasnika.")
+                        .WaitAndUnwrapException();
+                }
+            }
+
+            _context.SaveChanges();
+        }
+        private void DeleteInstructorOwner(UserDeleteRequest request)
+        {
+            Instructor instructor = _context.Instructor.FirstOrDefault(i => i.UserDetailsId == request.UserDetailsId);
+            _context.Remove(instructor);
+            foreach (Adventure adventure in _context.Adventure.Where(b => b.InstructorId == instructor.Id.ToString()))
+            {
+                foreach (AdventureRealisation realization in _context.AdventureRealisation.Where(r => r.StartDate < DateTime.Now).ToList())
+                {
+                    _context.Remove(realization);
+                    foreach (AdventureReservation reservation in _context.AdventureReservation.Where(r =>
+                        r.AdventureRealisationId == realization.Id.ToString()))
+                    {
+                        _emailSender.SendEmailAsync(GetEmailFromUserDetailsId(reservation.UserDetailsId), "Otkazivanje rezervacija", $"Nažalost, sve buduće rezervacije u vezi sa brodom {adventure.Name} su otkazane zbog brisanja profila vlasnika.").WaitAndUnwrapException();
+                        _context.Remove(reservation);
+                    }
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
+        public async Task<IActionResult> RegisterAnswer([Bind("Description,IsApproved,Type,UserDetailsId")]
+            DeleteRequestDTO dto)
+        {
+            UserDeleteRequest request = _context.UserDeleteRequest.FirstOrDefault(r => r.UserDetailsId == dto.UserDetailsId && r.isReviewed == false);
+
+            if (request != null) request.IsApproved = dto.IsApproved;
+            else return NotFound();
+            
+            UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
+            string message = "";
+            if (request.IsApproved)
+            {
+                switch (request.Type)
+                {
+                    case DeletionType.BOATOWNER:
+                        DeleteBoatOwner(request);
+                        break;
+                    case DeletionType.COTTAGEOWNER:
+                        DeleteCottageOwner(request);
+                        break;
+                    case DeletionType.INSTRUCTOR:
+                        DeleteInstructorOwner(request);
+                        break;
+                }
+                _context.Remove(userDetails);
+                message = "Vaš zahtev za brisanje je odobren.";
+            }
+            else
+            {
+                message = "Vaš zahtev za brisanje nije odobren.";
+            }
+
+            request.isReviewed = true;
+
+            await _emailSender.SendEmailAsync(GetEmailFromUserDetailsId(userDetails.Id.ToString()), "Zahtev za brisanje", message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: UserDeleteRequests/Details/5
@@ -86,13 +219,15 @@ namespace Hooking.Controllers
                 {
                     if(!userDeleteRequestTemp.isReviewed)
                     {
-                        StatusMessage = "Ne možete poslati više od jednog zahteva za brisanje profila.";
+                        StatusMessage = "Error: Ne možete poslati više od jednog zahteva za brisanje profila.";
                         return RedirectToPage("/Account/Manage/UserDeleteRequest", new { area = "Identity" });
                     }
                 }
+
+                UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == user.Id);
                 userDeleteRequest.Id = Guid.NewGuid();
                 userDeleteRequest.IsApproved = false;
-                userDeleteRequest.UserDetailsId = user.Id;
+                userDeleteRequest.UserDetailsId = userDetails.Id.ToString();
                 userDeleteRequest.isReviewed = false;
                 IList<string> rolenames = await _signInManager.UserManager.GetRolesAsync(user);
                 switch (rolenames[0])

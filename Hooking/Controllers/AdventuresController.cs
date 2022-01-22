@@ -4,13 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Hooking.Models.DTO;
 using Hooking.Services;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -38,10 +36,32 @@ namespace Hooking.Controllers
             return View(_adventureService.GetAdventures());
         }
 
-        public IActionResult InstructorIndex()
+        public IActionResult InstructorIndex(bool triedToDelete = false)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var adventures = _adventureService.GetInstructorAdventures(userId);
+            
+
+            UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == userId);
+
+            if (userDetails == null)
+            {
+                return NotFound();
+            }
+
+            Instructor instructor = _context.Instructor.FirstOrDefault(i => i.UserDetailsId == userDetails.Id.ToString());
+
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["InstructorId"] = instructor.Id.ToString();
+
+            if (triedToDelete)
+            {
+                ViewData["Status"] = "Nije moguće obrisati realizaciju jer za nju postoje rezervacije.";
+            }
 
             return View(adventures);
         }
@@ -209,7 +229,37 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
-            var adventure = _adventureService.FindAdventureById(adventureId ?? throw new NullReferenceException());
+            
+
+            List<AdventureRealisation> realizations =
+                _context.AdventureRealisation.Where(r => r.AdventureId == adventureId.ToString()).ToList();
+
+            if (realizations.Count != 0)
+            {
+                List<AdventureReservation> reservations = new List<AdventureReservation>();
+
+                foreach (AdventureRealisation realization in realizations)
+                {
+                    /*_context.Add(new AdventureReservation
+                    {
+                        AdventureRealisationId = realization.Id.ToString(),
+                        IsReviewed = false,
+                        UserDetailsId = "dadb6eb8-be7b-47af-950b-7ad2871fe206"
+                    });*/
+                    await _context.SaveChangesAsync();
+                    foreach (AdventureReservation reservation in _context.AdventureReservation
+                        .Where(r => r.AdventureRealisationId == realization.Id.ToString()).ToList())
+                    {
+                        reservations.Add(reservation);
+                    }
+                    if (reservations.Count != 0)
+                    {
+                        return RedirectToAction(nameof(InstructorIndex), new { triedToDelete = true });
+                    }
+                }
+            }
+
+            var adventure = _adventureService.FindAdventureById((Guid) adventureId);
             if (adventure == null)
             {
                 return NotFound();

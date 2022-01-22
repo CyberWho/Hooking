@@ -354,6 +354,7 @@ namespace Hooking.Controllers
                 return NotFound();
             }
 
+
             return View(cottage);
         }
         [HttpGet("/Cottages/CottagesForReservation")]
@@ -388,21 +389,29 @@ namespace Hooking.Controllers
                 }
             }
 
-            if (User.IsInRole("Admin"))
-            {
-                return RedirectToAction("Records", "Home");
-            }
-
+            bool deleted = false;
             if(cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
             {
                 _context.Cottage.Remove(cottage);
                 await _context.SaveChangesAsync();
                 StatusMessage = "Uspesno ste poslali zahtev za brisanje vikendice!";
+                deleted = true;
             } else
             {
                 StatusMessage = "Ne mozete poslati zahtev za brisanje vikendice jer je rezervisana!";
             }
+
             ViewData["StatusMessage"] = StatusMessage;
+            if (User.IsInRole("Admin"))
+            {
+                if (deleted)
+                {
+                    return RedirectToAction("Records", "Home");
+                }
+
+                return await Delete(id);
+            }
+
             return RedirectToPage("/Account/Manage/MyCottages", new { area = "Identity" });
         }
         [HttpPost("/Cottages/UploadImage/{id}")]
