@@ -18,7 +18,7 @@
             Naziv vikendice
         </dt>
         <dd class="col-sm-10">
-            @cottage.Name
+            <a href="@Url.Action("Details","Cottages",new { id = @cottage.Id })">@cottage.Name</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
@@ -69,6 +69,4 @@
         </dl>
     </div>
 </div>
-<div>
-    <a href='@Url.Page("/Account/Manage/MyCottages", new { area = "Identity" })'>Back to List</a>
-</div>
+

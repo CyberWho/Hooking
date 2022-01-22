@@ -24,7 +24,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var cottageOwnerId = cottageOwner.Id.ToString();
             List<Cottage> cottages = _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToList();
             List<string> cottageNames = new List<string>();
