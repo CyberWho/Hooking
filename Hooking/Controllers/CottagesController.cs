@@ -309,6 +309,13 @@ namespace Hooking.Controllers
                    
                     if (cottageSpecialOfferReservationsFull.Count == 0 && cottageReservations.Count == 0)
                     {
+                        foreach(var reservation in _context.CottageReservation.Local)
+                        {
+                            if(reservation.CottageId == id.ToString())
+                            {
+                                return RedirectToAction("ConcurrencyError", "Home");
+                            }
+                        }
                         Cottage cottageTemp = await _context.Cottage.FindAsync(id);
                         cottageTemp.Name = cottage.Name;
                         cottageTemp.Description = cottage.Description;
