@@ -35,6 +35,13 @@ namespace Hooking.Controllers
         {
             return View(_adventureService.GetAdventures());
         }
+        public IActionResult Charts()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var adventures = _adventureService.GetInstructorAdventures(userId);
+            
+            return View();
+        }
 
         public IActionResult InstructorIndex(bool triedToDelete = false)
         {
