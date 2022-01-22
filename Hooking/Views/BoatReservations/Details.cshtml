@@ -17,7 +17,7 @@
             Naziv
         </dt>
         <dd class="col-sm-10">
-            @boat.Name
+            <a href="@Url.Action("Details","Boats",new { id = @boat.Id })">@boat.Name</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
