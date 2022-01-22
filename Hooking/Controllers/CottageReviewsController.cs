@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Hooking.Controllers
 {
@@ -15,19 +16,32 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-
-        public CottageReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public CottageReviewsController(ApplicationDbContext context, 
+            UserManager<IdentityUser> userManager, 
+            IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
-
+            _emailSender = emailSender;
         }
 
         // GET: CottageReviews
         public async Task<IActionResult> Index()
         {
             return View(await _context.CottageReview.ToListAsync());
+        }
+
+        public async Task<IActionResult> Approve(Guid id)
+        {
+            CottageReview review = await _context.CottageReview.FindAsync(id);
+            if (review == null) return NotFound();
+
+            review.IsReviewed = true;
+            review.IsApproved = true;
+
+
         }
 
         // GET: CottageReviews/Details/5

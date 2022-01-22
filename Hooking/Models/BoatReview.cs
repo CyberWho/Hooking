@@ -18,5 +18,6 @@ namespace Hooking.Models
         public string Grade { get; set; }
         [DisplayName("Da li je odobrena recenzija?")]
         public bool IsApproved { get; set; }
+        public bool IsReviewed { get; set; }
     }
 }
