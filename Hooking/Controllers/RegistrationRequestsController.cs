@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Hooking.Areas.Identity.Pages.Account;
@@ -35,6 +36,11 @@ namespace Hooking.Controllers
         public async Task<IActionResult> Approve(Guid id)
         {
             var request = await _context.RegistrationRequest.FindAsync(id);
+            if (request == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
             _context.RegistrationRequest.Remove(request);
 
             UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
@@ -46,25 +52,31 @@ namespace Hooking.Controllers
                 {
                     CottageOwner cottageOwner = CreateCottageOwner(userDetails);
                     _context.Add(cottageOwner);
-                    await _context.SaveChangesAsync();
                     break;
                 }
                 case RegistrationType.BOAT_OWNER:
                 {
                     BoatOwner boatOwner = createBoatOwner(userDetails);
                     _context.Add(boatOwner);
-                    await _context.SaveChangesAsync();
                     break;
                 }
                 case RegistrationType.INSTRUCTOR:
                 {
                     Instructor instructor = CreateInstructor(userDetails);
                     _context.Add(instructor);
-                    await _context.SaveChangesAsync();
                     break;
                 }
             }
-            
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -72,13 +84,36 @@ namespace Hooking.Controllers
         public async Task<IActionResult> Reject(Guid id)
         {
             var request = await _context.RegistrationRequest.FindAsync(id);
+            if (request == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
             _context.RegistrationRequest.Remove(request);
             UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
+            if (userDetails == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
             _context.UserDetails.Remove(userDetails);
-            IdentityUser user = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
-            await _userManager.DeleteAsync(user);
-            await _context.SaveChangesAsync();
 
+            IdentityUser user = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+            if (user == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
+            await _userManager.DeleteAsync(user);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
 
             return RedirectToAction(nameof(Index));
         }

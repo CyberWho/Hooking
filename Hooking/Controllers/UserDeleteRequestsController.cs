@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -144,7 +145,7 @@ namespace Hooking.Controllers
             DeleteRequestDTO dto)
         {
             UserDeleteRequest request = _context.UserDeleteRequest.FirstOrDefault(r => r.UserDetailsId == dto.UserDetailsId && r.isReviewed == false);
-
+            
             if (request != null) request.IsApproved = dto.IsApproved;
             else return NotFound();
             
@@ -175,7 +176,16 @@ namespace Hooking.Controllers
             request.isReviewed = true;
 
             await _emailSender.SendEmailAsync(GetEmailFromUserDetailsId(userDetails.Id.ToString()), "Zahtev za brisanje", message);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
+
 
             return RedirectToAction(nameof(Index));
         }
