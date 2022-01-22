@@ -136,8 +136,8 @@ namespace Hooking.Controllers
             }
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
             var cottageOwnerUser = _context.CottageOwner.Where(m => m.Id == cottageOwnerId).FirstOrDefault<CottageOwner>();
-           
-            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            var cottageOwnerUserId = Guid.Parse(cottageOwnerUser.UserDetailsId);
+            cottageOwner = _context.UserDetails.Where(m => m.Id == cottageOwnerUserId).FirstOrDefault<UserDetails>();
             var cottageId = cottage.Id.ToString();
             CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
             Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
@@ -180,8 +180,8 @@ namespace Hooking.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
             var cottageOwnerUser = _context.CottageOwner.Where(m => m.Id == cottageOwnerId).FirstOrDefault<CottageOwner>();
-
-            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            var cottageOwnerUserId = Guid.Parse(cottageOwnerUser.UserDetailsId); 
+            cottageOwner = _context.UserDetails.Where(m => m.Id == cottageOwnerUserId).FirstOrDefault<UserDetails>();
             var cottageId = cottage.Id.ToString();
             CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
             Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);
@@ -225,8 +225,9 @@ namespace Hooking.Controllers
         public async Task<IActionResult> CottagesForSpecialOffer()
         {
             var user = await _userManager.GetUserAsync(User);
-            var userId = Guid.Parse(user.Id);
-            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var cottageOwnerId = cottageOwner.Id.ToString();
             List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToListAsync();
             return View(myCottages);
@@ -244,8 +245,9 @@ namespace Hooking.Controllers
                 cottage.Id = Guid.NewGuid();
                 var user = await _userManager.GetUserAsync(User);
                 var userId = Guid.Parse(user.Id);
-                var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
-                
+                var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+                var userDetailsId = userDetails.Id.ToString();
+                var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
                 cottage.CottageOwnerId = cottageOwner.Id.ToString();
                 cottage.CancelationPolicyId = "0";
                 cottage.AverageGrade = 0;
@@ -361,7 +363,9 @@ namespace Hooking.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var cottageOwnerId = cottageOwner.Id.ToString();
             List<Cottage> myCottages = await _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToListAsync();
             return View(myCottages);

@@ -39,7 +39,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var cottageOwner = _context.CottageOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var cottageOwnerId = cottageOwner.Id.ToString();
             List<Cottage> myCottages = new List<Cottage>();
             myCottages =   _context.Cottage.Where(m => m.CottageOwnerId == cottageOwnerId).ToList();
@@ -51,14 +53,12 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 List<CottageSpecialOffer> specialOffers = _context.CottageSpecialOffer.Where(m => m.CottageId == cottageId).ToList<CottageSpecialOffer>();
                 foreach(var specialOffer in specialOffers)
                 {
-                    if(specialOffer.ValidFrom <= DateTime.Now && specialOffer.ValidTo >= DateTime.Now)
-                    {
-                        cottageSpecialOffers.Add(specialOffer);
+                      cottageSpecialOffers.Add(specialOffer);
                         Guid cottageGuid = Guid.Parse(specialOffer.CottageId);
                         var cottageSpec = _context.Cottage.Where(m => m.Id == cottageGuid).FirstOrDefault<Cottage>();
                         cottages.Add(cottageSpec);
                         cottageNames.Add(cottage.Name);
-                    }
+                    
                         
                     
                 }
