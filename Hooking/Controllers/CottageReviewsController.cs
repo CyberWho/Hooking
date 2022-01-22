@@ -57,6 +57,8 @@ namespace Hooking.Controllers
 
             await _emailSender.SendEmailAsync(iUser.Email, "Odobrena revizija",
                 $"Revizija sa sadržajem '{review.Review}' i ocenom {review.Grade} je podneta za Vas.");
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: CottageReviews/Details/5
