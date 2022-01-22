@@ -77,7 +77,9 @@ namespace Hooking.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var boatOwnerId = boatOwner.Id.ToString();
             var boats = await _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToListAsync();
             return View(boats);
@@ -96,7 +98,8 @@ namespace Hooking.Controllers
             var boatId = boat.Id.ToString();
             var boatOwnerId = Guid.Parse(boat.BoatOwnerId);
             var boatOwner = _context.BoatOwner.Where(m => m.Id == boatOwnerId).FirstOrDefault();
-            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boatOwner.UserDetailsId).FirstOrDefault();
+            var boatOwnerUserId = Guid.Parse(boatOwner.UserDetailsId);
+            var boatOwnerUser = _context.UserDetails.Where(m => m.Id == boatOwnerUserId).FirstOrDefault();
             var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
             Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
             CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault();
@@ -132,7 +135,8 @@ namespace Hooking.Controllers
             var boatId = boat.Id.ToString();
             var boatOwnerId = Guid.Parse(boat.BoatOwnerId);
             var boatOwner = _context.BoatOwner.Where(m => m.Id == boatOwnerId).FirstOrDefault();
-            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boatOwner.UserDetailsId).FirstOrDefault();
+            var boatOwnerUserId = Guid.Parse(boatOwner.UserDetailsId);
+            var boatOwnerUser = _context.UserDetails.Where(m => m.Id == boatOwnerUserId).FirstOrDefault();
             var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
             Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
             CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault();
@@ -171,7 +175,9 @@ namespace Hooking.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var boatOwnerId = boatOwner.Id.ToString();
             List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToList<Boat>();
             return View(boats);
@@ -181,7 +187,9 @@ namespace Hooking.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var boatOwnerId = boatOwner.Id.ToString();
             List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToList<Boat>();
             return View(boats);
@@ -198,8 +206,10 @@ namespace Hooking.Controllers
                 boat.Id = Guid.NewGuid();
                 var user = await _userManager.GetUserAsync(User);
                 var userId = Guid.Parse(user.Id);
-                var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
-                
+                var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+                var userDetailsId = userDetails.Id.ToString();
+                var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
+
                 boat.BoatOwnerId = boatOwner.Id.ToString();
                 boat.CancelationPolicyId = "0";
                 boat.AverageGrade = 0;

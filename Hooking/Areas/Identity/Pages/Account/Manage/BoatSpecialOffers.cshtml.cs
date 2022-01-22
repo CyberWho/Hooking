@@ -25,7 +25,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
-            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == user.Id).FirstOrDefault();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+            var userDetailsId = userDetails.Id.ToString();
+            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
             var boatOwnerId = boatOwner.Id.ToString();
             List<Boat> boats = _context.Boat.Where(m => m.BoatOwnerId == boatOwnerId).ToList<Boat>();
             boatSpecialOffers = new List<BoatSpecialOffer>();
@@ -36,11 +38,10 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 List<BoatSpecialOffer> boatSpecialOffersTemp = _context.BoatSpecialOffer.Where(m => m.BoatId == boatId).ToList<BoatSpecialOffer>();
                 foreach (BoatSpecialOffer boatSpecialOffer in  boatSpecialOffersTemp)
                 {
-                    if (boatSpecialOffer.ValidFrom <= DateTime.Now && boatSpecialOffer.ValidTo >= DateTime.Now)
-                    {
+                    
                         boatSpecialOffers.Add(boatSpecialOffer);
                         boatNames.Add(boat.Name);
-                    }
+                    
 
 
                 }
