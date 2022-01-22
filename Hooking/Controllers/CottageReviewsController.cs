@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Newtonsoft.Json;
 
 namespace Hooking.Controllers
 {
@@ -25,6 +27,10 @@ namespace Hooking.Controllers
             _context = context;
             _userManager = userManager;
             _emailSender = emailSender;
+
+            using StreamReader reader = new StreamReader("./Data/emailCredentials.json");
+            string json = reader.ReadToEnd();
+            _emailSender = JsonConvert.DeserializeObject<EmailSender>(json);
         }
 
         // GET: CottageReviews
@@ -41,7 +47,16 @@ namespace Hooking.Controllers
             review.IsReviewed = true;
             review.IsApproved = true;
 
+            Cottage cottage = _context.Cottage.Find(Guid.Parse(review.CottageId));
 
+            CottageOwner owner = _context.CottageOwner.Find(Guid.Parse(cottage.CottageOwnerId));
+
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(owner.UserDetailsId));
+
+            IdentityUser iUser = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+
+            await _emailSender.SendEmailAsync(iUser.Email, "Odobrena revizija",
+                $"Revizija sa sadržajem '{review.Review}' i ocenom {review.Grade} je podneta za Vas.");
         }
 
         // GET: CottageReviews/Details/5
@@ -80,7 +95,8 @@ namespace Hooking.Controllers
                 cottageReview.Id = Guid.NewGuid();
                 cottageReview.CottageId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
-                cottageReview.UserDetailsId = user.Id.ToString();
+                UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == user.Id);
+                cottageReview.UserDetailsId = userDetails.Id.ToString();
                 _context.Add(cottageReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

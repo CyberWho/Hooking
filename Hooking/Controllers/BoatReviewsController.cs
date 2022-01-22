@@ -66,7 +66,8 @@ namespace Hooking.Controllers
                 boatReview.Id = Guid.NewGuid();
                 boatReview.BoatId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
-                boatReview.UserDetailsId = user.Id.ToString();
+                UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == user.Id);
+                boatReview.UserDetailsId = userDetails.Id.ToString();
                 _context.Add(boatReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
