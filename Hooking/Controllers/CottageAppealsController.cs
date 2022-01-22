@@ -69,7 +69,12 @@ namespace Hooking.Controllers
             string ownerEmail = GetCottageOwnerEmailFromAppeal(appeal);
             await _emailSender.SendEmailAsync(ownerEmail, "Odgovor na žalbu", answer);
             appeal = _context.CottageAppeal.FirstOrDefault(a => a.Id == appeal.Id);
-            _context.CottageAppeal.Remove(appeal ?? throw new ArgumentNullException(nameof(appeal)));
+            if (appeal == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
+            _context.CottageAppeal.Remove(appeal);
             try
             {
                 await _context.SaveChangesAsync();

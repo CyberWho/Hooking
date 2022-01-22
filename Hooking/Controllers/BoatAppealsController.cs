@@ -78,6 +78,11 @@ namespace Hooking.Controllers
             string boatOwnerEmail = GetBoatOwnerEmailFromAppeal(appeal);
             await _emailSender.SendEmailAsync(boatOwnerEmail, "Odgovor na žalbu", answer);
             appeal = _context.BoatAppeal.FirstOrDefault(a => a.Id == appeal.Id);
+            if (appeal == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
             _context.BoatAppeal.Remove(appeal);
             try
             {

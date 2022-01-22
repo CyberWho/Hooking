@@ -69,6 +69,11 @@ namespace Hooking.Controllers
             string instructorEmail = GetInstructorEmailFromAppeal(appeal);
             await _emailSender.SendEmailAsync(instructorEmail, "Odgovor na žalbu", answer);
             appeal = _context.AdventureAppeal.FirstOrDefault(a => a.Id == appeal.Id);
+            if (appeal == null)
+            {
+                Debug.WriteLine("Concurrency error!");
+                return RedirectToAction("ConcurrencyError", "Home");
+            }
             _context.AdventureAppeal.Remove(appeal);
             try
             {
