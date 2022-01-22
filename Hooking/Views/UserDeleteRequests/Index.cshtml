@@ -18,9 +18,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Type)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationTime)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,9 +32,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationTime)
             </td>
             <td>
                 @if (!item.isReviewed)

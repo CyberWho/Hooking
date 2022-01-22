@@ -23,8 +23,6 @@ namespace Hooking.Models
     {
         public string UserDetailsId { get; set; }
         [Display(Name = "Vreme podnošenja")]
-        public DateTime CreationTime { get; } = DateTime.Now;
-        [Display(Name = "Opis")]
         public string Description { get; set; }
         [Display(Name = "Odobren")]
         public bool IsApproved { get; set; }

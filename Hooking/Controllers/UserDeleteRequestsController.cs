@@ -48,7 +48,8 @@ namespace Hooking.Controllers
         // GET: UserDeleteRequests
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserDeleteRequest.ToListAsync());
+            var requests = await _context.UserDeleteRequest.ToListAsync();
+            return View(requests.OrderBy(r => r.isReviewed));
         }
 
         public async Task<IActionResult> AnswerRequest(DeleteRequestDTO dto)
@@ -79,7 +80,6 @@ namespace Hooking.Controllers
             });
         }
 
-
         private string GetEmailFromUserDetailsId(string userDetailsId)
         {
             UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(userDetailsId));
@@ -87,7 +87,6 @@ namespace Hooking.Controllers
             if (iUser != null) return iUser.Email;
             return "";
         }
-
         private void DeleteBoatOwner(UserDeleteRequest request)
         {
             BoatOwner boatOwner = _context.BoatOwner.FirstOrDefault(i => i.UserDetailsId == request.UserDetailsId);
@@ -104,8 +103,7 @@ namespace Hooking.Controllers
             
             _context.SaveChanges();
         }
-
-        void DeleteCottageOwner(UserDeleteRequest request)
+        private void DeleteCottageOwner(UserDeleteRequest request)
         {
             CottageOwner cottageOwner = _context.CottageOwner.FirstOrDefault(i => i.UserDetailsId == request.UserDetailsId);
             _context.Remove(cottageOwner);
@@ -121,7 +119,7 @@ namespace Hooking.Controllers
 
             _context.SaveChanges();
         }
-        void DeleteInstructorOwner(UserDeleteRequest request)
+        private void DeleteInstructorOwner(UserDeleteRequest request)
         {
             Instructor instructor = _context.Instructor.FirstOrDefault(i => i.UserDetailsId == request.UserDetailsId);
             _context.Remove(instructor);
@@ -145,11 +143,13 @@ namespace Hooking.Controllers
         public async Task<IActionResult> RegisterAnswer([Bind("Description,IsApproved,Type,UserDetailsId")]
             DeleteRequestDTO dto)
         {
-            UserDeleteRequest request = _context.UserDeleteRequest.FirstOrDefault(r => r.UserDetailsId == dto.UserDetailsId);
+            UserDeleteRequest request = _context.UserDeleteRequest.FirstOrDefault(r => r.UserDetailsId == dto.UserDetailsId && r.isReviewed == false);
 
             if (request != null) request.IsApproved = dto.IsApproved;
             else return NotFound();
-
+            
+            UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
+            string message = "";
             if (request.IsApproved)
             {
                 switch (request.Type)
@@ -164,10 +164,17 @@ namespace Hooking.Controllers
                         DeleteInstructorOwner(request);
                         break;
                 }
-                UserDetails userDetails = await _context.UserDetails.FindAsync(Guid.Parse(request.UserDetailsId));
                 _context.Remove(userDetails);
+                message = "Vaš zahtev za brisanje je odobren.";
             }
-            
+            else
+            {
+                message = "Vaš zahtev za brisanje nije odobren.";
+            }
+
+            request.isReviewed = true;
+
+            await _emailSender.SendEmailAsync(GetEmailFromUserDetailsId(userDetails.Id.ToString()), "Zahtev za brisanje", message);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
@@ -216,9 +223,11 @@ namespace Hooking.Controllers
                         return RedirectToPage("/Account/Manage/UserDeleteRequest", new { area = "Identity" });
                     }
                 }
+
+                UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == user.Id);
                 userDeleteRequest.Id = Guid.NewGuid();
                 userDeleteRequest.IsApproved = false;
-                userDeleteRequest.UserDetailsId = user.Id;
+                userDeleteRequest.UserDetailsId = userDetails.Id.ToString();
                 userDeleteRequest.isReviewed = false;
                 IList<string> rolenames = await _signInManager.UserManager.GetRolesAsync(user);
                 switch (rolenames[0])
