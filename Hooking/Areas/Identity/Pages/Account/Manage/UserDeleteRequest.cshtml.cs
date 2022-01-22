@@ -37,10 +37,15 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnCreate()
         {
             var user = await _userManager.GetUserAsync(User);
-            UserDeleteRequest userDeleteRequest = new UserDeleteRequest();
-            userDeleteRequest.Id = Guid.NewGuid();
-            userDeleteRequest.IsApproved = false;
-            userDeleteRequest.UserDetailsId = user.Id;
+            UserDeleteRequest userDeleteRequest = new UserDeleteRequest {Id = Guid.NewGuid(), IsApproved = false};
+            UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == user.Id);
+
+            if (userDetails == null)
+            {
+                return NotFound();
+            }
+
+            userDeleteRequest.UserDetailsId = userDetails.Id.ToString();
             IList<string> rolenames = await _signInManager.UserManager.GetRolesAsync(user);
             switch(rolenames[0])
             {
@@ -62,6 +67,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             }
             userDeleteRequest.Description = Description;
             _context.Add(userDeleteRequest);
+            StatusMessage = "Zahtev za brisanje profila uspešno podnet.";
             return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
         }
        
