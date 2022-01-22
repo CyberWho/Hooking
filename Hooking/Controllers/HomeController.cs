@@ -47,6 +47,10 @@ namespace Hooking.Controllers
         {
             return Redirect("/Records");
         }
+        public IActionResult ReservationReviews()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

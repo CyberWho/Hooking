@@ -111,7 +111,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BoatReservationId,Review,DidntShow,ReceivedPenalty,Id,RowVersion")] BoatReservationReview boatReservationReview)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ReceivedPenalty,Id,RowVersion")] BoatReservationReview boatReservationReview)
         {
             if (id != boatReservationReview.Id)
             {
@@ -122,8 +122,21 @@ namespace Hooking.Controllers
             {
                 try
                 {
-                    _context.Update(boatReservationReview);
+                    var temp = _context.BoatReservationReview.Find(id);
+                    temp.IsReviewedByAdmin = true;
+                    temp.ReceivedPenalty = boatReservationReview.ReceivedPenalty;
+                    _context.Update(temp);
                     await _context.SaveChangesAsync();
+                    if (boatReservationReview.ReceivedPenalty)
+                    {
+                        var boatReservation = _context.BoatReservation.Find(Guid.Parse(temp.BoatReservationId));
+                        Guid userId = Guid.Parse(boatReservation.UserDetailsId);
+                        UserDetails userDetails = _context.UserDetails.Where(m => m.Id == userId).FirstOrDefault<UserDetails>();
+                        userDetails.PenaltyCount++;
+                        _context.Update(userDetails);
+                        await _context.SaveChangesAsync();
+
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
