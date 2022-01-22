@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Nito.AsyncEx.Synchronous;
 
 namespace Hooking.Controllers
 {
@@ -27,6 +28,14 @@ namespace Hooking.Controllers
         
         public async Task<IActionResult> Index()
         {
+            /*_context.Add(new AdventureReservation
+            {
+                AdventureRealisationId = "a630b7b3-1cc1-4d6c-8f76-639e711a4911",
+                IsReviewed = false,
+                UserDetailsId = "276b5299-c194-4048-f33b-08d9ba8dadfb"
+            });
+            _context.SaveChangesAsync().WaitAndUnwrapException();*/
+
             var user = await _userManager.GetUserAsync(User);
 
             Guid userId = Guid.Parse(user.Id);
@@ -57,13 +66,26 @@ namespace Hooking.Controllers
 
             foreach (Adventure adventure in adventures)
             {
-                foreach (AdventureSpecialOffer offer in _context.AdventureSpecialOffer.Where(o =>
-                    o.AdventureId == adventure.Id.ToString()))
+                var offers = _context.AdventureSpecialOffer.Where(o => o.AdventureId == adventure.Id.ToString()).ToList();
+                foreach (AdventureSpecialOffer offer in offers)
                 {
                     codeForFront += ",";
                     codeForFront += "{ title: '" + adventure.Name + "', allDay : '" + true + "', start: '" +
                                 offer.StartDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
                                 "end: '" + offer.StartDate.AddDays(offer.Duration).ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+                }
+
+                var realizations = _context.AdventureRealisation.Where(r => r.AdventureId == adventure.Id.ToString()).ToList();
+                foreach (AdventureRealisation realization in realizations)
+                {
+                    var reservations = _context.AdventureReservation.Where(r => r.AdventureRealisationId == realization.Id.ToString()).ToList();
+                    foreach (AdventureReservation reservation in reservations)
+                    {
+                        codeForFront += ",";
+                        codeForFront += "{ title: '" + adventure.Name + "', allDay : '" + true + "', url:'" + $"AdventureReservations/Details/{reservation.Id}" + "', start: '" +
+                                        realization.StartDate.ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "', " +
+                                        "end: '" + realization.StartDate.AddDays(realization.Duration).ToString("yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss") + "'}\n";
+                    }
                 }
             }
             codeForFront += "]";

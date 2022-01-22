@@ -14,6 +14,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hooking.Services;
 using Hooking.Services.Implementations;
+using Microsoft.Extensions.Azure;
+using Azure.Storage.Queues;
+using Azure.Storage.Blobs;
+using Azure.Core.Extensions;
 
 namespace Hooking
 {
@@ -44,6 +48,11 @@ namespace Hooking
             services.AddAuthorization();
             services.AddRazorPages();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(Configuration["StorageStrings:AccessKey:blob"], preferMsi: true);
+                builder.AddQueueServiceClient(Configuration["StorageStrings:AccessKey:queue"], preferMsi: true);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +85,31 @@ namespace Hooking
                     pattern: "{controller=Home}/{action=Index}/{id?}/{cId?}");
                 endpoints.MapRazorPages();
             });
+        }
+    }
+    internal static class StartupExtensions
+    {
+        public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions> AddBlobServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddBlobServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddBlobServiceClient(serviceUriOrConnectionString);
+            }
+        }
+        public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions> AddQueueServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddQueueServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddQueueServiceClient(serviceUriOrConnectionString);
+            }
         }
     }
 }
