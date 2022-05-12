@@ -24,8 +24,10 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync(string sortOrder = "")
         {
             var user = await _userManager.GetUserAsync(User);
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+
             //  System.Diagnostics.Debug.WriteLine(user.Id.ToString());
-            myAdventureReservations = await _context.AdventureReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+            myAdventureReservations = await _context.AdventureReservation.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
             List<AdventureRealisation> myAdventureRealisations = new List<AdventureRealisation>();
             foreach (var myAdventureReservation in myAdventureReservations)
             {

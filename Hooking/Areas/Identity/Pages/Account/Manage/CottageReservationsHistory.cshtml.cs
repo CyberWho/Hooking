@@ -34,6 +34,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync(string sortOrder="")
         {
+            System.Diagnostics.Debug.WriteLine("stigao do istorije rezervacija vikendica");
+
             StartDateSort = sortOrder == "StartDate" ? "date_desc" : "StartDate";
             PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
 
@@ -56,19 +58,22 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             }
             ctgReservations = await reservationToSort.AsNoTracking().ToListAsync();
             var user = await _userManager.GetUserAsync(User);
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
 
 
 
             foreach (var ctgReservation in ctgReservations)
             {
-                if(ctgReservation.UserDetailsId==user.Id)
+
+
+                if (Guid.Parse(ctgReservation.UserDetailsId) == userDetails.Id)
                 {
                     myCottageReservations.Add(ctgReservation);
                 }
             }
 
           //  myCottageReservations = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
-          
+            
             List<Cottage> myCottages = new List<Cottage>();
             foreach(var myCottageReservation in myCottageReservations)
             {
