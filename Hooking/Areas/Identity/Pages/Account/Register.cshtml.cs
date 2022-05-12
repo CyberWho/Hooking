@@ -236,9 +236,12 @@ namespace Hooking.Areas.Identity.Pages.Account
         }
         private string GetInputType()
         {
-            var roleName = "Korisnik";
+            var roleName="";
             switch (Input.Type)
             {
+                case RegistrationType.REGULAR:
+                    roleName = "Korisnik";
+                    break;
                 case RegistrationType.BOAT_OWNER:
                     roleName = "Vlasnik broda";
                     break;
