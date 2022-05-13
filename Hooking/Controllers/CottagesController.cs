@@ -475,15 +475,37 @@ namespace Hooking.Controllers
             return _context.Cottage.Any(e => e.Id == id);
         }
 
+        private bool isCottageAvailable(DateTime StartDate, DateTime EndDate, CottageNotAvailablePeriod ctgNotAvailable)
+        {
+            if ((ctgNotAvailable.StartTime >= StartDate && ctgNotAvailable.StartTime <= EndDate) && ctgNotAvailable.EndTime >= EndDate)
+            {
+                return false;
+
+            }
+            else if ((ctgNotAvailable.EndTime >= StartDate && ctgNotAvailable.EndTime <= EndDate) && ctgNotAvailable.StartTime <= StartDate)
+            {
+                return false;
+
+            }
+            else if (ctgNotAvailable.StartTime <= StartDate && ctgNotAvailable.EndTime >= EndDate)
+            {
+                return false;
+            }
+            return true;
+        }
+
         [HttpPost("/Cottages/CottagesFiltered")]
 
         public async Task<IActionResult> CottagesFiltered(DateTime StartDate,DateTime EndDate, int MaxPersonCount)
         {
+
+
             List<Cottage> cottages = await _context.Cottage.ToListAsync();
+            List<Cottage> tempCottages = await _context.Cottage.ToListAsync();
+
             List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = await _context.CottageNotAvailablePeriod.ToListAsync();
 
             List<Cottage> filteredCottages = new List<Cottage>();
-   
 
             foreach (CottageNotAvailablePeriod ctgNotAvailable in cottageNotAvailablePeriods)
             {
@@ -492,44 +514,29 @@ namespace Hooking.Controllers
                 foreach(Cottage ctg in cottages)
                 {
                     //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
-                    if (ctgNotAvailable.CottageId != null)
-                    {
+    
                         if (ctg.Id == Guid.Parse(ctgNotAvailable.CottageId))
                         {
-                            if ((ctgNotAvailable.StartTime >= StartDate && ctgNotAvailable.StartTime <= EndDate) && ctgNotAvailable.EndTime >= EndDate)
+                            if(!isCottageAvailable(StartDate,EndDate,ctgNotAvailable))
                             {
-                                //  cottageNotAvailablePeriods.Remove(ctgNotAvailable);
-                            }
-                            else if ((ctgNotAvailable.EndTime >= StartDate && ctgNotAvailable.EndTime <= EndDate) && ctgNotAvailable.StartTime <= StartDate)
-                            {
-                                // cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                                tempCottages.Remove(ctg);
                             }
                             else
                             {
-                                if (!filteredCottages.Contains(ctg))
+                                if (!filteredCottages.Contains(ctg) && tempCottages.Contains(ctg))
                                 {
                                     filteredCottages.Add(ctg);
                                 }
                             }
+                        }
 
-                        }
-                        else
-                        {
-                            if (!filteredCottages.Contains(ctg))
-                            {
-                                filteredCottages.Add(ctg);
-                            }
-                        }
-                    }
+                    
                    
                 }
             }
             ViewData["StartDate"] = StartDate;
             ViewData["EndDate"] = EndDate;
             ViewData["MaxPersonCount"] = MaxPersonCount;
-            System.Diagnostics.Debug.WriteLine("cottageFiltered");
-            System.Diagnostics.Debug.WriteLine(MaxPersonCount.ToString());
-
 
             return View(filteredCottages);
         }
@@ -552,7 +559,7 @@ namespace Hooking.Controllers
             Guid cottageOwnerId = Guid.Parse(cottage.CottageOwnerId);
             var cottageOwnerUser = _context.CottageOwner.Where(m => m.UserDetailsId == cottage.CottageOwnerId).FirstOrDefault<CottageOwner>();
 
-            cottageOwner = _context.UserDetails.Where(m => m.IdentityUserId == cottageOwnerUser.UserDetailsId).FirstOrDefault<UserDetails>();
+            cottageOwner = _context.UserDetails.FirstOrDefault<UserDetails>();
             var cottageId = cottage.Id.ToString();
             CottagesHouseRules cottagesHouseRules = _context.CottagesHouseRules.Where(m => m.CottageId == cottageId).FirstOrDefault<CottagesHouseRules>();
             Guid houseRulesId = Guid.Parse(cottagesHouseRules.HouseRulesId);

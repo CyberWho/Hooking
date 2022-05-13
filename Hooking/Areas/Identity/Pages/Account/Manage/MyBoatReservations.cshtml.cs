@@ -29,9 +29,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var userId = Guid.Parse(user.Id);
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
             var userDetailsId = userDetails.Id.ToString();
-            var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
-            var boatOwnerId = boatOwner.Id.ToString();
-            myBoatReservations = await _context.BoatReservation.Where(m => m.UserDetailsId == boatOwnerId).ToListAsync();
+        //    var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
+         //   var boatOwnerId = boatOwner.Id.ToString();
+            myBoatReservations = await _context.BoatReservation.Where(m => m.UserDetailsId == userDetailsId).ToListAsync();
             List<Boat> myBoats = new List<Boat>();
             foreach (var myBoatReservation in myBoatReservations)
             {

@@ -29,7 +29,9 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            myAdventureFavorites = await _context.AdventureFavorites.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+            var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
+
+            myAdventureFavorites = await _context.AdventureFavorites.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
             myAdventures = await _context.Adventure.ToListAsync();
             List<Adventure> adventureData = new List<Adventure>();
             List<Guid> adventureFavoritesId = new List<Guid>();
