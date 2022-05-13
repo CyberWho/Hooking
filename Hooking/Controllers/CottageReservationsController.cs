@@ -366,11 +366,18 @@ namespace Hooking.Controllers
                 cottageNotAvailablePeriod.CottageId = CottageId;
                 cottageNotAvailablePeriod.StartTime = StartDate;
                 cottageNotAvailablePeriod.EndTime = EndDate;
+                
                 _context.Add(cottageNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
 
-              //   return RedirectToPage("/Cottages/Index");
+                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(CottageId)).FirstOrDefault();
+                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali vikendicu", $"Uspesno ste rezervisali vikendicu '{ctg.Name}' .");
+                return RedirectToAction("Index","Cottages");
+                // return View(cottageReservation);
+              //return  RedirectToPage("CottageReservationSuccessful", "CottageReservations");
+               //  return RedirectToPage("/Cottages/Index");
+              //  return RedirectToPage("/Views/CottageReservations/CottageReservationSuccessful");
+
             }
 
             return View(cottageReservation);
