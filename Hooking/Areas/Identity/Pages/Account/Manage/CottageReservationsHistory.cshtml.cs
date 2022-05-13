@@ -66,7 +66,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             {
 
 
-                if (Guid.Parse(ctgReservation.UserDetailsId) == userDetails.Id)
+                if (ctgReservation.UserDetailsId == userDetails.IdentityUserId)
                 {
                     myCottageReservations.Add(ctgReservation);
                 }

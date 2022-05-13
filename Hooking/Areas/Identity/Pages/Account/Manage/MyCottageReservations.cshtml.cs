@@ -29,7 +29,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
 
-            myCottageReservations = await _context.CottageReservation.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
+            myCottageReservations = await _context.CottageReservation.Where(m => m.UserDetailsId == userDetails.IdentityUserId).ToListAsync();
             List<Cottage> myCottages = new List<Cottage>();
 
             foreach (var myCottageReservation in myCottageReservations)
