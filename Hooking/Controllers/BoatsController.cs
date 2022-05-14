@@ -407,12 +407,33 @@ namespace Hooking.Controllers
             return _context.Boat.Any(e => e.Id == id);
         }
 
+        private bool isBoatAvailable(DateTime StartDate, DateTime EndDate, BoatNotAvailablePeriod btNotAvailable)
+        {
+            if ((btNotAvailable.StartTime >= StartDate && btNotAvailable.StartTime <= EndDate) && btNotAvailable.EndTime >= EndDate)
+            {
+                return false;
+
+            }
+            else if ((btNotAvailable.EndTime >= StartDate && btNotAvailable.EndTime <= EndDate) && btNotAvailable.StartTime <= StartDate)
+            {
+                return false;
+
+            }
+            else if (btNotAvailable.StartTime <= StartDate && btNotAvailable.EndTime >= EndDate)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<IActionResult> BoatsFiltered(DateTime StartDate, DateTime EndDate, int PersonCount)
         {
             System.Diagnostics.Debug.WriteLine("boatfiltered");
 
             System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
             List<Boat> boats = await _context.Boat.ToListAsync();
+            List<Boat> tempBoats = await _context.Boat.ToListAsync();
+
             List<BoatNotAvailablePeriod> boatNotAvailablePeriods = await _context.BoatNotAvailablePeriod.ToListAsync();
 
             List<Boat> filteredBoats = new List<Boat>();
@@ -425,30 +446,16 @@ namespace Hooking.Controllers
                 foreach (Boat bt in boats)
                 {
                     //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
-                    if (btNotAvailable.BoatId != null)
-                    {
-                        if (bt.Id == Guid.Parse(btNotAvailable.BoatId))
-                        {
-                            if ((btNotAvailable.StartTime >= StartDate && btNotAvailable.StartTime <= EndDate) && btNotAvailable.EndTime >= EndDate)
-                            {
-                                //  cottageNotAvailablePeriods.Remove(ctgNotAvailable);
-                            }
-                            else if ((btNotAvailable.EndTime >= StartDate && btNotAvailable.EndTime <= EndDate) && btNotAvailable.StartTime <= StartDate)
-                            {
-                                // cottageNotAvailablePeriods.Remove(ctgNotAvailable);
-                            }
-                            else
-                            {
-                                if (!filteredBoats.Contains(bt))
-                                {
-                                    filteredBoats.Add(bt);
-                                }
-                            }
 
+                    if (bt.Id == Guid.Parse(btNotAvailable.BoatId))
+                    {
+                        if (!isBoatAvailable(StartDate, EndDate, btNotAvailable))
+                        {
+                            tempBoats.Remove(bt);
                         }
                         else
                         {
-                            if (!filteredBoats.Contains(bt))
+                            if (!filteredBoats.Contains(bt) && tempBoats.Contains(bt))
                             {
                                 filteredBoats.Add(bt);
                             }
@@ -480,7 +487,13 @@ namespace Hooking.Controllers
             var boat = await _context.Boat
                 .FirstOrDefaultAsync(m => m.Id == id);
             var boatId = boat.Id.ToString();
-            var boatOwnerUser = _context.UserDetails.Where(m => m.IdentityUserId == boat.BoatOwnerId).FirstOrDefault<UserDetails>();
+            var boatOwner = _context.BoatOwner.Where(m => m.Id == Guid.Parse(boat.BoatOwnerId)).FirstOrDefault<BoatOwner>();
+
+            System.Diagnostics.Debug.WriteLine("id boat ownera" + boatOwner.Id.ToString());
+            System.Diagnostics.Debug.WriteLine("ud id boat ownera" + boatOwner.UserDetailsId.ToString());
+
+            var boatOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(boatOwner.UserDetailsId)).FirstOrDefault<UserDetails>();
+
             var fullAddress = boat.Address + "," + boat.City + "," + boat.Country;
             Guid boatCancelationPolicyId = Guid.Parse(boat.CancelationPolicyId);
             CancelationPolicy cancelationPolicy = _context.CancelationPolicy.Where(m => m.Id == boatCancelationPolicyId).FirstOrDefault<CancelationPolicy>();
@@ -495,7 +508,9 @@ namespace Hooking.Controllers
                 return NotFound();
             }
             List<BoatImage> boatImages = _context.BoatImage.Where(m => m.BoatId == boatId).ToList<BoatImage>();
-            ViewData["BoatOwner"] = boatOwnerUser;
+            ViewData["BoatOwner"] = boatOwner;
+            ViewData["BoatOwnerUser"] = boatOwnerUser;
+
             ViewData["FullAddress"] = fullAddress;
             ViewData["CancelationPolicy"] = cancelationPolicy;
             ViewData["FishingEquipment"] = fishingEquipment;

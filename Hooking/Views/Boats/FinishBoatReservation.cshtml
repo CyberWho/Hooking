@@ -5,7 +5,8 @@
 
 }
 @{
-    var boatOwner = (UserDetails)ViewData["BoatOwner"];
+    var boatOwnerUser = (UserDetails)ViewData["BoatOwnerUser"];
+    var boatOwner = (BoatOwner)ViewData["BoatOwner"];
     var fullAddress = (string)ViewData["FullAddress"];
     var cancelationPolicy = (CancelationPolicy)ViewData["CancelationPolicy"];
     var fishingEquipment = (FishingEquipment)ViewData["FishingEquipment"];
@@ -112,7 +113,7 @@
             Ime i prezime vlasnika
         </dt>
         <dd class="col-sm-10">
-            @boatOwner.FirstName @boatOwner.LastName
+            @boatOwnerUser.FirstName @boatOwnerUser.LastName
         </dd>
 
     </dl>

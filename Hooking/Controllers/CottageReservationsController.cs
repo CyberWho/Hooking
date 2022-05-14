@@ -326,7 +326,9 @@ namespace Hooking.Controllers
             var cottageReservation = await _context.CottageReservation.FindAsync(id);
             _context.CottageReservation.Remove(cottageReservation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Cottages");
+
+          //  return RedirectToAction(nameof(Index));
         }
 
         private bool CottageReservationExists(Guid id)
