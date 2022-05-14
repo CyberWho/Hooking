@@ -28,13 +28,15 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             var userId = Guid.Parse(user.Id);
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
-            var userDetailsId = userDetails.Id.ToString();
+            var userDetailsId = userDetails.IdentityUserId.ToString();
+            System.Diagnostics.Debug.WriteLine("identity ud id ulogovanog usera " + userDetailsId);
         //    var boatOwner = _context.BoatOwner.Where(m => m.UserDetailsId == userDetailsId).FirstOrDefault();
          //   var boatOwnerId = boatOwner.Id.ToString();
             myBoatReservations = await _context.BoatReservation.Where(m => m.UserDetailsId == userDetailsId).ToListAsync();
             List<Boat> myBoats = new List<Boat>();
             foreach (var myBoatReservation in myBoatReservations)
             {
+                System.Diagnostics.Debug.WriteLine("prosao " );
 
                 Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(myBoatReservation.BoatId)).FirstOrDefault<Boat>();
                 myBoats.Add(bt);

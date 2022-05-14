@@ -287,7 +287,6 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
-
             return View(boatReservation);
         }
 
@@ -299,7 +298,9 @@ namespace Hooking.Controllers
             var boatReservation = await _context.BoatReservation.FindAsync(id);
             _context.BoatReservation.Remove(boatReservation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Boats");
+
+           // return RedirectToAction(nameof(Index));
         }
 
         private bool BoatReservationExists(Guid id)
@@ -345,7 +346,8 @@ namespace Hooking.Controllers
                 boatNotAvailablePeriod.EndTime = EndDate;
                 _context.Add(boatNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+           //     return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Boats");
 
                 //   return RedirectToPage("/Cottages/Index");
             }
