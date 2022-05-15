@@ -10,6 +10,8 @@
     List<Cottage> cottages = (List<Cottage>)ViewData["Cottage"];
     int i = 0;
 }
+<h4>Moje rezervacije avantura</h4>
+
 <table class="table">
     <thead>
         <tr>
@@ -35,31 +37,31 @@
         {
             @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
             {
-        <tr>
-            <td>
-                @cottages[i].Name
-            </td>
+                <tr>
+                    <td>
+                        @cottages[i].Name
+                    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxPersonCount)
-            </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaxPersonCount)
+                    </td>
 
-            <td>
-                <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikazi vise</a>|
-                <a href="@Url.Action("Delete", "CottageReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
-            </td>
+                    <td>
+                        <a href="@Url.Action("Details", "CottageReservations", new { Id = @item.Id })">Prikazi vise</a>|
+                        <a href="@Url.Action("Delete", "CottageReservations", new { Id = @item.Id })">Otkazi rezervaciju</a>
+                    </td>
 
 
-        </tr>
+                </tr>
             }
             i++;
         }

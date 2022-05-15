@@ -1,6 +1,8 @@
 ﻿@page
 @model Hooking.Areas.Identity.Pages.Account.Manage.MyBoatReservationsModel
 @using Hooking.Models;
+@inject SignInManager<IdentityUser> _signInManager
+
 
 @{
     ViewData["Title"] = "Istorija rezervacija brodova";
@@ -10,8 +12,14 @@
     List<Boat> boats = (List<Boat>)ViewData["Boat"];
     int i = 0;
 }
-<h4>Pregled rezervacija</h4>
-<a href="@Url.Action("BoatsForReservation", "Boats")">Napravi novu rezervaciju</a>
+<h4>Moje rezervacije brodova</h4>
+@if (_signInManager.IsSignedIn(User))
+{
+    @if (!User.IsInRole("Korisnik"))
+    {
+        <a href="@Url.Action("BoatsForReservation", "Boats")">Napravi novu rezervaciju</a>
+    }
+}
 <table class="table">
     <thead>
         <tr>
@@ -37,31 +45,31 @@
         {
             @if (DateTime.Compare(item.StartDate, DateTime.Now) > 0)
             {
-        <tr>
-            <td>
-                @boats[i].Name
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PersonCount)
-            </td>
+                <tr>
+                    <td>
+                        @boats[i].Name
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PersonCount)
+                    </td>
 
-            <td>
-                <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži više</a>
-                <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkaži rezervaciju</a>
-            </td>
+                    <td>
+                        <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži više</a>
+                        <a href="@Url.Action("Delete", "BoatReservations", new { Id = @item.Id })">Otkaži rezervaciju</a>
+                    </td>
 
 
-        </tr>
-        
+                </tr>
+
             }
             i++;
         }

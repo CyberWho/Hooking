@@ -306,56 +306,72 @@ namespace Hooking.Controllers
             return _adventureService.AdventureExists(id);
         }
 
+        private bool isInstructorAvailable(DateTime StartDate, DateTime EndDate, InstructorNotAvailablePeriod insNotAvailable)
+        {
+            if ((insNotAvailable.StartTime >= StartDate && insNotAvailable.StartTime <= EndDate) && insNotAvailable.EndTime >= EndDate)
+            {
+                System.Diagnostics.Debug.WriteLine("slucaj 1 ");
+
+                return false;
+
+
+            }
+            else if ((insNotAvailable.EndTime >= StartDate && insNotAvailable.EndTime <= EndDate) && insNotAvailable.StartTime <= StartDate)
+            {
+                System.Diagnostics.Debug.WriteLine("slucaj 2 ");
+
+                return false;
+
+            }
+            else if (insNotAvailable.StartTime <= StartDate && insNotAvailable.EndTime >= EndDate)
+            {
+                System.Diagnostics.Debug.WriteLine("slucaj 3 ");
+
+                return false;
+            }
+            return true;
+        }
+
         [HttpPost("/Adventures/InstructorFiltered")]
 
-        public async Task<IActionResult> InstructorFiltered(DateTime StartTime, DateTime EndDate)
+        public async Task<IActionResult> InstructorFiltered(DateTime StartDate, DateTime EndDate)
         {
             List<Instructor> instructors = await _context.Instructor.ToListAsync();
             List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = await _context.InstructorNotAvailablePeriod.ToListAsync();
+            List<Instructor> tempInstructors = await _context.Instructor.ToListAsync();
 
             List<Instructor> filteredInstructors = new List<Instructor>();
-
+            int i = 0;
 
             foreach (InstructorNotAvailablePeriod insNotAvailable in instructorNotAvailablePeriods)
             {
 
-                // System.Diagnostics.Debug.WriteLine("ctgNotAvailableID: " + ctgNotAvailable.CottageId.ToString());
                 foreach (Instructor ins in instructors)
                 {
-                    //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
-                    if (insNotAvailable.InstructorId != null)
-                    {
+
                         if (ins.Id == Guid.Parse(insNotAvailable.InstructorId))
                         {
-                            if ((insNotAvailable.StartTime >= StartTime && insNotAvailable.StartTime <= EndDate) && insNotAvailable.EndTime >= EndDate)
+                        System.Diagnostics.Debug.WriteLine("jednaki smo " +i.ToString());
+                            if (!isInstructorAvailable(StartDate, EndDate, insNotAvailable))
                             {
-                                //  cottageNotAvailablePeriods.Remove(ctgNotAvailable);
-                            }
-                            else if ((insNotAvailable.EndTime >= StartTime && insNotAvailable.EndTime <= EndDate) && insNotAvailable.StartTime <= StartTime)
-                            {
-                                // cottageNotAvailablePeriods.Remove(ctgNotAvailable);
+                            System.Diagnostics.Debug.WriteLine("evo brisem " + i.ToString());
+
+                                 tempInstructors.Remove(ins);
                             }
                             else
                             {
-                                if (!filteredInstructors.Contains(ins))
+                                if (!filteredInstructors.Contains(ins) && tempInstructors.Contains(ins))
                                 {
-                                    filteredInstructors.Add(ins);
+                                System.Diagnostics.Debug.WriteLine("dodajem " + i.ToString());
+
+                                filteredInstructors.Add(ins);
                                 }
                             }
-
                         }
-                        else
-                        {
-                            if (!filteredInstructors.Contains(ins))
-                            {
-                                filteredInstructors.Add(ins);
-                            }
-                        }
-                    }
-
+                    i++;
                 }
             }
-            ViewData["StartDate"] = StartTime;
+            ViewData["StartDate"] = StartDate;
             ViewData["EndDate"] = EndDate;
 
             List<UserDetails> userIns = await _context.UserDetails.ToListAsync();
@@ -386,13 +402,15 @@ namespace Hooking.Controllers
             {
                 return NotFound();
             }
-
             AdventureDTO dto = _adventureService.GetAdventureDto((Guid)adventureId);
+            List<AdventureRealisation> advReals = _context.AdventureRealisation.Where(m => m.AdventureId == adventureId.ToString()).ToList();
             if (dto == null)
             {
                 return NotFound();
             }
             adventureImages = _adventureService.GetAdventureImages(adventureId ?? throw new NullReferenceException()).ToList();
+            ViewData["AdventureRealisation"] = advReals; //imamo sve realizacije avantura
+
             ViewData["AdventureImages"] = adventureImages;
             return View(dto);
 

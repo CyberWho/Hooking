@@ -14,6 +14,8 @@
 
 
 }
+<h4>Moje rezervacije avantura</h4>
+
 <table class="table">
     <thead>
         <tr>
@@ -56,44 +58,44 @@
         {
             @if (DateTime.Compare(myAdventureRealisations[i].StartDate, DateTime.Now) > 0)
             {
-        <tr>
-            <td>
-                @userInstructors[i].FirstName
-            </td>
-            <td>
-                @userInstructors[i].LastName
-            </td>
-            <td>
-                @userInstructors[i].Address
-            </td>
-            <td>
-                @myAdventures[i].Name
-            </td>
-            <td>
-                @myAdventures[i].Address
-            </td>
-            <td>
-                @myAdventures[i].City
-            </td>
-            <td>
-                @myAdventures[i].Country
-            </td>
-            <td>
-                @myAdventures[i].Description
-            </td>
-            <td>
-                @myAdventureRealisations[i].Price
-            </td>
-            <td>
-                @myAdventureRealisations[i].StartDate
-            </td>
-            <td>
-                @myAdventureRealisations[i].Duration
-            </td>
-            <td>
-                <a href="@Url.Action("Delete", "AdventureReservations", new { Id = @myAdventureReservations[i].Id })">Otkazi rezervaciju</a>
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @userInstructors[i].FirstName
+                    </td>
+                    <td>
+                        @userInstructors[i].LastName
+                    </td>
+                    <td>
+                        @userInstructors[i].Address
+                    </td>
+                    <td>
+                        @myAdventures[i].Name
+                    </td>
+                    <td>
+                        @myAdventures[i].Address
+                    </td>
+                    <td>
+                        @myAdventures[i].City
+                    </td>
+                    <td>
+                        @myAdventures[i].Country
+                    </td>
+                    <td>
+                        @myAdventures[i].Description
+                    </td>
+                    <td>
+                        @myAdventureRealisations[i].Price
+                    </td>
+                    <td>
+                        @myAdventureRealisations[i].StartDate
+                    </td>
+                    <td>
+                        @myAdventureRealisations[i].Duration
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Delete", "AdventureReservations", new { Id = @myAdventureReservations[i].Id })">Otkazi rezervaciju</a>
+                    </td>
+                </tr>
             }
         }
 

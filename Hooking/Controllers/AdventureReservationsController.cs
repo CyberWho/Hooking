@@ -230,7 +230,9 @@ namespace Hooking.Controllers
             var adventureReservation = await _context.AdventureReservation.FindAsync(id);
             _context.AdventureReservation.Remove(adventureReservation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Instructors");
+
+            //return RedirectToAction(nameof(Index));
         }
 
 
@@ -242,26 +244,26 @@ namespace Hooking.Controllers
         }
 
         [HttpGet("/AdventureReservations/AdventureReservationFinished")]
-        public async Task<IActionResult> AdventureReservationFinished(String AdventureId)
+        public async Task<IActionResult> AdventureReservationFinished(String AdventureId,String AdventureRealisationId)
         {
+
             AdventureReservation adventureReservation = new AdventureReservation();
-            var adventureRealisation = await _context.AdventureRealisation.Where(m => m.AdventureId == AdventureId).FirstOrDefaultAsync();
-            // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
+            Adventure adventure = _context.Adventure.Where(m => m.Id == Guid.Parse(AdventureId)).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                adventureReservation.AdventureRealisationId = adventureRealisation.Id.ToString();
+                adventureReservation.AdventureRealisationId = AdventureRealisationId;
                 adventureReservation.UserDetailsId = user.Id;
                 adventureReservation.IsReviewed = false;
                 _context.Add(adventureReservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
 
-                //   return RedirectToPage("/Cottages/Index");
+                return RedirectToAction("Index", "Instructors");
             }
 
-            return View(adventureRealisation);
+            return View(adventureReservation);
         }
 
     }

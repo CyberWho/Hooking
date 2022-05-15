@@ -9,6 +9,8 @@
     List<Guid> adventureFavoritesId = (List<Guid>)ViewData["AdventureFavoritesId"];
     int i = 0;
 }
+<h4>Moje omiljene avanture</h4>
+
 <table class="table">
     <thead>
         <tr>
@@ -34,30 +36,30 @@
     <tbody>
         @foreach (var item in adventureData)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AverageGrade)
-            </td>
-            <td>
-                <a href="@Url.Action("Delete", "AdventureFavorites", new { Id = adventureFavoritesId[i] })">Otkazi pretplatu</a>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+                <td>
+                    <a href="@Url.Action("Delete", "AdventureFavorites", new { Id = adventureFavoritesId[i] })">Otkazi pretplatu</a>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
             i++;
         }
     </tbody>

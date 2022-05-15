@@ -16,6 +16,7 @@
 
 
 }
+<h4>Istorija rezervacija avantura</h4>
 
 <table class="table">
     <thead>
@@ -59,59 +60,59 @@
                     Trajanje
                 </a>
             </th>
-</thead>
+    </thead>
     <tbody>
         @for (int i = 0; i < userInstructors.Count; i++)
         {
             @if (DateTime.Compare(myAdventureRealisations[i].StartDate, DateTime.Now) < 0)
             {
-        <tr>
-            <td>
-                @userInstructors[i].FirstName
-            </td>
-            <td>
-                @userInstructors[i].LastName
-            </td>
-            <td>
-                @userInstructors[i].Address
-            </td>
-            <td>
-                @myAdventures[i].Name
-            </td>
-            <td>
-                @myAdventures[i].Address
-            </td>
-            <td>
-                @myAdventures[i].City
-            </td>
-            <td>
-                @myAdventures[i].Country
-            </td>
-            <td>
-                @myAdventures[i].Description
-            </td>
-            <td>
-                @myAdventureRealisations[i].Price
-            </td>
-            <td>
-                @myAdventureRealisations[i].StartDate
-            </td>
-            <td>
-                @myAdventureRealisations[i].Duration
-            </td>
-            <td>
-                <a href="@Url.Action("Create", "AdventureAppeals", new { Id = @myAdventureRealisations[i].AdventureId})">Prilozi zalbu</a>
-            </td>
-            <td>
-                <a href="@Url.Action("Create", "AdventureReviews", new { Id = @myAdventureRealisations[i].AdventureId})">Oceni</a>
+                <tr>
+                    <td>
+                        @userInstructors[i].FirstName
+                    </td>
+                    <td>
+                        @userInstructors[i].LastName
+                    </td>
+                    <td>
+                        @userInstructors[i].Address
+                    </td>
+                    <td>
+                        @myAdventures[i].Name
+                    </td>
+                    <td>
+                        @myAdventures[i].Address
+                    </td>
+                    <td>
+                        @myAdventures[i].City
+                    </td>
+                    <td>
+                        @myAdventures[i].Country
+                    </td>
+                    <td>
+                        @myAdventures[i].Description
+                    </td>
+                    <td>
+                        @myAdventureRealisations[i].Price
+                    </td>
+                    <td>
+                        @myAdventureRealisations[i].StartDate
+                    </td>
+                    <td>
+                        @myAdventureRealisations[i].Duration
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Create", "AdventureAppeals", new { Id = @myAdventureRealisations[i].AdventureId})">Prilozi zalbu</a>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Create", "AdventureReviews", new { Id = @myAdventureRealisations[i].AdventureId})">Oceni</a>
 
-            </td>
-        </tr>
+                    </td>
+                </tr>
             }
         }
 
 
 
 
-        </tbody>
-    </table>
+    </tbody>
+</table>

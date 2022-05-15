@@ -320,9 +320,8 @@ namespace Hooking.Controllers
         {
             BoatReservation boatReservation = new BoatReservation();
             // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
-            System.Diagnostics.Debug.WriteLine("boatresfinished");
 
-            System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
+            Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(BoatId)).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -346,7 +345,9 @@ namespace Hooking.Controllers
                 boatNotAvailablePeriod.EndTime = EndDate;
                 _context.Add(boatNotAvailablePeriod);
                 await _context.SaveChangesAsync();
-           //     return RedirectToAction(nameof(Index));
+                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali brod", $"Uspesno ste rezervisali brod '{bt.Name}' .");
+
+                //     return RedirectToAction(nameof(Index));
                 return RedirectToAction("Index", "Boats");
 
                 //   return RedirectToPage("/Cottages/Index");

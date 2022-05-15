@@ -5,12 +5,13 @@
 @{
     ViewData["Title"] = "Details";
     List<AdventureImage> adventureImages = (List<AdventureImage>)ViewData["AdventureImages"];
+    List<AdventureRealisation> adventureRealisations = (List<AdventureRealisation>)ViewData["AdventureRealisation"];
 }
 
-<h1>Details</h1>
+<h1>Detalji</h1>
 
 <div>
-    <h4>Adventure</h4>
+    <h4>Avantura</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -116,6 +117,30 @@
         </div>
     </dl>
 </div>
+<h2>Realizacije avanture</h2>
+@foreach (var item in adventureRealisations)
+{
+    <dt class="col-sm-2">
+        Cena
+    </dt>
+    <dd class="col-sm-10">
+        @item.Price
+    </dd>
+    <dt class="col-sm-2">
+        Datum pocetka
+    </dt>
+    <dd class="col-sm-10">
+        @item.StartDate
+    </dd>
+    <dt class="col-sm-2">
+        Trajanje
+    </dt>
+    <dd class="col-sm-10">
+        @item.Duration
+    </dd>
+    <a href="@Url.Action("AdventureReservationFinished", "AdventureReservations" ,new { AdventureId=Model.AdventureId, AdventureRealisationId=item.Id })">Potvrdi rezervaciju</a>
+
+}
 <div>
     @if (_adventureService.AdventureEditable(Guid.Parse(Model.AdventureId)))
     {
