@@ -4,10 +4,37 @@
     ViewData["Title"] = "Create";
 }
 
+@{
+    Adventure adv = (Adventure)ViewData["Adventure"];
+    UserDetails userInstructor = (UserDetails)ViewData["UserInstructor"];
 
+}
 
 <h4>Zalba na instruktora i uslugu</h4>
 <hr />
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Naziv avanture
+        </dt>
+        <dd class="col-sm-10">
+            @adv.Name
+        </dd>
+        <dt class="col-sm-2">
+            Ime instruktora
+        </dt>
+        <dd class="col-sm-10">
+            @userInstructor.FirstName
+        </dd>
+        <dt class="col-sm-2">
+            Prezime instruktora
+        </dt>
+        <dd class="col-sm-10">
+            @userInstructor.LastName
+        </dd>
+    </dl>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">

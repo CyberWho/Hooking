@@ -4,8 +4,13 @@
     ViewData["Title"] = "Istorija rezervacija";
     ViewData["ActivePage"] = ManageNavPages.BoatReservationsHistory;
 }
-@{ 
+@inject SignInManager<IdentityUser> SignInManager
+
+@using Hooking.Models;
+@{
     List<string> boatNames = (List<string>)ViewData["BoatNames"];
+    List<BoatOwner> boatOwners = (List<BoatOwner>)ViewData["BoatOwners"];
+
     var index = 0;
 }
 <h4>Istorija rezervacija brodova</h4>
@@ -35,34 +40,42 @@
     <tbody>
         @foreach (var item in Model.boatReservations)
         {
-        <tr>
-            <th>
-                @boatNames[index]
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PersonCount)
-            </td>
-            <td>
-                @if (!item.IsReviewed)
-                {
-                    <a href="@Url.Action("Create", "BoatReservationReviews", new { Id = @item.Id })">Recenzija</a>
-                }
+            <tr>
+                <th>
+                    @boatNames[index]
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonCount)
+                </td>
+                <td>
+                    @if (!item.IsReviewed)
+                    {
+                        <a href="@Url.Action("Create", "BoatReservationReviews", new { Id = @item.Id  })">Recenzija</a>
+                        <a href="@Url.Action("Create", "BoatAppeals", new { Id = @item.BoatId , boatOwnerId = @boatOwners[index].Id })">Prilozi zalbu</a>
 
-                <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži još</a>
-            </td>
-            @{
-                index++;
-            }
-        </tr>
+                    }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Korisnik"))
+                        {
+                            <a href="@Url.Action("Details", "BoatReservations", new { Id = @item.Id })">Prikaži još</a>
+
+                        }
+                    }
+                </td>
+                @{
+                    index++;
+                }
+            </tr>
         }
     </tbody>
 </table>

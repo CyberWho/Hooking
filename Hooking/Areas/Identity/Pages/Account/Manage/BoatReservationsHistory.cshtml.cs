@@ -35,12 +35,13 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
             boatReservations = new List<BoatReservation>();
             boatNames = new List<string>();
+            List<BoatOwner> boatOwners = new List<BoatOwner>();
             foreach(Boat boat in boats)
             {
                 string boatId = boat.Id.ToString();
                 List<BoatReservation> myBoatReservations = _context.BoatReservation.Where(m => m.BoatId == boatId && m.UserDetailsId == userDetailsId).ToList<BoatReservation>();
 
-                if(myBoatReservations.Count != 0)
+                if (myBoatReservations.Count != 0)
                 {
                     foreach(BoatReservation boatReservation in myBoatReservations)
                     {
@@ -50,11 +51,19 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                         {
                             boatReservations.Add(boatReservation);
                             boatNames.Add(boat.Name);
+
+                            Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(boatReservation.BoatId)).FirstOrDefault();
+
+
+                            //dobavljamo vlasnika broda
+                            BoatOwner boatOwner = _context.BoatOwner.Where(m => m.Id == Guid.Parse(bt.BoatOwnerId)).FirstOrDefault();
+                            boatOwners.Add(boatOwner);
                         }
                     }
                 }
             }
             ViewData["BoatNames"] = boatNames;
+            ViewData["BoatOwners"] = boatOwners;
             return Page();
         }
     }

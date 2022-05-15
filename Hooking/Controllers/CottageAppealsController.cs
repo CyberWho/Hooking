@@ -107,8 +107,16 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageAppeals/Create
-        public IActionResult Create()
+        public IActionResult Create(Guid id, String cottageOwnerId)
         {
+            System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
+
+            Cottage ctg = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
+            CottageOwner ctgOwner = _context.CottageOwner.Where(m => m.Id == Guid.Parse(cottageOwnerId)).FirstOrDefault();
+            UserDetails cottageOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(ctgOwner.UserDetailsId)).FirstOrDefault();
+
+            ViewData["Cottage"] = ctg;
+            ViewData["CottageOwner"] = cottageOwnerUser;
             return View();
         }
 
@@ -117,8 +125,15 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("/CottageAppeals/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
+        public async Task<IActionResult> Create(Guid id,String ownerId,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
         {
+           // System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
+
+
+        //    Cottage ctg = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
+        //    CottageOwner ctgOwner = _context.CottageOwner.Where(m => m.Id == Guid.Parse(ownerId)).FirstOrDefault();
+        //    UserDetails cottageOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(ctgOwner.UserDetailsId)).FirstOrDefault();
+
             if (ModelState.IsValid)
             {
                 cottageAppeal.Id = Guid.NewGuid();
@@ -127,7 +142,7 @@ namespace Hooking.Controllers
                 cottageAppeal.UserEmail = user.Email;
                 _context.Add(cottageAppeal);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Cottages");
             }
             return View(cottageAppeal);
         }

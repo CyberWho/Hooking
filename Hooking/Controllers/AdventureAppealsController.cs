@@ -107,8 +107,15 @@ namespace Hooking.Controllers
         }
 
         // GET: AdventureAppeals/Create
-        public IActionResult Create()
+        public IActionResult Create(Guid id, String instructorId)
         {
+            System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
+
+            Adventure adv = _context.Adventure.Where(m => m.Id == id).FirstOrDefault();
+            UserDetails userInstructor = _context.UserDetails.Where(m => m.Id == Guid.Parse(instructorId)).FirstOrDefault();
+
+            ViewData["Adventure"] = adv;
+            ViewData["UserInstructor"] = userInstructor;
             return View();
         }
 
@@ -127,7 +134,7 @@ namespace Hooking.Controllers
                 adventureAppeal.UserEmail = user.Email;
                 _context.Add(adventureAppeal);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Instructors");
             }
             return View(adventureAppeal);
         }
