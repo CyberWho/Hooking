@@ -98,8 +98,16 @@ namespace Hooking.Controllers
         }
 
         // GET: BoatAppeals/Create
-        public IActionResult Create()
+        public IActionResult Create(Guid id, String boatOwnerId)
         {
+            System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
+
+            Boat bt = _context.Boat.Where(m => m.Id == id).FirstOrDefault();
+            BoatOwner btOwner = _context.BoatOwner.Where(m => m.Id == Guid.Parse(boatOwnerId)).FirstOrDefault();
+            UserDetails boatOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(btOwner.UserDetailsId)).FirstOrDefault();
+
+            ViewData["Boat"] = bt;
+            ViewData["BoatOwner"] = boatOwnerUser;
             return View();
         }
 
@@ -118,7 +126,9 @@ namespace Hooking.Controllers
                 boatAppeal.UserEmail = user.Email;
                 _context.Add(boatAppeal);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Boats");
+
+               // return RedirectToAction(nameof(Index));
             }
             return View(boatAppeal);
         }

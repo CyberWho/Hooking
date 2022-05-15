@@ -60,7 +60,7 @@
             </td>
 
             <td>
-                <a href="@Url.Action("Create", "CottageAppeals", new { Id = @item.CottageId })">Prilozi zalbu</a>
+                <a href="@Url.Action("Create", "CottageAppeals", new { Id = @item.CottageId , cottageOwnerId = @cottages[i].CottageOwnerId })">Prilozi zalbu</a>
 
 
             </td>
