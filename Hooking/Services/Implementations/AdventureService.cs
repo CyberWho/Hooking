@@ -237,6 +237,10 @@ namespace Hooking.Services.Implementations
             var adventureEquipment =
                 _context.AdventureFishingEquipment.FirstOrDefault(e => e.AdventureId == adventureId.ToString());
 
+
+            System.Diagnostics.Debug.WriteLine("prosledjena avantura id " + adventureId.ToString());
+
+
             string rulesId = _context.AdventuresAdventureRules
                 .FirstOrDefault(r => r.AdventureId == adventureId.ToString()).AdventureRulesId;
 

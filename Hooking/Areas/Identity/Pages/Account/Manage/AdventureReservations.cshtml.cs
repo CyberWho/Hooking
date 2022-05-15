@@ -27,7 +27,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
 
             //  System.Diagnostics.Debug.WriteLine(user.Id.ToString());
-            myAdventureReservations = await _context.AdventureReservation.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
+            myAdventureReservations = await _context.AdventureReservation.Where(m => m.UserDetailsId == userDetails.IdentityUserId.ToString()).ToListAsync();
             List<AdventureRealisation> myAdventureRealisations = new List<AdventureRealisation>();
             foreach (var myAdventureReservation in myAdventureReservations)
             {
