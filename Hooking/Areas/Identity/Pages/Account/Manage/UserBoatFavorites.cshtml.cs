@@ -29,7 +29,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
 
-            myBoatFavorites = await _context.BoatFavorites.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
+            myBoatFavorites = await _context.BoatFavorites.Where(m => m.UserDetailsId == userDetails.IdentityUserId.ToString()).ToListAsync();
         //    myCottages = await _context.Cottage.ToListAsync();
             List<Boat> boatData = new List<Boat>();
             List<Guid> boatFavoritesId = new List<Guid>();

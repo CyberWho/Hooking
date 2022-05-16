@@ -54,7 +54,20 @@ namespace Hooking.Controllers
         {
             return View();
         }
+        private bool CottageExists(String cottageId)
+        {
+            System.Diagnostics.Debug.WriteLine("id prosledjene vikendice" + cottageId);
 
+            List<CottageFavorites> ctgFavs = _context.CottageFavorites.ToList();
+            foreach (CottageFavorites ctgFav in ctgFavs)
+            {
+                System.Diagnostics.Debug.WriteLine("id ctgFav " + ctgFav.CottageId.ToString());
+                if (ctgFav.CottageId == cottageId)
+                    return true;
+            }
+            return false;
+
+        }
         // POST: CottageFavorites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -62,19 +75,21 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id,[Bind("Id,RowVersion")] CottageFavorites cottageFavorites)
         {
-            if (ModelState.IsValid)
+            if(!CottageExists(id.ToString()))
             {
-                System.Diagnostics.Debug.WriteLine(id);
-                cottageFavorites.Id = Guid.NewGuid();
-                cottageFavorites.CottageId = id.ToString();
-                var user = await _userManager.GetUserAsync(User);
-                System.Diagnostics.Debug.WriteLine(user.Id);
-                cottageFavorites.UserDetailsId = user.Id.ToString();
-                _context.Add(cottageFavorites);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    System.Diagnostics.Debug.WriteLine(id);
+                    cottageFavorites.Id = Guid.NewGuid();
+                    cottageFavorites.CottageId = id.ToString();
+                    var user = await _userManager.GetUserAsync(User);
+                    System.Diagnostics.Debug.WriteLine(user.Id);
+                    cottageFavorites.UserDetailsId = user.Id.ToString();
+                    _context.Add(cottageFavorites);
+                    await _context.SaveChangesAsync();
+                }
             }
-            return View(cottageFavorites);
+            return RedirectToAction("Index", "Cottages");
         }
 
         // GET: CottageFavorites/Edit/5
@@ -154,7 +169,7 @@ namespace Hooking.Controllers
             var cottageFavorites = await _context.CottageFavorites.FindAsync(id);
             _context.CottageFavorites.Remove(cottageFavorites);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Cottages");
         }
 
         private bool CottageFavoritesExists(Guid id)

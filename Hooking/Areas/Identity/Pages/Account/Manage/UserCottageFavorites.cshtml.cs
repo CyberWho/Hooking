@@ -31,8 +31,8 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(User);
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
-
-            myCottageFavorites = await _context.CottageFavorites.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
+            
+            myCottageFavorites = await _context.CottageFavorites.Where(m => m.UserDetailsId == userDetails.IdentityUserId.ToString()).ToListAsync();
             myCottages = await _context.Cottage.ToListAsync();
             List<Cottage> cottageData = new List<Cottage>();
             List<Guid> cottageFavoritesId = new List<Guid>();

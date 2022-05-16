@@ -56,12 +56,7 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["Country"]">Drzava</a>
             </th>
-            <th>
-                Prosecna ocena
-            </th>
-            <th>
-                Zbirna ocena
-            </th>
+
             <th>
                 Biografija
             </th>
@@ -95,12 +90,7 @@
                     <td>
                         @userInstructors[i].Country
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AverageGrade)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GradeCount)
-                    </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.Biography)
                     </td>
