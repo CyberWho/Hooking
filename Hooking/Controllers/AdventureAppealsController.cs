@@ -109,7 +109,6 @@ namespace Hooking.Controllers
         // GET: AdventureAppeals/Create
         public IActionResult Create(Guid id, String instructorId)
         {
-            System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
 
             Adventure adv = _context.Adventure.Where(m => m.Id == id).FirstOrDefault();
             UserDetails userInstructor = _context.UserDetails.Where(m => m.Id == Guid.Parse(instructorId)).FirstOrDefault();

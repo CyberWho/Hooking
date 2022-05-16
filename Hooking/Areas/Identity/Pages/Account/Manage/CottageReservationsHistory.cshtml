@@ -65,7 +65,7 @@
 
             </td>
             <td>
-            <a href="@Url.Action("Create", "CottageReviews", new { Id = @item.CottageId })">Oceni</a>
+            <a href="@Url.Action("Create", "CottageReviews", new { Id = @item.CottageId, cottageOwnerId = @cottages[i].CottageOwnerId })">Oceni</a>
                 </td>
 
 
