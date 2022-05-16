@@ -100,7 +100,6 @@ namespace Hooking.Controllers
         // GET: BoatAppeals/Create
         public IActionResult Create(Guid id, String boatOwnerId)
         {
-            System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
 
             Boat bt = _context.Boat.Where(m => m.Id == id).FirstOrDefault();
             BoatOwner btOwner = _context.BoatOwner.Where(m => m.Id == Guid.Parse(boatOwnerId)).FirstOrDefault();

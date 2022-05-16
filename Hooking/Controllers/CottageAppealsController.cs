@@ -109,8 +109,6 @@ namespace Hooking.Controllers
         // GET: CottageAppeals/Create
         public IActionResult Create(Guid id, String cottageOwnerId)
         {
-            System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
-
             Cottage ctg = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
             CottageOwner ctgOwner = _context.CottageOwner.Where(m => m.Id == Guid.Parse(cottageOwnerId)).FirstOrDefault();
             UserDetails cottageOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(ctgOwner.UserDetailsId)).FirstOrDefault();
@@ -127,12 +125,7 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id,String ownerId,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
         {
-           // System.Diagnostics.Debug.WriteLine("stigao sam u kontroler");
-
-
-        //    Cottage ctg = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
-        //    CottageOwner ctgOwner = _context.CottageOwner.Where(m => m.Id == Guid.Parse(ownerId)).FirstOrDefault();
-        //    UserDetails cottageOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(ctgOwner.UserDetailsId)).FirstOrDefault();
+          
 
             if (ModelState.IsValid)
             {

@@ -95,8 +95,14 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageReviews/Create
-        public IActionResult Create()
+        public IActionResult Create(Guid id, String cottageOwnerId)
         {
+            Cottage ctg = _context.Cottage.Where(m => m.Id == id).FirstOrDefault();
+            CottageOwner ctgOwner = _context.CottageOwner.Where(m => m.Id == Guid.Parse(cottageOwnerId)).FirstOrDefault();
+            UserDetails cottageOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(ctgOwner.UserDetailsId)).FirstOrDefault();
+
+            ViewData["Cottage"] = ctg;
+            ViewData["CottageOwner"] = cottageOwnerUser;
             return View();
         }
 
@@ -116,7 +122,32 @@ namespace Hooking.Controllers
                 cottageReview.UserDetailsId = userDetails.Id.ToString();
                 _context.Add(cottageReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //updateujemo prosecnu ocenu u vikendici
+                List<CottageReview> ctgReviews = _context.CottageReview.Where(m => m.CottageId == cottageReview.CottageId).ToList();
+                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(cottageReview.CottageId)).FirstOrDefault();
+                int gradeCount = 0;
+                double gradeSum = 0;
+                foreach (CottageReview ctgReview in ctgReviews)
+                {
+                    if(ctg.Id==Guid.Parse(ctgReview.CottageId))
+                    {
+                        gradeCount++;
+                        gradeSum += Convert.ToDouble(ctgReview.Grade);
+                    }
+                }
+
+                ctg.AverageGrade = Math.Round(gradeSum / gradeCount,2);
+                ctg.GradeCount = gradeCount;
+
+                _context.Update(ctg);
+                await _context.SaveChangesAsync();
+
+
+
+                return RedirectToAction("Index", "Cottages");
+
+
+
             }
             return View(cottageReview);
         }

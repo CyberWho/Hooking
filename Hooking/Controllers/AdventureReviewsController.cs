@@ -47,8 +47,14 @@ namespace Hooking.Controllers
         }
 
         // GET: AdventureReviews/Create
-        public IActionResult Create()
+        public IActionResult Create(Guid id, String instructorId)
         {
+
+            Adventure adv = _context.Adventure.Where(m => m.Id == id).FirstOrDefault();
+            UserDetails userInstructor = _context.UserDetails.Where(m => m.Id == Guid.Parse(instructorId)).FirstOrDefault();
+
+            ViewData["Adventure"] = adv;
+            ViewData["UserInstructor"] = userInstructor;
             return View();
         }
 
@@ -67,7 +73,27 @@ namespace Hooking.Controllers
                 adventureReview.UserDetailsId = user.Id.ToString();
                 _context.Add(adventureReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                List<AdventureReview> advReviews = _context.AdventureReview.Where(m => m.AdventureId == adventureReview.AdventureId).ToList();
+                Adventure adv = _context.Adventure.Where(m => m.Id == Guid.Parse(adventureReview.AdventureId)).FirstOrDefault();
+                int gradeCount = 0;
+                double gradeSum = 0;
+                foreach (AdventureReview advReview in advReviews)
+                {
+                    if (adv.Id == Guid.Parse(advReview.AdventureId))
+                    {
+                        gradeCount++;
+                        gradeSum += Convert.ToDouble(advReview.Grade);
+                    }
+                }
+
+                adv.AverageGrade = Math.Round(gradeSum / gradeCount, 2);
+
+                _context.Update(adv);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Instructors");
+
             }
             return View(adventureReview);
         }
