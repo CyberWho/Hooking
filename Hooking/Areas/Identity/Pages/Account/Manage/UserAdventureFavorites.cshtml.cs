@@ -31,7 +31,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             var userDetails = _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefault();
 
-            myAdventureFavorites = await _context.AdventureFavorites.Where(m => m.UserDetailsId == userDetails.Id.ToString()).ToListAsync();
+            myAdventureFavorites = await _context.AdventureFavorites.Where(m => m.UserDetailsId == userDetails.IdentityUserId.ToString()).ToListAsync();
             myAdventures = await _context.Adventure.ToListAsync();
             List<Adventure> adventureData = new List<Adventure>();
             List<Guid> adventureFavoritesId = new List<Guid>();

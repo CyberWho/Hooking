@@ -66,13 +66,17 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id, [Bind("Id,RowVersion")] AdventureFavorites adventureFavorites)
         {
-            if (ModelState.IsValid)
+            if (!AdventureExists(id.ToString()))
             {
-                IdentityUser iUser = await _userManager.GetUserAsync(User);
-                _adventureService.Subscribe(id, adventureFavorites, iUser);
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    IdentityUser iUser = await _userManager.GetUserAsync(User);
+                    _adventureService.Subscribe(id, adventureFavorites, iUser);
+                    return RedirectToAction("Index", "InstructorsAdventure");
+                }
             }
-            return View(adventureFavorites);
+
+            return RedirectToAction("Index", "Instructors");
         }
 
         // GET: AdventureFavorites/Edit/5
@@ -143,7 +147,18 @@ namespace Hooking.Controllers
 
             return View(adventureFavorites);
         }
+        private bool AdventureExists(String advId)
+        {
 
+            List<AdventureFavorites> advFavs = _context.AdventureFavorites.ToList();
+            foreach (AdventureFavorites advFav in advFavs)
+            {
+                if (advFav.AdventureId == advId)
+                    return true;
+            }
+            return false;
+
+        }
         // POST: AdventureFavorites/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -152,7 +167,7 @@ namespace Hooking.Controllers
             var adventureFavorites = await _context.AdventureFavorites.FindAsync(id);
             _context.AdventureFavorites.Remove(adventureFavorites);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Instructors");
         }
 
         private bool AdventureFavoritesExists(Guid id)

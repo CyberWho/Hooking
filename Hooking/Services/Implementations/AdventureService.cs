@@ -300,7 +300,7 @@ namespace Hooking.Services.Implementations
 
             UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == identityUser.Id);
 
-            favorite.UserDetailsId = userDetails.Id.ToString();
+            favorite.UserDetailsId = userDetails.IdentityUserId.ToString();
 
             _context.Add(favorite);
             _context.SaveChanges();

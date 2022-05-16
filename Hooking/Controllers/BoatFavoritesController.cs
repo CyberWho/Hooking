@@ -52,6 +52,19 @@ namespace Hooking.Controllers
             return View();
         }
 
+        private bool BoatExists(String boatId)
+        {
+
+            List<BoatFavorites> btFavs = _context.BoatFavorites.ToList();
+            foreach (BoatFavorites btFav in btFavs)
+            {
+                if (btFav.BoatId == boatId)
+                    return true;
+            }
+            return false;
+
+        }
+
         // POST: BoatFavorites/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -59,23 +72,21 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id, [Bind("Id,RowVersion")] BoatFavorites boatFavorites)
         {
-            if (ModelState.IsValid)
+            if (!BoatExists(id.ToString()))
             {
-                /*boatFavorites.Id = Guid.NewGuid();
-                _context.Add(boatFavorites);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));*/
-                System.Diagnostics.Debug.WriteLine(id);
-                boatFavorites.Id = Guid.NewGuid();
-                boatFavorites.BoatId = id.ToString();
-                var user = await _userManager.GetUserAsync(User);
-                System.Diagnostics.Debug.WriteLine(user.Id);
-                boatFavorites.UserDetailsId = user.Id.ToString();
-                _context.Add(boatFavorites);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+ 
+                    boatFavorites.Id = Guid.NewGuid();
+                    boatFavorites.BoatId = id.ToString();
+                    var user = await _userManager.GetUserAsync(User);
+                    System.Diagnostics.Debug.WriteLine(user.Id);
+                    boatFavorites.UserDetailsId = user.Id.ToString();
+                    _context.Add(boatFavorites);
+                    await _context.SaveChangesAsync();
+                }
             }
-            return View(boatFavorites);
+            return RedirectToAction("Index", "Boats");
         }
 
         // GET: BoatFavorites/Edit/5
@@ -155,7 +166,7 @@ namespace Hooking.Controllers
             var boatFavorites = await _context.BoatFavorites.FindAsync(id);
             _context.BoatFavorites.Remove(boatFavorites);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Boats");
         }
 
         private bool BoatFavoritesExists(Guid id)
