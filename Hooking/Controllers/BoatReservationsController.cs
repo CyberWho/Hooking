@@ -89,12 +89,17 @@ namespace Hooking.Controllers
             var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
             string email = identityUser.Email;
             string phoneNumber = identityUser.PhoneNumber;
+
+            Boat bt = _context.Boat.Where(m => m.Id == boatId).FirstOrDefault();
+            BoatOwner btOwner = _context.BoatOwner.Where(m => m.Id == Guid.Parse(bt.BoatOwnerId)).FirstOrDefault();
+            UserDetails userOwner = _context.UserDetails.Where(m => m.Id == Guid.Parse(btOwner.UserDetailsId)).FirstOrDefault();
             if (boatReservation == null)
             {
                 return NotFound();
             }
             ViewData["Boat"] = boat;
             ViewData["UserDetails"] = userDetails;
+            ViewData["UserOwner"] = userOwner;
             ViewData["Email"] = email;
             ViewData["PhoneNumber"] = phoneNumber;
             return View(boatReservation);

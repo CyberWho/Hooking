@@ -37,11 +37,11 @@ namespace Hooking.Controllers
         }
 
         // GET: AdventureSpecialOffers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String id)
         {
             var user = await _userManager.GetUserAsync(User);
 
-            Guid userId = Guid.Parse(user.Id);
+       /*     Guid userId = Guid.Parse(user.Id);
             System.Diagnostics.Debug.WriteLine(userId);
             UserDetails userDetails = await _context.UserDetails.Where(m => m.IdentityUserId == user.Id).FirstOrDefaultAsync<UserDetails>();
             var userDetailsId = userDetails.Id.ToString();
@@ -57,9 +57,14 @@ namespace Hooking.Controllers
                 adventureSpecialOffers.AddRange(adventureSpecials);
                 for(int i = 0; i < adventureSpecials.Count; i++)
                     adventureNames.Add(adventure.Name);
-            }
-            ViewData["AdventureNames"] = adventureNames;
-            return View(adventureSpecialOffers);
+            }*/
+
+            Adventure adv = _context.Adventure.Where(m => m.Id == Guid.Parse(id)).FirstOrDefault();
+
+            ViewData["Adventure"] = adv;
+
+          //  ViewData["AdventureNames"] = adventureNames;
+            return View(await _context.AdventureSpecialOffer.Where(m => m.AdventureId == id).ToListAsync());
         }
        
         // GET: AdventureSpecialOffers/Details/5

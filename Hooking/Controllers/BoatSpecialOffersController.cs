@@ -38,9 +38,12 @@ namespace Hooking.Controllers
         }
 
         // GET: BoatSpecialOffers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String id)
         {
-            return View(await _context.BoatSpecialOffer.ToListAsync());
+            Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(id)).FirstOrDefault();
+
+            ViewData["Boat"] = bt;
+            return View(await _context.BoatSpecialOffer.Where(m => m.BoatId == id).ToListAsync());
         }
 
         // GET: BoatSpecialOffers/Details/5

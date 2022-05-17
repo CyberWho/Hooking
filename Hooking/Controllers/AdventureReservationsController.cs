@@ -242,7 +242,36 @@ namespace Hooking.Controllers
             var ins = await _context.InstructorNotAvailablePeriod.FirstOrDefaultAsync();
             return View(ins);
         }
+        [HttpGet("/AdventureReservations/AdventureFastReservationFinished")]
+        public async Task<IActionResult> AdventureReservationFinished(String AdventureId, DateTime startDate, double Duration, double Price)
+        {
 
+            AdventureRealisation adventureRealisation = new AdventureRealisation();
+            adventureRealisation.Id = Guid.NewGuid();
+            adventureRealisation.AdventureId = AdventureId;
+            adventureRealisation.StartDate = startDate;
+            adventureRealisation.Duration = Duration;
+            adventureRealisation.Price = Price;
+            _context.Add(adventureRealisation);
+            await _context.SaveChangesAsync();
+            AdventureReservation adventureReservation = new AdventureReservation();
+            Adventure adventure = _context.Adventure.Where(m => m.Id == Guid.Parse(AdventureId)).FirstOrDefault();
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                adventureReservation.AdventureRealisationId = adventureRealisation.Id.ToString();
+                adventureReservation.UserDetailsId = user.Id;
+                adventureReservation.IsReviewed = false;
+                _context.Add(adventureReservation);
+                await _context.SaveChangesAsync();
+                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
+
+                return RedirectToAction("Index", "Instructors");
+            }
+
+            return View(adventureReservation);
+        }
         [HttpGet("/AdventureReservations/AdventureReservationFinished")]
         public async Task<IActionResult> AdventureReservationFinished(String AdventureId,String AdventureRealisationId)
         {
