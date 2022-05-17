@@ -39,9 +39,11 @@ namespace Hooking.Controllers
         }
 
         // GET: CottageSpecialOffers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(String id)
         {
-            return View(await _context.CottageSpecialOffer.ToListAsync());
+            Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(id)).FirstOrDefault();
+            ViewData["Cottage"] = ctg;
+            return View(await _context.CottageSpecialOffer.Where(m=>m.CottageId==id).ToListAsync());
         }
 
         // GET: CottageSpecialOffers/Details/5

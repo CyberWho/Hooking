@@ -70,6 +70,9 @@
                     <a href="@Url.Action("Delete", "CottageFavorites", new { Id = cottageFavoritesId[i] })">Otkazi pretplatu</a>
 
                 </td>
+                <td>
+                    <a href="@Url.Action("Index", "CottageSpecialOffers", new { Id = cottageData[i].Id })">Specijalne ponude</a>
+                </td>
             </tr>
             i++;
         }

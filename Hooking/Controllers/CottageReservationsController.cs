@@ -207,12 +207,16 @@ namespace Hooking.Controllers
             var identityUser = _context.Users.Where(m => m.Id == userDetails.IdentityUserId).FirstOrDefault();
             string email = identityUser.Email;
             string phoneNumber = identityUser.PhoneNumber;
+            Cottage ctg = _context.Cottage.Where(m => m.Id == cottageId).FirstOrDefault();
+            CottageOwner ctgOwner = _context.CottageOwner.Where(m => m.Id == Guid.Parse(ctg.CottageOwnerId)).FirstOrDefault();
+            UserDetails userOwner = _context.UserDetails.Where(m => m.Id == Guid.Parse(ctgOwner.UserDetailsId)).FirstOrDefault();
             if (cottageReservation == null)
             {
                 return NotFound();
             }
             ViewData["Cottage"] = cottage;
             ViewData["UserDetails"] = userDetails;
+            ViewData["UserOwner"] = userOwner;
             ViewData["Email"] = email;
             ViewData["PhoneNumber"] = phoneNumber;
             return View(cottageReservation);

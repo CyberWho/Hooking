@@ -3,18 +3,16 @@
 @{
     ViewData["Title"] = "Index";
 }
+@{ 
+    Cottage ctg = (Cottage)ViewData["Cottage"];
+}
 
-<h1>Index</h1>
+<h1>Specijalne ponude vikendice @ctg.Name</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CottageId)
-            </th>
            
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
@@ -31,19 +29,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CottageId)
-            </td>
-           
+
+
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
@@ -57,13 +50,12 @@
                 @Html.DisplayFor(modelItem => item.MaxPersonCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a href="@Url.Action("CottageReservationFinished", "CottageReservations" ,new { CottageId = ctg.Id, StartDate=item.StartDate, EndDate=item.EndDate, Price=item.Price, MaxPersonCount = item.MaxPersonCount })">Potvrdi brzu rezervaciju</a>
             </td>
+
         </tr>
 }
     </tbody>
