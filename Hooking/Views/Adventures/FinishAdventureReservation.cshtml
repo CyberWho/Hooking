@@ -142,10 +142,14 @@
 
 }
 <div>
-    @if (_adventureService.AdventureEditable(Guid.Parse(Model.AdventureId)))
+    @if (!User.IsInRole("Korisnik"))
     {
-        <a asp-action="Edit" asp-route-id="@Guid.Parse(Model.AdventureId)">Ažuriraj</a>
-    }
+        @if(_adventureService.AdventureEditable(Guid.Parse(Model.AdventureId)))
+       {
+            <a asp-action="Edit" asp-route-id="@Guid.Parse(Model.AdventureId)">Ažuriraj</a>
+       }
+}
+
     <br /><br />
     <a asp-controller="Adventures" asp-action="InstructorIndex">Nazad</a>
 </div>
@@ -174,7 +178,6 @@
 </div>
 <hr />
 
-<a href="@Url.Action("AdventureReservationFinished", "AdventureReservations" ,new { AdventureId=Model.AdventureId })">Potvrdi rezervaciju</a>
 
 
 @section Scripts{

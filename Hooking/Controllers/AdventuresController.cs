@@ -308,6 +308,9 @@ namespace Hooking.Controllers
 
         private bool isInstructorAvailable(DateTime StartDate, DateTime EndDate, InstructorNotAvailablePeriod insNotAvailable)
         {
+
+
+
             if ((insNotAvailable.StartTime >= StartDate && insNotAvailable.StartTime <= EndDate) && insNotAvailable.EndTime >= EndDate)
             {
                 System.Diagnostics.Debug.WriteLine("slucaj 1 ");
@@ -334,49 +337,34 @@ namespace Hooking.Controllers
 
         [HttpPost("/Adventures/InstructorFiltered")]
 
-        public async Task<IActionResult> InstructorFiltered(DateTime StartDate, DateTime EndDate)
+        public async Task<IActionResult> InstructorFiltered(DateTime StartTime, DateTime EndTime)
         {
-            List<Instructor> instructors = await _context.Instructor.ToListAsync();
             List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = await _context.InstructorNotAvailablePeriod.ToListAsync();
             List<Instructor> tempInstructors = await _context.Instructor.ToListAsync();
 
-            List<Instructor> filteredInstructors = new List<Instructor>();
-            int i = 0;
+            System.Diagnostics.Debug.WriteLine("start time prosledjeni " + StartTime.ToString());
+            System.Diagnostics.Debug.WriteLine("end time prosledjeni " + EndTime.ToString());
 
             foreach (InstructorNotAvailablePeriod insNotAvailable in instructorNotAvailablePeriods)
             {
 
-                foreach (Instructor ins in instructors)
+                if (!isInstructorAvailable(StartTime, EndTime, insNotAvailable))
                 {
 
-                        if (ins.Id == Guid.Parse(insNotAvailable.InstructorId))
-                        {
-                        System.Diagnostics.Debug.WriteLine("jednaki smo " +i.ToString());
-                            if (!isInstructorAvailable(StartDate, EndDate, insNotAvailable))
-                            {
-                            System.Diagnostics.Debug.WriteLine("evo brisem " + i.ToString());
-
-                                 tempInstructors.Remove(ins);
-                            }
-                            else
-                            {
-                                if (!filteredInstructors.Contains(ins) && tempInstructors.Contains(ins))
-                                {
-                                System.Diagnostics.Debug.WriteLine("dodajem " + i.ToString());
-
-                                filteredInstructors.Add(ins);
-                                }
-                            }
-                        }
-                    i++;
+                    Instructor ins = _context.Instructor.Where(m => m.Id == Guid.Parse(insNotAvailable.InstructorId)).FirstOrDefault();
+                    if (tempInstructors.Contains(ins))
+                    {
+                        tempInstructors.Remove(ins);
+                    }
                 }
+
             }
-            ViewData["StartDate"] = StartDate;
-            ViewData["EndDate"] = EndDate;
+            ViewData["StartDate"] = StartTime;
+            ViewData["EndDate"] = EndTime;
 
             List<UserDetails> userIns = await _context.UserDetails.ToListAsync();
 
-            var inses = filteredInstructors;
+            var inses = tempInstructors;
 
             List<UserDetails> users = new List<UserDetails>();
             foreach (Instructor instructor in inses)
@@ -393,7 +381,7 @@ namespace Hooking.Controllers
             }
             ViewData["UserInstructors"] = users;
 
-            return View(filteredInstructors);
+            return View(tempInstructors);
         }
         [HttpGet("/Adventures/FinishAdventureReservation")]
         public async Task<IActionResult> FinishAdventureReservation(Guid? adventureId)

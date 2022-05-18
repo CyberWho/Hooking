@@ -9,7 +9,11 @@
 <h1>Vikendice</h1>
 @if (!User.IsInRole("Admin"))
 {
-    <a asp-controller="CottageSpecialOffers" asp-action="Index">Specijalne ponude</a>
+    @if (!User.IsInRole("Korisnik"))
+    {
+        <a asp-controller="CottageSpecialOffers" asp-action="Index">Specijalne ponude</a>
+
+    }
     <br>
     <a asp-controller="CottageReservations" asp-action="CottageFiltering">Napravi novu rezervaciju</a>
 }
@@ -133,7 +137,7 @@
                     <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
                     @if (!User.IsInRole("Admin"))
                     {
-                <a asp-action="Create" asp-controller="CottageFavorites" asp-route-id="@item.Id"> | Pretplati se</a>
+                        <a asp-action="Create" asp-controller="CottageFavorites" asp-route-id="@item.Id"> | Pretplati se</a>
                     }
                     @if (_signInManager.IsSignedIn(User))
                     {

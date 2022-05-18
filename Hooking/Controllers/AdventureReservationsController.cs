@@ -222,14 +222,46 @@ namespace Hooking.Controllers
             return View(_adventureService.GetAdventureReservationsHistory(userDetails.Id));
         }
 
+        private List<InstructorNotAvailablePeriod> findPeriodToFree(AdventureReservation adventureReservation)
+        {
+            List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = new List<InstructorNotAvailablePeriod>();
+            List<InstructorNotAvailablePeriod> allInstructorNotAvailablePeriods = _context.InstructorNotAvailablePeriod.ToList();
+            foreach (InstructorNotAvailablePeriod instructorNotAvailablePeriod in allInstructorNotAvailablePeriods)
+            {
+                isPeriodEqual(adventureReservation, instructorNotAvailablePeriods, instructorNotAvailablePeriod);
+            }
+
+            return instructorNotAvailablePeriods;
+        }
+
+        private  void isPeriodEqual(AdventureReservation adventureReservation, List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods, InstructorNotAvailablePeriod instructorNotAvailablePeriod)
+        {
+            AdventureRealisation adventureRealisation = _context.AdventureRealisation.Where(m => m.Id == Guid.Parse(adventureReservation.AdventureRealisationId)).FirstOrDefault();
+            Adventure adventure = _context.Adventure.Where(m => m.Id == Guid.Parse(adventureRealisation.AdventureId)).FirstOrDefault();
+
+            if (instructorNotAvailablePeriod.InstructorId ==  adventure.InstructorId && instructorNotAvailablePeriod.StartTime == adventureRealisation.StartDate && instructorNotAvailablePeriod.EndTime == adventureRealisation.StartDate.AddHours(adventureRealisation.Duration))
+            {
+                instructorNotAvailablePeriods.Add(instructorNotAvailablePeriod);
+            }
+        }
+
         // POST: AdventureReservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var adventureReservation = await _context.AdventureReservation.FindAsync(id);
+            List<InstructorNotAvailablePeriod> instructorNotAvailablePeriodsToFree = findPeriodToFree(adventureReservation);
+
             _context.AdventureReservation.Remove(adventureReservation);
             await _context.SaveChangesAsync();
+
+            foreach (InstructorNotAvailablePeriod instructorNotAvailablePeriod in instructorNotAvailablePeriodsToFree)
+            {
+                _context.InstructorNotAvailablePeriod.Remove(instructorNotAvailablePeriod);
+            }
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", "Instructors");
 
             //return RedirectToAction(nameof(Index));
@@ -243,7 +275,7 @@ namespace Hooking.Controllers
             return View(ins);
         }
         [HttpGet("/AdventureReservations/AdventureFastReservationFinished")]
-        public async Task<IActionResult> AdventureReservationFinished(String AdventureId, DateTime startDate, double Duration, double Price)
+        public async Task<IActionResult> AdventureFastReservationFinished(String AdventureId, DateTime startDate, double Duration, double Price)
         {
 
             AdventureRealisation adventureRealisation = new AdventureRealisation();
@@ -267,6 +299,13 @@ namespace Hooking.Controllers
                 await _context.SaveChangesAsync();
                 await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
 
+                InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
+                instructorNotAvailablePeriod.Id = Guid.NewGuid();
+                instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
+                instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
+                instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
+                _context.InstructorNotAvailablePeriod.Add(instructorNotAvailablePeriod);
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Instructors");
             }
 
@@ -278,16 +317,24 @@ namespace Hooking.Controllers
 
             AdventureReservation adventureReservation = new AdventureReservation();
             Adventure adventure = _context.Adventure.Where(m => m.Id == Guid.Parse(AdventureId)).FirstOrDefault();
-
+            AdventureRealisation adventureRealisation = _context.AdventureRealisation.Where(m => m.Id == Guid.Parse(AdventureRealisationId)).FirstOrDefault();
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
                 adventureReservation.AdventureRealisationId = AdventureRealisationId;
                 adventureReservation.UserDetailsId = user.Id;
                 adventureReservation.IsReviewed = false;
-                _context.Add(adventureReservation);
+                _context.AdventureReservation.Add(adventureReservation);
                 await _context.SaveChangesAsync();
                 await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
+
+                InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
+                instructorNotAvailablePeriod.Id = Guid.NewGuid();
+                instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
+                instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
+                instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
+                _context.InstructorNotAvailablePeriod.Add(instructorNotAvailablePeriod);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Instructors");
             }

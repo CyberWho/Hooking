@@ -294,15 +294,41 @@ namespace Hooking.Controllers
             }
             return View(boatReservation);
         }
+        private List<BoatNotAvailablePeriod> findPeriodToFree(BoatReservation boatReservation)
+        {
+            List<BoatNotAvailablePeriod> boatNotAvailablePeriods = new List<BoatNotAvailablePeriod>();
+            List<BoatNotAvailablePeriod> allBoatNotAvailablePeriods = _context.BoatNotAvailablePeriod.ToList();
+            foreach (BoatNotAvailablePeriod boatNotAvailablePeriod in allBoatNotAvailablePeriods)
+            {
+                isPeriodEqual(boatReservation, boatNotAvailablePeriods, boatNotAvailablePeriod);
+            }
 
+            return boatNotAvailablePeriods;
+        }
+
+        private static void isPeriodEqual(BoatReservation boatReservation, List<BoatNotAvailablePeriod> boatNotAvailablePeriods, BoatNotAvailablePeriod boatNotAvailablePeriod)
+        {
+            if (boatNotAvailablePeriod.BoatId == boatReservation.BoatId && boatNotAvailablePeriod.StartTime == boatReservation.StartDate && boatNotAvailablePeriod.EndTime == boatReservation.EndDate)
+            {
+                boatNotAvailablePeriods.Add(boatNotAvailablePeriod);
+            }
+        }
         // POST: BoatReservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var boatReservation = await _context.BoatReservation.FindAsync(id);
+            List<BoatNotAvailablePeriod> boatNotAvailablePeriodsToFree = findPeriodToFree(boatReservation);
+
             _context.BoatReservation.Remove(boatReservation);
             await _context.SaveChangesAsync();
+            foreach (BoatNotAvailablePeriod boatNotAvailablePeriod in boatNotAvailablePeriodsToFree)
+            {
+                _context.BoatNotAvailablePeriod.Remove(boatNotAvailablePeriod);
+            }
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", "Boats");
 
            // return RedirectToAction(nameof(Index));
