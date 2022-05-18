@@ -25,18 +25,30 @@ namespace Hooking.Controllers
         }
 
         // GET: Instructors
-        public async Task<IActionResult> Index(string searchString="", string sortOrder="", bool triedToDelete=false)
+        public async Task<IActionResult> Index(string searchString="", string sortOrder="", bool triedToDelete=false, string filter="")
         {
            
             var ins = from b in _context.UserDetails
                       select b;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                ins = ins.Where(s => s.FirstName.Contains(searchString)
-                                       || s.City.Contains(searchString) || s.Country.Contains(searchString) || s.LastName.Contains(searchString)
-                                       || s.Address.Contains(searchString));
-            }
 
+            switch (filter)
+            {
+                case "FirstName":
+                    ins = ins.Where(s => s.FirstName.Contains(searchString));
+                    break;
+                case "City":
+                    ins = ins.Where(s => s.City.Contains(searchString));
+                    break;
+                case "Country":
+                    ins = ins.Where(s => s.Country.Contains(searchString));
+                    break;
+                case "LastName":
+                    ins = ins.Where(s => s.LastName.Contains(searchString));
+                    break;
+                case "Address":
+                    ins = ins.Where(s => s.Address.Contains(searchString));
+                    break;
+            }
             switch (sortOrder)
             {
                 case "FirstName":
@@ -54,8 +66,6 @@ namespace Hooking.Controllers
                 case "LastName":
                     ins = ins.OrderBy(b => b.FirstName);
                     break;
-
-
             }
             List<UserDetails> userIns = await ins.AsNoTracking().ToListAsync();
 

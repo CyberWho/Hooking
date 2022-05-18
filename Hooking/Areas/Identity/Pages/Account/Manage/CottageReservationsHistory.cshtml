@@ -19,15 +19,17 @@
                 Naziv vikendice
             </th>
             <th>
-                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="@Model.StartDateSort">
+                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="StartDate">
                     Od
                 </a>
             </th>
             <th>
-                Do
+                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="EndDate">
+                    Do
+                </a>
             </th>
             <th>
-                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="@Model.PriceSort">
+                <a asp-page="./CottageReservationsHistory" asp-route-sortOrder="Price">
                     Cena
                 </a>
             </th>

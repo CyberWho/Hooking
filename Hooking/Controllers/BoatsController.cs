@@ -33,14 +33,10 @@ namespace Hooking.Controllers
         }
 
         // GET: Boats
-        public async Task<IActionResult> Index(string searchString = "",string sortOrder="")
+        public async Task<IActionResult> Index(string searchString = "",string filter="",string sortOrder="")
         {
             List<Boat> boats = await _context.Boat.ToListAsync();
-            ViewData["Name"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
-            ViewData["Address"] = String.IsNullOrEmpty(sortOrder) ? "Address" : "";
-            ViewData["City"] = String.IsNullOrEmpty(sortOrder) ? "City" : "";
-            ViewData["Country"] = String.IsNullOrEmpty(sortOrder) ? "Country" : "";
-            ViewData["AverageGrade"] = String.IsNullOrEmpty(sortOrder) ? "AverageGrade" : "";
+
             var bts = from b in _context.Boat
                       select b;
             switch (sortOrder)
@@ -58,17 +54,21 @@ namespace Hooking.Controllers
                     bts = bts.OrderBy(b => b.Country);
                     break;
                 case "AverageGrade":
-                    bts = bts.OrderBy(b => b.AverageGrade);
+                    bts = bts.OrderByDescending(b => b.AverageGrade);
                     break;
 
-                default:
-                    bts = bts.OrderByDescending(b => b.Name);
-                    break;
             }
-            if (!String.IsNullOrEmpty(searchString))
+            switch (filter)
             {
-                bts = bts.Where(s => s.Name.Contains(searchString)
-                                       || s.City.Contains(searchString) || s.Country.Contains(searchString));
+                case "Name":
+                    bts = bts.Where(s => s.Name.Contains(searchString));
+                    break;
+                case "City":
+                    bts = bts.Where(s => s.City.Contains(searchString));
+                    break;
+                case "Country":
+                    bts = bts.Where(s => s.Country.Contains(searchString));
+                    break;
             }
             return View(bts.ToList());
         }

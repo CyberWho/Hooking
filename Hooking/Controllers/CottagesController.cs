@@ -52,8 +52,11 @@ namespace Hooking.Controllers
        
 
         // GET: Cottages
-        public async Task<IActionResult> Index(string searchString = "", string filter = "", string sortOrder = "")
+        public async Task<IActionResult> Index(string searchString = "", string filter = "", string sortOrder = "", string sort = "")
         {
+            System.Diagnostics.Debug.WriteLine("sort order je " + sortOrder);
+            System.Diagnostics.Debug.WriteLine("varijabla sort je " + sort);
+
             //List<Cottage> cottages = await _context.Cottage.ToListAsync();
             var cottages = await _cache.GetAsync("Cottage");
             if ((cottages?.Count() ?? 0) > 0)
@@ -62,13 +65,7 @@ namespace Hooking.Controllers
                 var generatedCottages = JsonSerializer.Deserialize<List<Cottage>>(cottageString);
                 return Ok(new { LoadedFromRedis = true, Data = generatedCottages });
             }
-            List<Cottage> filteredCottages = new List<Cottage>();
 
-            ViewData["Name"] = String.IsNullOrEmpty(sortOrder) ? "Name" : "";
-            ViewData["Address"] = String.IsNullOrEmpty(sortOrder) ? "Address" : "";
-            ViewData["City"] = String.IsNullOrEmpty(sortOrder) ? "City" : "";
-            ViewData["Country"] = String.IsNullOrEmpty(sortOrder) ? "Country" : "";
-            ViewData["AverageGrade"] = String.IsNullOrEmpty(sortOrder) ? "AverageGrade" : "";
             var ctg = from b in _context.Cottage
                       select b;
             switch (sortOrder)
@@ -86,19 +83,29 @@ namespace Hooking.Controllers
                     ctg = ctg.OrderBy(b => b.Country);
                     break;
                 case "AverageGrade":
-                    ctg = ctg.OrderBy(b => b.AverageGrade);
+                    ctg = ctg.OrderByDescending(b => b.AverageGrade);
                     break;
-
-
             }
-            if (!String.IsNullOrEmpty(searchString))
+
+
+            switch (filter)
             {
-                ctg = ctg.Where(s => s.Name.Contains(searchString)
-                                       || s.City.Contains(searchString) || s.Country.Contains(searchString));
+                case "Name":
+                    ctg = ctg.Where(s => s.Name.Contains(searchString));
+                    break;
+                case "City":
+                    ctg = ctg.Where(s => s.City.Contains(searchString));
+                    break;
+                case "Country":
+                    ctg = ctg.Where(s => s.Country.Contains(searchString));
+                    break;
             }
 
-          
-            return View(ctg.ToList());
+     
+   
+
+
+                return View(ctg.ToList());
         }
         [HttpGet("/Cottages/ShowAllUsers/{id}")]
         public async Task<IActionResult> ShowAllUsers(Guid id)
