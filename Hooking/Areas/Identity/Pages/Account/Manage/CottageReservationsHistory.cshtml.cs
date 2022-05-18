@@ -27,17 +27,12 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         public List<CottageReservation> myCottageReservations = new List<CottageReservation>();
 
         public List<CottageReservation> ctgReservations { get; set; }
-        public string StartDateSort { get; set; }
-        public string PriceSort { get; set; }
 
 
 
         public async Task<IActionResult> OnGetAsync(string sortOrder="")
         {
-            System.Diagnostics.Debug.WriteLine("stigao do istorije rezervacija vikendica");
 
-            StartDateSort = sortOrder == "StartDate" ? "date_desc" : "StartDate";
-            PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
 
             IQueryable<CottageReservation> reservationToSort = from s in _context.CottageReservation
                                                                select s;
@@ -46,14 +41,11 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 case "StartDate":
                     reservationToSort = reservationToSort.OrderBy(s => s.StartDate);
                     break;
-                case "date_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.StartDate);
-                    break;
                 case "Price":
                     reservationToSort = reservationToSort.OrderBy(s => s.Price);
                     break;
-                case "price_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.Price);
+                case "EndDate":
+                    reservationToSort = reservationToSort.OrderBy(s => s.EndDate);
                     break;
             }
             ctgReservations = await reservationToSort.AsNoTracking().ToListAsync();

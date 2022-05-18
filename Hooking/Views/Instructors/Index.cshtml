@@ -13,7 +13,14 @@
 <h4 style="color: red">@ViewData["StatusMessage"]</h4>
 
 <br>
-<a asp-controller="AdventureReservations" asp-action="InstructorFiltering">Napravi novu rezervaciju</a>
+@if (_signInManager.IsSignedIn(User))
+{
+    @if (User.IsInRole("Korisnik"))
+    {
+        <a asp-controller="AdventureReservations" asp-action="InstructorFiltering">Napravi novu rezervaciju</a>
+
+    }
+}
 
 
 <div class="row">
@@ -42,19 +49,19 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Name"]">Ime</a>
+                <a asp-action="Index" asp-route-sortOrder="FirstName">Ime</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["LastName"]">Prezime</a>
+                <a asp-action="Index" asp-route-sortOrder="LastName">Prezime</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Address"]">Adresa</a>
+                <a asp-action="Index" asp-route-sortOrder="Address">Adresa</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["City"]">Grad</a>
+                <a asp-action="Index" asp-route-sortOrder="City">Grad</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["Country"]">Drzava</a>
+                <a asp-action="Index" asp-route-sortOrder="Country">Drzava</a>
             </th>
 
             <th>

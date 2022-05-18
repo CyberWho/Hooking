@@ -30,9 +30,7 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
         }
         public async Task<IActionResult> OnGetAsync(string sortOrder = "")
         {
-            StartDateSort = sortOrder == "StartDate" ? "date_desc" : "StartDate";
-            PriceSort = sortOrder == "Price" ? "price_desc" : "Price";
-            DurationSort = sortOrder == "Duration" ? "duration_desc" : "Duration";
+
 
 
             IQueryable<AdventureRealisation> reservationToSort = from s in _context.AdventureRealisation
@@ -42,21 +40,15 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 case "StartDate":
                     reservationToSort = reservationToSort.OrderBy(s => s.StartDate);
                     break;
-                case "date_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.StartDate);
-                    break;
+
                 case "Price":
                     reservationToSort = reservationToSort.OrderBy(s => s.Price);
                     break;
-                case "price_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.Price);
-                    break;
+
                 case "Duration":
                     reservationToSort = reservationToSort.OrderBy(s => s.Duration);
                     break;
-                case "duration_desc":
-                    reservationToSort = reservationToSort.OrderByDescending(s => s.Duration);
-                    break;
+
 
             }
             adRealisations = await reservationToSort.AsNoTracking().ToListAsync();
@@ -67,12 +59,12 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
 
             //  System.Diagnostics.Debug.WriteLine(user.Id.ToString());
             myAdventureReservations = await _context.AdventureReservation.Where(m=>m.UserDetailsId == userDetails.IdentityUserId.ToString()).ToListAsync();
-            List<AdventureRealisation> myAdventureRealisations = new List<AdventureRealisation>();
-            foreach (var myAdventureReservation in myAdventureReservations)
+            List<AdventureRealisation> myAdventureRealisations = adRealisations;
+         /*   foreach (var myAdventureReservation in myAdventureReservations)
             {
                AdventureRealisation ar =  _context.AdventureRealisation.Where(m => m.Id == Guid.Parse(myAdventureReservation.AdventureRealisationId)).FirstOrDefault<AdventureRealisation>();
                myAdventureRealisations.Add(ar);
-            }
+            }*/
             List<AdventureRealisation> finalAdventureRealisations = new List<AdventureRealisation>();
 
             foreach (var myAdventureRealisation in myAdventureRealisations)
@@ -81,7 +73,6 @@ namespace Hooking.Areas.Identity.Pages.Account.Manage
                 {
                     if(myAdventureRealisation.StartDate==adRealisation.StartDate)
                     {
-                        System.Diagnostics.Debug.WriteLine("nasao");
                         if(!finalAdventureRealisations.Contains(myAdventureRealisation))
                         {
                             finalAdventureRealisations.Add(myAdventureRealisation);
