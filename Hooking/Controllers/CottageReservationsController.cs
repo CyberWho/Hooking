@@ -322,13 +322,39 @@ namespace Hooking.Controllers
             return View(cottageReservation);
         }
 
+        private List<CottageNotAvailablePeriod> findPeriodToFree(CottageReservation cottageReservation)
+        {
+            List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = new List<CottageNotAvailablePeriod>();
+            List<CottageNotAvailablePeriod> allCottageNotAvailablePeriods =  _context.CottageNotAvailablePeriod.ToList();
+            foreach (CottageNotAvailablePeriod cottageNotAvailablePeriod in allCottageNotAvailablePeriods)
+            {
+                isPeriodEqual(cottageReservation, cottageNotAvailablePeriods, cottageNotAvailablePeriod);
+            }
+
+            return cottageNotAvailablePeriods; 
+        }
+
+        private static void isPeriodEqual(CottageReservation cottageReservation, List<CottageNotAvailablePeriod> cottageNotAvailablePeriods, CottageNotAvailablePeriod cottageNotAvailablePeriod)
+        {
+            if (cottageNotAvailablePeriod.CottageId == cottageReservation.CottageId && cottageNotAvailablePeriod.StartTime == cottageReservation.StartDate && cottageNotAvailablePeriod.EndTime == cottageReservation.EndDate)
+            {
+                cottageNotAvailablePeriods.Add(cottageNotAvailablePeriod);
+            }
+        }
+
         // POST: CottageReservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var cottageReservation = await _context.CottageReservation.FindAsync(id);
+            List<CottageNotAvailablePeriod> cottageNotAvailablePeriodsToFree = findPeriodToFree(cottageReservation);
             _context.CottageReservation.Remove(cottageReservation);
+            await _context.SaveChangesAsync();
+            foreach (CottageNotAvailablePeriod cottageNotAvailablePeriod in cottageNotAvailablePeriodsToFree)
+            {
+                _context.CottageNotAvailablePeriod.Remove(cottageNotAvailablePeriod);
+            }
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Cottages");
 
@@ -346,12 +372,45 @@ namespace Hooking.Controllers
             var cottages = await _context.CottageReservation.FirstOrDefaultAsync();
             return View(cottages);
         }
+
+        private bool isTaken(CottageReservation cottageReservation)
+        {
+            List<CottageReservation> ctgReservations = _context.CottageReservation.Where(m => m.CottageId == cottageReservation.CottageId).ToList();
+
+            foreach (CottageReservation ctgReservation in ctgReservations)
+            {
+                System.Diagnostics.Debug.WriteLine("u petlji sam");
+
+                if ((cottageReservation.StartDate >= ctgReservation.StartDate && cottageReservation.StartDate <= ctgReservation.EndDate) && cottageReservation.EndDate >= ctgReservation.EndDate)
+                {
+                    System.Diagnostics.Debug.WriteLine("slucaj 1");
+                    return false;
+
+                }
+                else if ((cottageReservation.EndDate >= ctgReservation.EndDate && cottageReservation.EndDate <= ctgReservation.EndDate) && cottageReservation.StartDate <= ctgReservation.StartDate)
+                {
+                    System.Diagnostics.Debug.WriteLine("slucaj 2");
+
+                    return false;
+
+                }
+                else if (cottageReservation.StartDate <= ctgReservation.StartDate && cottageReservation.EndDate >= ctgReservation.EndDate)
+                {
+                    System.Diagnostics.Debug.WriteLine("slucaj 3");
+
+                    return false;
+                }
+                return true;
+            }
+            return true;
+        }
+
         [HttpGet("/CottageReservations/CottageReservationFinished")]
         public async Task<IActionResult> CottageReservationFinished(String CottageId,DateTime StartDate,DateTime EndDate,Double Price,int MaxPersonCount)
         {
             CottageReservation cottageReservation = new CottageReservation();
            // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
-
+            
             if (ModelState.IsValid)
             {
                 cottageReservation.Id = Guid.NewGuid();
@@ -363,30 +422,31 @@ namespace Hooking.Controllers
                 cottageReservation.MaxPersonCount = MaxPersonCount;
                 var user = await _userManager.GetUserAsync(User);
                 cottageReservation.UserDetailsId = user.Id;
+                    System.Diagnostics.Debug.WriteLine("rezervacija je moguca");
+                    _context.Add(cottageReservation);
+                    await _context.SaveChangesAsync();
+                    CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
+                    cottageNotAvailablePeriod.Id = Guid.NewGuid();
+                    cottageNotAvailablePeriod.CottageId = CottageId;
+                    cottageNotAvailablePeriod.StartTime = StartDate;
+                    cottageNotAvailablePeriod.EndTime = EndDate;
+
+                    _context.Add(cottageNotAvailablePeriod);
+                    await _context.SaveChangesAsync();
+
+                    Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(CottageId)).FirstOrDefault();
+                    await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali vikendicu", $"Uspesno ste rezervisali vikendicu '{ctg.Name}' .");
+                    return RedirectToAction("Index", "Cottages");
 
 
-                _context.Add(cottageReservation);
-                await _context.SaveChangesAsync();
-                CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
-                cottageNotAvailablePeriod.Id = Guid.NewGuid();
-                cottageNotAvailablePeriod.CottageId = CottageId;
-                cottageNotAvailablePeriod.StartTime = StartDate;
-                cottageNotAvailablePeriod.EndTime = EndDate;
-                
-                _context.Add(cottageNotAvailablePeriod);
-                await _context.SaveChangesAsync();
-
-                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(CottageId)).FirstOrDefault();
-                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali vikendicu", $"Uspesno ste rezervisali vikendicu '{ctg.Name}' .");
-                return RedirectToAction("Index","Cottages");
                 // return View(cottageReservation);
-              //return  RedirectToPage("CottageReservationSuccessful", "CottageReservations");
-               //  return RedirectToPage("/Cottages/Index");
-              //  return RedirectToPage("/Views/CottageReservations/CottageReservationSuccessful");
+                //return  RedirectToPage("CottageReservationSuccessful", "CottageReservations");
+                //  return RedirectToPage("/Cottages/Index");
+                //  return RedirectToPage("/Views/CottageReservations/CottageReservationSuccessful");
 
             }
 
-            return View(cottageReservation);
+            return RedirectToAction("Index", "Cottages");
         }
     }
 }

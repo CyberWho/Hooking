@@ -431,38 +431,23 @@ namespace Hooking.Controllers
             System.Diagnostics.Debug.WriteLine("boatfiltered");
 
             System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
-            List<Boat> boats = await _context.Boat.ToListAsync();
             List<Boat> tempBoats = await _context.Boat.ToListAsync();
 
             List<BoatNotAvailablePeriod> boatNotAvailablePeriods = await _context.BoatNotAvailablePeriod.ToListAsync();
 
-            List<Boat> filteredBoats = new List<Boat>();
 
 
             foreach (BoatNotAvailablePeriod btNotAvailable in boatNotAvailablePeriods)
             {
-
-                // System.Diagnostics.Debug.WriteLine("ctgNotAvailableID: " + ctgNotAvailable.CottageId.ToString());
-                foreach (Boat bt in boats)
+                if (!isBoatAvailable(StartDate, EndDate, btNotAvailable))
                 {
-                    //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
-
-                    if (bt.Id == Guid.Parse(btNotAvailable.BoatId))
+                    Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(btNotAvailable.BoatId)).FirstOrDefault();
+                    if (tempBoats.Contains(bt))
                     {
-                        if (!isBoatAvailable(StartDate, EndDate, btNotAvailable))
-                        {
-                            tempBoats.Remove(bt);
-                        }
-                        else
-                        {
-                            if (!filteredBoats.Contains(bt) && tempBoats.Contains(bt))
-                            {
-                                filteredBoats.Add(bt);
-                            }
-                        }
+                        tempBoats.Remove(bt);
                     }
-
                 }
+
             }
             ViewData["StartDate"] = StartDate;
             ViewData["EndDate"] = EndDate;
@@ -470,7 +455,7 @@ namespace Hooking.Controllers
    
 
 
-            return View(filteredBoats);
+            return View(tempBoats);
         }
 
         [HttpGet("/Boats/FinishBoatReservation")]

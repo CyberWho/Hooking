@@ -500,45 +500,30 @@ namespace Hooking.Controllers
         {
 
 
-            List<Cottage> cottages = await _context.Cottage.ToListAsync();
+          //  List<Cottage> cottages = await _context.Cottage.ToListAsync();
             List<Cottage> tempCottages = await _context.Cottage.ToListAsync();
 
             List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = await _context.CottageNotAvailablePeriod.ToListAsync();
 
-            List<Cottage> filteredCottages = new List<Cottage>();
+         //   List<Cottage> filteredCottages = new List<Cottage>();
 
             foreach (CottageNotAvailablePeriod ctgNotAvailable in cottageNotAvailablePeriods)
             {
 
-               // System.Diagnostics.Debug.WriteLine("ctgNotAvailableID: " + ctgNotAvailable.CottageId.ToString());
-                foreach(Cottage ctg in cottages)
+                if (!isCottageAvailable(StartDate, EndDate, ctgNotAvailable))
                 {
-                    //  System.Diagnostics.Debug.WriteLine("VikendicaID: " + ctg.Id.ToString());
-    
-                        if (ctg.Id == Guid.Parse(ctgNotAvailable.CottageId))
-                        {
-                            if(!isCottageAvailable(StartDate,EndDate,ctgNotAvailable))
-                            {
-                                tempCottages.Remove(ctg);
-                            }
-                            else
-                            {
-                                if (!filteredCottages.Contains(ctg) && tempCottages.Contains(ctg))
-                                {
-                                    filteredCottages.Add(ctg);
-                                }
-                            }
-                        }
-
-                    
-                   
+                    Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(ctgNotAvailable.CottageId)).FirstOrDefault();
+                    if (tempCottages.Contains(ctg))
+                    {
+                        tempCottages.Remove(ctg);
+                    }
                 }
             }
             ViewData["StartDate"] = StartDate;
             ViewData["EndDate"] = EndDate;
             ViewData["MaxPersonCount"] = MaxPersonCount;
 
-            return View(filteredCottages);
+            return View(tempCottages);
         }
         [HttpGet("/Cottages/FinishCottageReservation")]
         public async Task<IActionResult> FinishCottageReservation(Guid? id,DateTime StartDate,DateTime EndDate,int MaxPersonCount)
