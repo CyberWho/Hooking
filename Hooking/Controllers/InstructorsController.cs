@@ -246,6 +246,8 @@ namespace Hooking.Controllers
             return View(instructor);
         }
 
+
+
         // POST: Instructors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -278,6 +280,41 @@ namespace Hooking.Controllers
         private bool InstructorExists(Guid id)
         {
             return _context.Instructor.Any(e => e.Id == id);
+        }
+
+        [HttpGet("/Instructors/AdventuresForReservation")]
+        public async Task<IActionResult> AdventuresForReservation(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var instructor = await _context.Instructor
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+            Guid userInstructorId = Guid.Parse(instructor.UserDetailsId);
+            var userInstructor = _context.UserDetails.Where(m => m.Id == userInstructorId).FirstOrDefault<UserDetails>();
+            var allAdventures = await _context.Adventure.ToListAsync();
+            List<Adventure> adventures = new List<Adventure>();
+            foreach (Adventure adventure in allAdventures)
+            {
+                Guid guid = new Guid(adventure.InstructorId);
+                if (guid == id)
+                {
+                    adventures.Add(adventure);
+                }
+                // Adventure a = _context.Adventure.Where(m => m.InstructorId == adventure.InstructorId).FirstOrDefault<Adventure>();
+
+            }
+            ViewData["UserInstructor"] = userInstructor;
+            ViewData["InstructorsAdventures"] = adventures;
+
+
+            return View(instructor);
         }
     }
 }

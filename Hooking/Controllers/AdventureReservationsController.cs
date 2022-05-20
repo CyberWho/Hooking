@@ -274,18 +274,41 @@ namespace Hooking.Controllers
             var ins = await _context.InstructorNotAvailablePeriod.FirstOrDefaultAsync();
             return View(ins);
         }
+
+        private string adventureRealisationExists(AdventureRealisation adventureRealisation)
+        {
+           
+            foreach(AdventureRealisation advRealisation in _context.AdventureRealisation.ToList())
+            {
+                if(adventureRealisation.AdventureId==advRealisation.AdventureId&&
+                    adventureRealisation.StartDate==advRealisation.StartDate && 
+                    adventureRealisation.Duration == advRealisation.Duration &&
+                    adventureRealisation.Price==advRealisation.Price)
+                     {
+                            return advRealisation.Id.ToString();
+                     }
+            }
+            return null;
+        }
+
         [HttpGet("/AdventureReservations/AdventureFastReservationFinished")]
         public async Task<IActionResult> AdventureFastReservationFinished(String AdventureId, DateTime startDate, double Duration, double Price)
         {
 
             AdventureRealisation adventureRealisation = new AdventureRealisation();
-            adventureRealisation.Id = Guid.NewGuid();
             adventureRealisation.AdventureId = AdventureId;
             adventureRealisation.StartDate = startDate;
             adventureRealisation.Duration = Duration;
             adventureRealisation.Price = Price;
-            _context.Add(adventureRealisation);
-            await _context.SaveChangesAsync();
+            adventureRealisation.Id = (Guid.Parse(adventureRealisationExists(adventureRealisation)));
+            if (adventureRealisation.Id==null)
+            {
+                adventureRealisation.Id = Guid.NewGuid();
+                System.Diagnostics.Debug.WriteLine("realizacija ne postoji, pravim je");
+                _context.Add(adventureRealisation);
+                await _context.SaveChangesAsync();
+            }
+
             AdventureReservation adventureReservation = new AdventureReservation();
             Adventure adventure = _context.Adventure.Where(m => m.Id == Guid.Parse(AdventureId)).FirstOrDefault();
 
@@ -295,22 +318,105 @@ namespace Hooking.Controllers
                 adventureReservation.AdventureRealisationId = adventureRealisation.Id.ToString();
                 adventureReservation.UserDetailsId = user.Id;
                 adventureReservation.IsReviewed = false;
-                _context.Add(adventureReservation);
-                await _context.SaveChangesAsync();
-                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
+   
+                if (isAlreadyReserved(adventureReservation))
+                {
+                    return RedirectToAction("AdventureAlreadyReserved", "Home");
+                }
+                if (canFinishReservation(adventureReservation))
+                {
 
-                InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
-                instructorNotAvailablePeriod.Id = Guid.NewGuid();
-                instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
-                instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
-                instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
-                _context.InstructorNotAvailablePeriod.Add(instructorNotAvailablePeriod);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Instructors");
+                    _context.Add(adventureReservation);
+                    await _context.SaveChangesAsync();
+                    await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
+
+                    InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
+                    instructorNotAvailablePeriod.Id = Guid.NewGuid();
+                    instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
+                    instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
+                    instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
+                    _context.InstructorNotAvailablePeriod.Add(instructorNotAvailablePeriod);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Instructors");
+                }
+                else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+                }
             }
 
             return View(adventureReservation);
         }
+
+        private bool isAvailable(DateTime StartDate1, DateTime EndDate1, DateTime StartDate2, DateTime EndDate2)
+        {
+            if ((StartDate1 >= StartDate2 && StartDate1 <= EndDate2) && EndDate1 >= EndDate2)
+            {
+                return false;
+
+            }
+            else if ((EndDate1 >= StartDate2 && EndDate1 <= EndDate2) && StartDate1 <= StartDate2)
+            {
+                return false;
+
+            }
+            else if (StartDate1 <= StartDate2 && EndDate1 >= EndDate2)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool canFinishReservation(AdventureReservation adventureReservation)
+        {
+            //cottage reservations in local buffer
+            AdventureRealisation adventureRealisation = _context.AdventureRealisation.Find(Guid.Parse(adventureReservation.AdventureRealisationId));
+
+
+            //ako 2 klijenta pokusaju rezervaciju na istu vikendicu u isto vreme provericemo da li u lokalnom
+            //bufferu postoji ta rezervacija u to vreme i ako postoji jedan od njih nece moci da rezervise
+            foreach (var localAdventureReservation in _context.AdventureReservation.Local)
+            {
+                AdventureRealisation adventureRealisationTemp = _context.AdventureRealisation.Find(Guid.Parse(localAdventureReservation.AdventureRealisationId));
+
+                if (adventureRealisation.AdventureId == adventureRealisationTemp.AdventureId)
+                {
+                    if (!isAvailable(adventureRealisation.StartDate, adventureRealisation.StartDate.AddHours(adventureRealisation.Duration),
+                        adventureRealisationTemp.StartDate, adventureRealisationTemp.StartDate.AddHours(adventureRealisation.Duration)))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        private bool isAlreadyReserved(AdventureReservation adventureReservation)
+        {
+            //cottage reservations in local buffer
+            AdventureRealisation adventureRealisation = _context.AdventureRealisation.Where(m=>m.Id == Guid.Parse(adventureReservation.AdventureRealisationId)).FirstOrDefault();
+            System.Diagnostics.Debug.WriteLine("id prosledjene realizacije " + adventureRealisation.Id.ToString());
+            List<AdventureReservation> advReservations = _context.AdventureReservation.ToList();
+
+
+            //ako 2 klijenta pokusaju rezervaciju na istu vikendicu u isto vreme provericemo da li u lokalnom
+            //bufferu postoji ta rezervacija u to vreme i ako postoji jedan od njih nece moci da rezervise
+            foreach (AdventureReservation advReservation in advReservations)
+            {
+                AdventureRealisation adventureRealisationTemp = _context.AdventureRealisation.Find(Guid.Parse(advReservation.AdventureRealisationId));
+                System.Diagnostics.Debug.WriteLine("id trenutne realizacije " + adventureRealisationTemp.Id.ToString());
+
+                if (adventureRealisation.AdventureId == adventureRealisationTemp.AdventureId)
+                {
+                    if (!isAvailable(adventureRealisation.StartDate, adventureRealisation.StartDate.AddHours(adventureRealisation.Duration),
+                        adventureRealisationTemp.StartDate, adventureRealisationTemp.StartDate.AddHours(adventureRealisation.Duration)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         [HttpGet("/AdventureReservations/AdventureReservationFinished")]
         public async Task<IActionResult> AdventureReservationFinished(String AdventureId,String AdventureRealisationId)
         {
@@ -324,19 +430,30 @@ namespace Hooking.Controllers
                 adventureReservation.AdventureRealisationId = AdventureRealisationId;
                 adventureReservation.UserDetailsId = user.Id;
                 adventureReservation.IsReviewed = false;
-                _context.AdventureReservation.Add(adventureReservation);
-                await _context.SaveChangesAsync();
-                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
+                if (isAlreadyReserved(adventureReservation))
+                {
+                    return RedirectToAction("AdventureAlreadyReserved", "Home");
+                }
+                if (canFinishReservation(adventureReservation))
+                {
+                    _context.AdventureReservation.Add(adventureReservation);
+                    await _context.SaveChangesAsync();
+                    await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali avanturu", $"Uspesno ste rezervisali avanturu '{adventure.Name}' .");
 
-                InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
-                instructorNotAvailablePeriod.Id = Guid.NewGuid();
-                instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
-                instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
-                instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
-                _context.InstructorNotAvailablePeriod.Add(instructorNotAvailablePeriod);
-                await _context.SaveChangesAsync();
+                    InstructorNotAvailablePeriod instructorNotAvailablePeriod = new InstructorNotAvailablePeriod();
+                    instructorNotAvailablePeriod.Id = Guid.NewGuid();
+                    instructorNotAvailablePeriod.InstructorId = adventure.InstructorId;
+                    instructorNotAvailablePeriod.StartTime = adventureRealisation.StartDate;
+                    instructorNotAvailablePeriod.EndTime = adventureRealisation.StartDate.AddHours(adventureRealisation.Duration);
+                    _context.InstructorNotAvailablePeriod.Add(instructorNotAvailablePeriod);
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Instructors");
+                    return RedirectToAction("Index", "Instructors");
+                }
+                else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+                }
             }
 
             return View(adventureReservation);

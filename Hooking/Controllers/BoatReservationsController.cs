@@ -345,6 +345,59 @@ namespace Hooking.Controllers
             var boats = await _context.BoatReservation.FirstOrDefaultAsync();
             return View(boats);
         }
+        private bool isAvailable(DateTime StartDate1, DateTime EndDate1, DateTime StartDate2, DateTime EndDate2)
+        {
+            if ((StartDate1 >= StartDate2 && StartDate1 <= EndDate2) && EndDate1 >= EndDate2)
+            {
+                return false;
+
+            }
+            else if ((EndDate1 >= StartDate2 && EndDate1 <= EndDate2) && StartDate1 <= StartDate2)
+            {
+                return false;
+
+            }
+            else if (StartDate1 <= StartDate2 && EndDate1 >= EndDate2)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool canFinishReservation(BoatReservation boatReservation)
+        {
+            var localBoatReservations = _context.BoatReservation.Local;
+
+
+            foreach (var localBoatReservation in localBoatReservations)
+            {
+                if (boatReservation.BoatId == localBoatReservation.BoatId)
+                {
+
+                    if (!isAvailable(boatReservation.StartDate, boatReservation.EndDate, localBoatReservation.StartDate, localBoatReservation.EndDate))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        private bool isAlreadyReserved(BoatReservation boatReservation)
+        {
+            List<BoatReservation> btReservations = _context.BoatReservation.ToList();
+            //ovde vrsimo standardnu proveru da li takva rezervacija vikendice vec postoji u bazi
+            foreach (BoatReservation btReservation in btReservations)
+            {
+                if (boatReservation.BoatId == btReservation.BoatId)
+                {
+                    if (!isAvailable(boatReservation.StartDate, boatReservation.EndDate, btReservation.StartDate, btReservation.EndDate))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         [HttpGet("/BoatReservations/BoatReservationFinished")]
         public async Task<IActionResult> BoatReservationFinished(String BoatId, DateTime StartDate, DateTime EndDate, Double Price, int PersonCount)
@@ -365,21 +418,31 @@ namespace Hooking.Controllers
                 boatReservation.PersonCount = PersonCount;
                 var user = await _userManager.GetUserAsync(User);
                 boatReservation.UserDetailsId = user.Id;
+                if(isAlreadyReserved(boatReservation))
+                {
+                    return RedirectToAction("BoatAlreadyReserved", "Home");
+                }
+                if (canFinishReservation(boatReservation))
+                {
+                    _context.Add(boatReservation);
+                    await _context.SaveChangesAsync();
+                    BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
+                    boatNotAvailablePeriod.Id = Guid.NewGuid();
+                    boatNotAvailablePeriod.BoatId = BoatId;
+                    boatNotAvailablePeriod.StartTime = StartDate;
+                    boatNotAvailablePeriod.EndTime = EndDate;
+                    _context.Add(boatNotAvailablePeriod);
+                    await _context.SaveChangesAsync();
+                    await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali brod", $"Uspesno ste rezervisali brod '{bt.Name}' .");
 
+                    //     return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Boats");
+                }
+                else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+                }
 
-                _context.Add(boatReservation);
-                await _context.SaveChangesAsync();
-                BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
-                boatNotAvailablePeriod.Id = Guid.NewGuid();
-                boatNotAvailablePeriod.BoatId = BoatId;
-                boatNotAvailablePeriod.StartTime = StartDate;
-                boatNotAvailablePeriod.EndTime = EndDate;
-                _context.Add(boatNotAvailablePeriod);
-                await _context.SaveChangesAsync();
-                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali brod", $"Uspesno ste rezervisali brod '{bt.Name}' .");
-
-                //     return RedirectToAction(nameof(Index));
-                return RedirectToAction("Index", "Boats");
 
                 //   return RedirectToPage("/Cottages/Index");
             }

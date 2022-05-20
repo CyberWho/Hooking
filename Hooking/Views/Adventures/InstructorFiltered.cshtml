@@ -81,7 +81,7 @@
                         @Html.DisplayFor(modelItem => item.Biography)
                     </td>
                     <td>
-                        <a asp-controller="Instructors" asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+                        <a asp-controller="Instructors" asp-action="AdventuresForReservation" asp-route-id="@item.Id">Nastavi na rezervaciju</a>
 
                         @if (_signInManager.IsSignedIn(User))
                         {

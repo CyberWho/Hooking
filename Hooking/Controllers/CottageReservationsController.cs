@@ -23,7 +23,7 @@ namespace Hooking.Controllers
         public Cottage cottage;
         public UserDetails userDetails;
 
-        public CottageReservationsController(ApplicationDbContext context, 
+        public CottageReservationsController(ApplicationDbContext context,
                                              UserManager<IdentityUser> userManager,
                                              RoleManager<IdentityRole> roleManager,
                                              IEmailSender emailSender)
@@ -45,26 +45,26 @@ namespace Hooking.Controllers
         {
 
             var user = await _userManager.GetUserAsync(User);
-            var reservations = await _context.CottageReservation.Where(m => m.UserDetailsId==user.Id).ToListAsync();
-           
-           // return View(await _context.CottageReservation.ToListAsync());
-           return View(reservations);
+            var reservations = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
+
+            // return View(await _context.CottageReservation.ToListAsync());
+            return View(reservations);
         }
 
         // GET: CottageReservationsHistory
-        public async Task<IActionResult> CottageReservationsHistory(string sortOrder="")
+        public async Task<IActionResult> CottageReservationsHistory(string sortOrder = "")
         {
 
             var user = await _userManager.GetUserAsync(User);
             var reservations = await _context.CottageReservation.Where(m => m.UserDetailsId == user.Id).ToListAsync();
 
             List<CottageReservation> cottageReservations = await _context.CottageReservation.ToListAsync();
-            
+
 
             ViewData["StartDate"] = String.IsNullOrEmpty(sortOrder) ? "StartDate" : "";
             ViewData["EndDate"] = String.IsNullOrEmpty(sortOrder) ? "EndDate" : "";
             ViewData["Price"] = String.IsNullOrEmpty(sortOrder) ? "Price" : "";
-   
+
             var ctg = from b in cottageReservations
                       select b;
             switch (sortOrder)
@@ -79,13 +79,13 @@ namespace Hooking.Controllers
                     ctg = ctg.OrderBy(b => b.Price);
                     break;
             }
-          
+
 
             // return View(await _context.CottageReservation.ToListAsync());
             return View(ctg);
         }
         [HttpGet]
-        public  IActionResult CreateView(Guid id, Guid cId)
+        public IActionResult CreateView(Guid id, Guid cId)
         {
             return View();
         }
@@ -95,7 +95,7 @@ namespace Hooking.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
                 cottageReservation.Id = Guid.NewGuid();
                 var cottage = await _context.Cottage
                      .FirstOrDefaultAsync(m => m.Id == cId);
@@ -106,21 +106,21 @@ namespace Hooking.Controllers
                 cottageReservation.UserDetailsId = id.ToString();
                 cottageReservation.CottageId = cId.ToString();
                 cottageReservation.IsReviewed = false;
-                if(await IsPossible(cottageReservation))
+                if (await IsPossible(cottageReservation))
                 {
                     await CreateReservation(id, cottageReservation);
                 } else
                 {
                     return RedirectToAction("ConcurrencyError", "Home");
                 }
-                     
+
                 return RedirectToPage("/Account/Manage/CottagesReservations", new { area = "Identity" });
 
             }
             return View();
-            
+
         }
-        public async Task<bool> CreateReservation(Guid id,CottageReservation cottageReservation)
+        public async Task<bool> CreateReservation(Guid id, CottageReservation cottageReservation)
         {
             if (await IsPossible(cottageReservation))
             {
@@ -149,26 +149,26 @@ namespace Hooking.Controllers
             Guid cottageId = Guid.Parse(cottageReservation.CottageId);
             Cottage cottage = await _context.Cottage.FirstOrDefaultAsync(m => m.Id == cottageId);
             List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageReservation.CottageId).ToListAsync();
-            foreach(CottageReservation cottageReservationTemp in cottageReservations)
+            foreach (CottageReservation cottageReservationTemp in cottageReservations)
             {
-                if(IsOverlapping(cottageReservation.StartDate,cottageReservation.EndDate,cottageReservationTemp.StartDate,cottageReservationTemp.EndDate))
+                if (IsOverlapping(cottageReservation.StartDate, cottageReservation.EndDate, cottageReservationTemp.StartDate, cottageReservationTemp.EndDate))
                 {
                     return false;
                 }
             }
             List<CottageSpecialOffer> cottageSpecialOffers = await _context.CottageSpecialOffer.Where(m => m.CottageId == cottageReservation.CottageId).ToListAsync();
-            foreach(CottageSpecialOffer cottageSpecialOffer in cottageSpecialOffers)
+            foreach (CottageSpecialOffer cottageSpecialOffer in cottageSpecialOffers)
             {
-                if(IsOverlapping(cottageReservation.StartDate,cottageReservation.EndDate,cottageSpecialOffer.StartDate,cottageSpecialOffer.EndDate))
+                if (IsOverlapping(cottageReservation.StartDate, cottageReservation.EndDate, cottageSpecialOffer.StartDate, cottageSpecialOffer.EndDate))
                 {
                     return false;
                 }
             }
             foreach (var reservation in _context.CottageReservation.Local)
             {
-                if(reservation.CottageId == cottageReservation.CottageId)
+                if (reservation.CottageId == cottageReservation.CottageId)
                 {
-                    if(IsOverlapping(reservation.StartDate,reservation.EndDate,cottageReservation.StartDate,cottageReservation.EndDate))
+                    if (IsOverlapping(reservation.StartDate, reservation.EndDate, cottageReservation.StartDate, cottageReservation.EndDate))
                     {
                         return false;
                     }
@@ -188,7 +188,6 @@ namespace Hooking.Controllers
             return ((end1 < start2 && start1 < start2) ||
                         (end2 < start1 && start2 < start1));
 
-           
         }
         // GET: CottageReservations/Details/5
         public async Task<IActionResult> Details(Guid? id)
@@ -325,13 +324,13 @@ namespace Hooking.Controllers
         private List<CottageNotAvailablePeriod> findPeriodToFree(CottageReservation cottageReservation)
         {
             List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = new List<CottageNotAvailablePeriod>();
-            List<CottageNotAvailablePeriod> allCottageNotAvailablePeriods =  _context.CottageNotAvailablePeriod.ToList();
+            List<CottageNotAvailablePeriod> allCottageNotAvailablePeriods = _context.CottageNotAvailablePeriod.ToList();
             foreach (CottageNotAvailablePeriod cottageNotAvailablePeriod in allCottageNotAvailablePeriods)
             {
                 isPeriodEqual(cottageReservation, cottageNotAvailablePeriods, cottageNotAvailablePeriod);
             }
 
-            return cottageNotAvailablePeriods; 
+            return cottageNotAvailablePeriods;
         }
 
         private static void isPeriodEqual(CottageReservation cottageReservation, List<CottageNotAvailablePeriod> cottageNotAvailablePeriods, CottageNotAvailablePeriod cottageNotAvailablePeriod)
@@ -358,7 +357,7 @@ namespace Hooking.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Cottages");
 
-          //  return RedirectToAction(nameof(Index));
+            //  return RedirectToAction(nameof(Index));
         }
 
         private bool CottageReservationExists(Guid id)
@@ -373,37 +372,70 @@ namespace Hooking.Controllers
             return View(cottages);
         }
 
-        private bool isTaken(CottageReservation cottageReservation)
+        private bool isAvailable(DateTime StartDate1, DateTime EndDate1, DateTime StartDate2, DateTime EndDate2)
         {
-            List<CottageReservation> ctgReservations = _context.CottageReservation.Where(m => m.CottageId == cottageReservation.CottageId).ToList();
-
-            foreach (CottageReservation ctgReservation in ctgReservations)
+            if ((StartDate1 >= StartDate2 && StartDate1 <= EndDate2) && EndDate1 >= EndDate2)
             {
-                System.Diagnostics.Debug.WriteLine("u petlji sam");
+                System.Diagnostics.Debug.WriteLine("slucaj 1");
 
-                if ((cottageReservation.StartDate >= ctgReservation.StartDate && cottageReservation.StartDate <= ctgReservation.EndDate) && cottageReservation.EndDate >= ctgReservation.EndDate)
+                return false;
+
+            }
+            else if ((EndDate1 >= StartDate2 && EndDate1 <= EndDate2) && StartDate1 <= StartDate2)
+            {
+                System.Diagnostics.Debug.WriteLine("slucaj 2");
+
+                return false;
+
+            }
+            else if (StartDate1 <= StartDate2 && EndDate1 >= EndDate2)
+            {
+                System.Diagnostics.Debug.WriteLine("slucaj 3");
+
+                return false;
+            }
+            return true;
+        }
+
+        private bool canFinishReservation(CottageReservation cottageReservation)
+        {
+            //cottage reservations in local buffer
+            var localCottageReservations = _context.CottageReservation.Local;
+            //ako 2 klijenta pokusaju rezervaciju na istu vikendicu u isto vreme provericemo da li u lokalnom
+            //bufferu postoji ta rezervacija u to vreme i ako postoji jedan od njih nece moci da rezervise
+            foreach (var localCottageReservation in localCottageReservations)
+            {
+                System.Diagnostics.Debug.WriteLine("prolaz u lokalu");
+
+                if (cottageReservation.CottageId == localCottageReservation.CottageId)
                 {
-                    System.Diagnostics.Debug.WriteLine("slucaj 1");
-                    return false;
-
-                }
-                else if ((cottageReservation.EndDate >= ctgReservation.EndDate && cottageReservation.EndDate <= ctgReservation.EndDate) && cottageReservation.StartDate <= ctgReservation.StartDate)
-                {
-                    System.Diagnostics.Debug.WriteLine("slucaj 2");
-
-                    return false;
-
-                }
-                else if (cottageReservation.StartDate <= ctgReservation.StartDate && cottageReservation.EndDate >= ctgReservation.EndDate)
-                {
-                    System.Diagnostics.Debug.WriteLine("slucaj 3");
-
-                    return false;
+                    if (!isAvailable(cottageReservation.StartDate, cottageReservation.EndDate, localCottageReservation.StartDate, localCottageReservation.EndDate))
+                    {
+                        return false;
+                    }
                 }
                 return true;
             }
             return true;
         }
+
+        private bool isAlreadyReserved (CottageReservation cottageReservation)
+        {
+            List<CottageReservation> cottageReservations = _context.CottageReservation.ToList();
+            //ovde vrsimo standardnu proveru da li takva rezervacija vikendice vec postoji u bazi
+            foreach (CottageReservation ctgReservation in cottageReservations)
+            {
+                if (cottageReservation.CottageId == ctgReservation.CottageId)
+                {
+                    if (!isAvailable(cottageReservation.StartDate, cottageReservation.EndDate, ctgReservation.StartDate, ctgReservation.EndDate))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        
 
         [HttpGet("/CottageReservations/CottageReservationFinished")]
         public async Task<IActionResult> CottageReservationFinished(String CottageId,DateTime StartDate,DateTime EndDate,Double Price,int MaxPersonCount)
@@ -422,7 +454,14 @@ namespace Hooking.Controllers
                 cottageReservation.MaxPersonCount = MaxPersonCount;
                 var user = await _userManager.GetUserAsync(User);
                 cottageReservation.UserDetailsId = user.Id;
-                    System.Diagnostics.Debug.WriteLine("rezervacija je moguca");
+                if(isAlreadyReserved(cottageReservation))
+                {
+                    System.Diagnostics.Debug.WriteLine("spreman da redirektujem");
+
+                    return RedirectToAction("CottageAlreadyReserved", "Home");
+                }
+                if (canFinishReservation(cottageReservation))
+                {
                     _context.Add(cottageReservation);
                     await _context.SaveChangesAsync();
                     CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
@@ -437,6 +476,13 @@ namespace Hooking.Controllers
                     Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(CottageId)).FirstOrDefault();
                     await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali vikendicu", $"Uspesno ste rezervisali vikendicu '{ctg.Name}' .");
                     return RedirectToAction("Index", "Cottages");
+                }
+                else
+                {
+                    return RedirectToAction("ConcurrencyError", "Home");
+
+                }
+
 
 
                 // return View(cottageReservation);

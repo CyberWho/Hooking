@@ -22,6 +22,18 @@ namespace Hooking.Controllers
         {
             return View();
         }
+        public IActionResult CottageAlreadyReserved()
+        {
+            return View();
+        }
+        public IActionResult BoatAlreadyReserved()
+        {
+            return View();
+        }
+        public IActionResult AdventureAlreadyReserved()
+        {
+            return View();
+        }
         public IActionResult ConcurrencyError()
         {
             return View();
