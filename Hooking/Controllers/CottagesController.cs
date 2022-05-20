@@ -482,24 +482,26 @@ namespace Hooking.Controllers
             return _context.Cottage.Any(e => e.Id == id);
         }
 
-        private bool isCottageAvailable(DateTime StartDate, DateTime EndDate, CottageNotAvailablePeriod ctgNotAvailable)
+        private bool isCottageAvailable(DateTime StartDate1, DateTime EndDate1, DateTime StartDate2, DateTime EndDate2)
         {
-            if ((ctgNotAvailable.StartTime >= StartDate && ctgNotAvailable.StartTime <= EndDate) && ctgNotAvailable.EndTime >= EndDate)
+            if ((StartDate1 >= StartDate2 && StartDate1 <= EndDate2) && EndDate1 >= EndDate2)
             {
                 return false;
 
             }
-            else if ((ctgNotAvailable.EndTime >= StartDate && ctgNotAvailable.EndTime <= EndDate) && ctgNotAvailable.StartTime <= StartDate)
+            else if ((EndDate1 >= StartDate2 && EndDate1 <= EndDate2) && StartDate1 <= StartDate2)
             {
                 return false;
 
             }
-            else if (ctgNotAvailable.StartTime <= StartDate && ctgNotAvailable.EndTime >= EndDate)
+            else if (StartDate1 <= StartDate2 && EndDate1 >= EndDate2)
             {
                 return false;
             }
             return true;
+            
         }
+    //    private bool canFinishReservation()
 
         [HttpPost("/Cottages/CottagesFiltered")]
 
@@ -517,7 +519,7 @@ namespace Hooking.Controllers
             foreach (CottageNotAvailablePeriod ctgNotAvailable in cottageNotAvailablePeriods)
             {
 
-                if (!isCottageAvailable(StartDate, EndDate, ctgNotAvailable))
+                if (!isCottageAvailable(ctgNotAvailable.StartTime,ctgNotAvailable.EndTime,StartDate, EndDate))
                 {
                     Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(ctgNotAvailable.CottageId)).FirstOrDefault();
                     if (tempCottages.Contains(ctg))

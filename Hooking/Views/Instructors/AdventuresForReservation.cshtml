@@ -4,7 +4,7 @@
 
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Adventures For Reservation";
     var userInstructor = (UserDetails)ViewData["UserInstructor"];
     List<Adventure> instructorAdventures = (List<Adventure>)ViewData["InstructorsAdventures"];
 
@@ -105,7 +105,18 @@
             <dd class="col-sm-10">
 
             </dd>
+            @if (_signInManager.IsSignedIn(User))
+            {
+                @if (User.IsInRole("Korisnik"))
+                {
+                    <dt class="col-sm-2">
+                        <a asp-action="FinishAdventureReservation" asp-controller="Adventures" asp-route-adventureId="@item.Id">Rezervisi</a>
+                    </dt>
+                    <dd class="col-sm-10">
 
+                    </dd>
+                }
+            }
         }
 
 
