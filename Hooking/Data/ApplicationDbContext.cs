@@ -76,6 +76,9 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.ReservationFilter> ReservationFilter { get; set; }
         public DbSet<Hooking.Models.BoatReservationFilter> BoatReservationFilter { get; set; }
         public DbSet<Hooking.Models.AdventureReservationFilter> AdventureReservationFilter { get; set; }
+        public DbSet<Hooking.Models.FilteredCottages> FilteredCottages { get; set; }
+        public DbSet<Hooking.Models.FilteredBoats> FilteredBoats { get; set; }
+        public DbSet<Hooking.Models.FilteredInstructors> FilteredInstructors { get; set; }
         
     }
 }

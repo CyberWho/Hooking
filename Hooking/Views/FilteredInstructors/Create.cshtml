@@ -1,30 +1,31 @@
-﻿@model Hooking.Models.ReservationFilter
+﻿@model Hooking.Models.FilteredInstructors
 
 @{
     ViewData["Title"] = "Create";
 }
 
+<h1>Create</h1>
 
-<h4>Unesite kriterijume za rezervaciju vikendice</h4>
+<h4>FilteredInstructors</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="FilteredCottages" asp-action="Index">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="startDate" class="control-label"></label>
-                <input asp-for="startDate" class="form-control" />
-                <span asp-validation-for="startDate" class="text-danger"></span>
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="endDate" class="control-label"></label>
-                <input asp-for="endDate" class="form-control" />
-                <span asp-validation-for="endDate" class="text-danger"></span>
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="price" class="control-label"></label>
-                <input asp-for="price" class="form-control" />
-                <span asp-validation-for="price" class="text-danger"></span>
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="City" class="control-label"></label>
@@ -37,12 +38,12 @@
                 <span asp-validation-for="AverageGrade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MaxPersonCount" class="control-label"></label>
-                <input asp-for="MaxPersonCount" class="form-control" />
-                <span asp-validation-for="MaxPersonCount" class="text-danger"></span>
+                <label asp-for="GradeCount" class="control-label"></label>
+                <input asp-for="GradeCount" class="form-control" />
+                <span asp-validation-for="GradeCount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Pretrazi" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

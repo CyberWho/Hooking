@@ -87,19 +87,22 @@ namespace Hooking.Controllers
                     break;
             }
 
-
-            switch (filter)
+            if(filter!="" && filter!=null)
             {
-                case "Name":
-                    ctg = ctg.Where(s => s.Name.Contains(searchString));
-                    break;
-                case "City":
-                    ctg = ctg.Where(s => s.City.Contains(searchString));
-                    break;
-                case "Country":
-                    ctg = ctg.Where(s => s.Country.Contains(searchString));
-                    break;
+                switch (filter)
+                {
+                    case "Name":
+                        ctg = ctg.Where(s => s.Name.Contains(searchString));
+                        break;
+                    case "City":
+                        ctg = ctg.Where(s => s.City.Contains(searchString));
+                        break;
+                    case "Country":
+                        ctg = ctg.Where(s => s.Country.Contains(searchString));
+                        break;
+                }
             }
+
 
      
    
@@ -501,7 +504,7 @@ namespace Hooking.Controllers
             return true;
             
         }
-
+       
         [HttpPost("/Cottages/CottagesFiltered")]
 
         public async Task<IActionResult> CottagesFiltered(DateTime StartDate, DateTime EndDate, double price=0, string City="", double AverageGrade=0, int MaxPersonCount=0)
