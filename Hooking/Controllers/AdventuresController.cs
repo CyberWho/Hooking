@@ -337,18 +337,21 @@ namespace Hooking.Controllers
 
         [HttpPost("/Adventures/InstructorFiltered")]
 
-        public async Task<IActionResult> InstructorFiltered(DateTime StartTime, DateTime EndTime)
+        public async Task<IActionResult> InstructorFiltered(DateTime StartDate, DateTime EndDate, double price = 0, string City = "", double AverageGrade = 0, int MaxPersonCount = 0)
         {
             List<InstructorNotAvailablePeriod> instructorNotAvailablePeriods = await _context.InstructorNotAvailablePeriod.ToListAsync();
             List<Instructor> tempInstructors = await _context.Instructor.ToListAsync();
 
-            System.Diagnostics.Debug.WriteLine("start time prosledjeni " + StartTime.ToString());
-            System.Diagnostics.Debug.WriteLine("end time prosledjeni " + EndTime.ToString());
-
+            System.Diagnostics.Debug.WriteLine("start time prosledjeni " + StartDate.ToString());
+            System.Diagnostics.Debug.WriteLine("end time prosledjeni " + EndDate.ToString());
+            System.Diagnostics.Debug.WriteLine("cena " + price.ToString());
+          //  System.Diagnostics.Debug.WriteLine("grad " + City.ToString());
+            System.Diagnostics.Debug.WriteLine("avg grade " + AverageGrade.ToString());
+            System.Diagnostics.Debug.WriteLine("mpc " + MaxPersonCount.ToString());
             foreach (InstructorNotAvailablePeriod insNotAvailable in instructorNotAvailablePeriods)
             {
 
-                if (!isInstructorAvailable(StartTime, EndTime, insNotAvailable))
+                if (!isInstructorAvailable(StartDate, EndDate, insNotAvailable))
                 {
 
                     Instructor ins = _context.Instructor.Where(m => m.Id == Guid.Parse(insNotAvailable.InstructorId)).FirstOrDefault();
@@ -359,8 +362,12 @@ namespace Hooking.Controllers
                 }
 
             }
-            ViewData["StartDate"] = StartTime;
-            ViewData["EndDate"] = EndTime;
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+            ViewData["City"] = City;
+            ViewData["MaxPersonCount"] = MaxPersonCount;
+            ViewData["Price"] = price;
+            ViewData["AverageGrade"] = AverageGrade;
 
             List<UserDetails> userIns = await _context.UserDetails.ToListAsync();
 

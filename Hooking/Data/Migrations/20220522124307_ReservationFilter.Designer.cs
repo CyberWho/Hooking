@@ -4,14 +4,16 @@ using Hooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hooking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220522124307_ReservationFilter")]
+    partial class ReservationFilter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -715,40 +717,6 @@ namespace Hooking.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BoatReservation");
-                });
-
-            modelBuilder.Entity("Hooking.Models.BoatReservationFilter", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<double?>("AverageGrade")
-                        .HasColumnType("float");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MaxPersonCount")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<DateTime>("endDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double?>("price")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("startDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BoatReservationFilter");
                 });
 
             modelBuilder.Entity("Hooking.Models.BoatReservationReview", b =>
@@ -1724,7 +1692,7 @@ namespace Hooking.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double?>("AverageGrade")
+                    b.Property<double>("AverageGrade")
                         .HasColumnType("float");
 
                     b.Property<string>("City")
@@ -1741,7 +1709,7 @@ namespace Hooking.Data.Migrations
                     b.Property<DateTime>("endDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("price")
+                    b.Property<double>("price")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("startDate")

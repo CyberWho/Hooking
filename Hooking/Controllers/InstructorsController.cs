@@ -283,12 +283,20 @@ namespace Hooking.Controllers
         }
 
         [HttpGet("/Instructors/AdventuresForReservation")]
-        public async Task<IActionResult> AdventuresForReservation(Guid? id)
+        public async Task<IActionResult> AdventuresForReservation(Guid? id,DateTime StartDate,DateTime EndDate, double price = 0, string City = "", double AverageGrade = 0, int MaxPersonCount = 0)
         {
             if (id == null)
             {
+
                 return NotFound();
             }
+            System.Diagnostics.Debug.Write("instruktor kontroler prosledjeni id instruktora je: " + id.ToString());
+            System.Diagnostics.Debug.WriteLine("start time prosledjeni " + StartDate.ToString());
+            System.Diagnostics.Debug.WriteLine("end time prosledjeni " + EndDate.ToString());
+            System.Diagnostics.Debug.WriteLine("cena " + price.ToString());
+            System.Diagnostics.Debug.WriteLine("grad " + City.ToString());
+            System.Diagnostics.Debug.WriteLine("avg grade " + AverageGrade.ToString());
+            System.Diagnostics.Debug.WriteLine("mpc " + MaxPersonCount.ToString());
 
             var instructor = await _context.Instructor
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -310,11 +318,54 @@ namespace Hooking.Controllers
                 // Adventure a = _context.Adventure.Where(m => m.InstructorId == adventure.InstructorId).FirstOrDefault<Adventure>();
 
             }
+
+            List<Adventure> helpAdventures = new List<Adventure>(adventures);
+            //sada filtriramo po ostalim kriterijumima
+            foreach (Adventure adv in adventures)
+            {
+                filterAdventures(price, City, AverageGrade, helpAdventures, adv);
+            }
+
+            foreach (Adventure adv in adventures)
+            {
+                System.Diagnostics.Debug.WriteLine("adventures ime avanture " + adv.Name.ToString());
+            }
+            foreach (Adventure adv in helpAdventures)
+            {
+                System.Diagnostics.Debug.WriteLine("adventures ime avanture " + adv.Name.ToString());
+            }
+
             ViewData["UserInstructor"] = userInstructor;
-            ViewData["InstructorsAdventures"] = adventures;
+            ViewData["InstructorsAdventures"] = helpAdventures;
 
 
             return View(instructor);
+        }
+
+        private static void filterAdventures(double price, string City, double AverageGrade, List<Adventure> helpAdventures, Adventure adv)
+        {
+            if (price != 0)
+            {
+                if (adv.Price > price)
+                {
+                    helpAdventures.Remove(adv);
+                }
+            }
+            if (City != "")
+            {
+                if (adv.City != City)
+                {
+                    helpAdventures.Remove(adv);
+                }
+            }
+            if (AverageGrade != 0)
+            {
+                if (adv.AverageGrade < AverageGrade)
+                {
+
+                    helpAdventures.Remove(adv);
+                }
+            }
         }
     }
 }

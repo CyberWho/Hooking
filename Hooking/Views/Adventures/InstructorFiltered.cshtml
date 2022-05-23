@@ -5,6 +5,13 @@
 @{
     ViewData["Title"] = "Instruktori";
     List<UserDetails> userInstructors = (List<UserDetails>)ViewData["UserInstructors"];
+    double price = (double)ViewData["Price"];
+    int MaxPersonCount = (int)ViewData["MaxPersonCount"];
+    double AverageGrade = (double)ViewData["AverageGrade"];
+    string City = (string)ViewData["City"];
+    DateTime StartDate = (DateTime)ViewData["StartDate"];
+    DateTime EndDate = (DateTime)ViewData["EndDate"];
+
     int i = 0;
 
 }
@@ -81,7 +88,8 @@
                         @Html.DisplayFor(modelItem => item.Biography)
                     </td>
                     <td>
-                        <a asp-controller="Instructors" asp-action="AdventuresForReservation" asp-route-id="@item.Id">Nastavi na rezervaciju</a>
+                        <a href="@Url.Action("AdventuresForReservation", "Instructors", new { Id = @item.Id,StartDate=StartDate,EndDate=EndDate,price=price,City=City,AverageGrade=AverageGrade,MaxPersonCount=MaxPersonCount })">Nastavi na rezervaciju</a>
+
 
                         @if (_signInManager.IsSignedIn(User))
                         {
