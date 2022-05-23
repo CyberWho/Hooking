@@ -87,19 +87,22 @@ namespace Hooking.Controllers
                     break;
             }
 
-
-            switch (filter)
+            if(filter!="" && filter!=null)
             {
-                case "Name":
-                    ctg = ctg.Where(s => s.Name.Contains(searchString));
-                    break;
-                case "City":
-                    ctg = ctg.Where(s => s.City.Contains(searchString));
-                    break;
-                case "Country":
-                    ctg = ctg.Where(s => s.Country.Contains(searchString));
-                    break;
+                switch (filter)
+                {
+                    case "Name":
+                        ctg = ctg.Where(s => s.Name.Contains(searchString));
+                        break;
+                    case "City":
+                        ctg = ctg.Where(s => s.City.Contains(searchString));
+                        break;
+                    case "Country":
+                        ctg = ctg.Where(s => s.Country.Contains(searchString));
+                        break;
+                }
             }
+
 
      
    
@@ -501,21 +504,23 @@ namespace Hooking.Controllers
             return true;
             
         }
-    //    private bool canFinishReservation()
-
+       
         [HttpPost("/Cottages/CottagesFiltered")]
 
-        public async Task<IActionResult> CottagesFiltered(DateTime StartDate,DateTime EndDate, int MaxPersonCount)
+        public async Task<IActionResult> CottagesFiltered(DateTime StartDate, DateTime EndDate, double price=0, string City="", double AverageGrade=0, int MaxPersonCount=0)
         {
+            System.Diagnostics.Debug.WriteLine("startdate: " + StartDate.ToString());
+            System.Diagnostics.Debug.WriteLine("enddate: " + EndDate.ToString());
+            System.Diagnostics.Debug.WriteLine("cena: " + price.ToString());
+        //    System.Diagnostics.Debug.WriteLine("grad: " + City.ToString());/
+            System.Diagnostics.Debug.WriteLine("prosecna ocena: " + AverageGrade.ToString());
 
 
-          //  List<Cottage> cottages = await _context.Cottage.ToListAsync();
             List<Cottage> tempCottages = await _context.Cottage.ToListAsync();
 
             List<CottageNotAvailablePeriod> cottageNotAvailablePeriods = await _context.CottageNotAvailablePeriod.ToListAsync();
 
-         //   List<Cottage> filteredCottages = new List<Cottage>();
-
+            //ovde filtriramo po zauzetosti datuma
             foreach (CottageNotAvailablePeriod ctgNotAvailable in cottageNotAvailablePeriods)
             {
 
@@ -528,12 +533,44 @@ namespace Hooking.Controllers
                     }
                 }
             }
+            List<Cottage> helpCottages = new List<Cottage>(tempCottages);
+            //sada filtriramo po ostalim kriterijumima
+            foreach (Cottage ctg in tempCottages)
+            {
+                filterCottages(price, City, AverageGrade, helpCottages, ctg);
+            }
             ViewData["StartDate"] = StartDate;
             ViewData["EndDate"] = EndDate;
             ViewData["MaxPersonCount"] = MaxPersonCount;
 
-            return View(tempCottages);
+            return View(helpCottages);
         }
+
+        private static void filterCottages(double price, string City, double AverageGrade, List<Cottage> helpCottages, Cottage ctg)
+        {
+            if (price != 0)
+            {
+                if (ctg.RegularPrice > price)
+                {
+                    helpCottages.Remove(ctg);
+                }
+            }
+            if (City != null)
+            {
+                if (ctg.City != City)
+                {
+                    helpCottages.Remove(ctg);
+                }
+            }
+            if (AverageGrade != 0)
+            {
+                if (ctg.AverageGrade < AverageGrade)
+                {
+                    helpCottages.Remove(ctg);
+                }
+            }
+        }
+
         [HttpGet("/Cottages/FinishCottageReservation")]
         public async Task<IActionResult> FinishCottageReservation(Guid? id,DateTime StartDate,DateTime EndDate,int MaxPersonCount)
         {

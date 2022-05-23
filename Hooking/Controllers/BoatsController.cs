@@ -426,11 +426,14 @@ namespace Hooking.Controllers
             return true;
         }
 
-        public async Task<IActionResult> BoatsFiltered(DateTime StartDate, DateTime EndDate, int PersonCount)
+        public async Task<IActionResult> BoatsFiltered(DateTime StartDate, DateTime EndDate, double price = 0, string City = "", double AverageGrade = 0, int MaxPersonCount = 0)
         {
-            System.Diagnostics.Debug.WriteLine("boatfiltered");
+            System.Diagnostics.Debug.WriteLine("startdate: " + StartDate.ToString());
+            System.Diagnostics.Debug.WriteLine("enddate: " + EndDate.ToString());
+            System.Diagnostics.Debug.WriteLine("cena: " + price.ToString());
+            //    System.Diagnostics.Debug.WriteLine("grad: " + City.ToString());/
+            System.Diagnostics.Debug.WriteLine("prosecna ocena: " + AverageGrade.ToString());
 
-            System.Diagnostics.Debug.WriteLine(PersonCount.ToString());
             List<Boat> tempBoats = await _context.Boat.ToListAsync();
 
             List<BoatNotAvailablePeriod> boatNotAvailablePeriods = await _context.BoatNotAvailablePeriod.ToListAsync();
@@ -447,17 +450,45 @@ namespace Hooking.Controllers
                         tempBoats.Remove(bt);
                     }
                 }
-
+            }
+            List<Boat> helpBoats = new List<Boat>(tempBoats);
+            //sada filtriramo po ostalim kriterijumima
+            foreach (Boat bt in tempBoats)
+            {
+                filterBoats(price, City, AverageGrade, helpBoats, bt);
             }
             ViewData["StartDate"] = StartDate;
             ViewData["EndDate"] = EndDate;
-            ViewData["PersonCount"] = PersonCount;
+            ViewData["PersonCount"] = MaxPersonCount;
    
 
 
-            return View(tempBoats);
+            return View(helpBoats);
         }
-
+        private static void filterBoats(double price, string City, double AverageGrade, List<Boat> helpBoats, Boat bt)
+        {
+            if (price != 0)
+            {
+                if (bt.RegularPrice > price)
+                {
+                    helpBoats.Remove(bt);
+                }
+            }
+            if (City != null)
+            {
+                if (bt.City != City)
+                {
+                    helpBoats.Remove(bt);
+                }
+            }
+            if (AverageGrade != 0)
+            {
+                if (bt.AverageGrade < AverageGrade)
+                {
+                    helpBoats.Remove(bt);
+                }
+            }
+        }
         [HttpGet("/Boats/FinishBoatReservation")]
         public async Task<IActionResult> FinishBoatReservation(Guid? id, DateTime StartDate, DateTime EndDate, int PersonCount)
         {
