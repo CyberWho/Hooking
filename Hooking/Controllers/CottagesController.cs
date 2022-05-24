@@ -485,7 +485,7 @@ namespace Hooking.Controllers
             return _context.Cottage.Any(e => e.Id == id);
         }
 
-        private bool isCottageAvailable(DateTime StartDate1, DateTime EndDate1, DateTime StartDate2, DateTime EndDate2)
+        public bool isCottageAvailable(DateTime StartDate1, DateTime EndDate1, DateTime StartDate2, DateTime EndDate2)
         {
             if ((StartDate1 >= StartDate2 && StartDate1 <= EndDate2) && EndDate1 >= EndDate2)
             {

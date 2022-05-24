@@ -63,12 +63,12 @@
                     </td>
 
                     <td>
-                        <a href="@Url.Action("Create", "CottageAppeals", new { Id = @item.BoatId , cottageOwnerId = @boats[i].BoatOwnerId })">Prilozi zalbu</a>
+                        <a href="@Url.Action("Create", "BoatAppeals", new { Id = @item.BoatId , boatOwnerId = @boats[i].BoatOwnerId })">Prilozi zalbu</a>
 
 
                     </td>
                     <td>
-                        <a href="@Url.Action("Create", "CottageReviews", new { Id = @item.BoatId, cottageOwnerId = @boats[i].BoatOwnerId })">Oceni</a>
+                        <a href="@Url.Action("Create", "BoatReviews", new { Id = @item.BoatId, boatOwnerId = @boats[i].BoatOwnerId })">Oceni</a>
                     </td>
 
 

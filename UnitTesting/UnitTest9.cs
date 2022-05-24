@@ -1,37 +1,44 @@
-﻿using NUnit.Framework;
-using Hooking.Controllers;
-using Microsoft.AspNetCore.Identity;
+﻿using Hooking.Controllers;
 using Hooking.Data;
+using Hooking.Data.Migrations;
 using Hooking.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace UnitTesting
 {
-    class UnitTest2
+    class UnitTest9
     {
         private ApplicationDbContext _context;
         private UserManager<IdentityUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
-        public BoatsController boatsController;
+
+        public BoatFavoritesController boatFavoritesController;
+        public BoatFavorites boatFavorites;
+        public string boatId;
         [SetUp]
         public void SetUp()
         {
             var dbOption = new DbContextOptionsBuilder<ApplicationDbContext>().UseSqlServer("Data Source=DESKTOP-CJ8VDR7;Initial Catalog=HookingDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;").Options;
             _context = new ApplicationDbContext(dbOption);
-            boatsController = new BoatsController(_context, _userManager, _roleManager);
-            
+
+            boatFavoritesController = new BoatFavoritesController(_context, _userManager);
+            boatId = "76327af1-f2c8-40bb-b202-96fb51079d79";
+
+
+
         }
         #region Unit Test
         [Test]
-        public async Task EditBoat()
+        public void boatExists()
         {
-            Boat boat = await _context.Boat.FirstOrDefaultAsync();
-            double regPrice = boat.RegularPrice;
-            boat.RegularPrice = boat.RegularPrice + 10000;
-            var actionResult = boatsController.Edit(boat.Id, boat);
-            Assert.AreNotEqual(regPrice, boat.RegularPrice);
+            bool exists = boatFavoritesController.BoatExists(boatId);
+            Assert.IsTrue(exists);
         }
         #endregion
     }

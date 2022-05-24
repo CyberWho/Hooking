@@ -26,7 +26,7 @@ namespace UnitTesting
         public void SetUp()
         {
             var dbOption = new DbContextOptionsBuilder<ApplicationDbContext>()
-                           .UseSqlServer("Server=tcp:hooking.database.windows.net,1433;Initial Catalog=HookingDB;Persist Security Info=False;User ID=pedja;Password=Omorika7212.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=60;").Options;
+                           .UseSqlServer("Data Source=DESKTOP-CJ8VDR7;Initial Catalog=HookingDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;").Options;
             _context = new ApplicationDbContext(dbOption);
             adventureRealisationsController = new AdventureRealisationsController(_context, _userManager);
             

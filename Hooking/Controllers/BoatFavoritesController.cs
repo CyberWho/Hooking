@@ -52,7 +52,7 @@ namespace Hooking.Controllers
             return View();
         }
 
-        private bool BoatExists(String boatId)
+        public bool BoatExists(String boatId)
         {
 
             List<BoatFavorites> btFavs = _context.BoatFavorites.ToList();

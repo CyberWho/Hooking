@@ -123,7 +123,7 @@ namespace Hooking.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost("/CottageAppeals/Create/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid id,String ownerId,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
+        public async Task<IActionResult> Create(Guid id,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
         {
           
 
@@ -131,8 +131,11 @@ namespace Hooking.Controllers
             {
                 cottageAppeal.Id = Guid.NewGuid();
                 cottageAppeal.CottageId = id.ToString();
-                var user = await _userManager.GetUserAsync(User);
-                cottageAppeal.UserEmail = user.Email;
+                if (cottageAppeal.UserEmail==null)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    cottageAppeal.UserEmail = user.Email;
+                }
                 _context.Add(cottageAppeal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Cottages");

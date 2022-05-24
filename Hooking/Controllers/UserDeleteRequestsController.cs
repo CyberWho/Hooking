@@ -221,9 +221,14 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Description,Id,RowVersion")] UserDeleteRequest userDeleteRequest)
         {
+            Console.WriteLine("usao u create");
             if (ModelState.IsValid)
             {
+                Console.WriteLine("model je validan");
+
                 var user = await _userManager.GetUserAsync(User);
+                Console.WriteLine("id usera"+user.Id.ToString());
+
                 List<UserDeleteRequest> userDeleteRequests = _context.UserDeleteRequest.Where(m => m.UserDetailsId == user.Id).ToList();
                 foreach(var userDeleteRequestTemp in userDeleteRequests)
                 {
@@ -235,6 +240,8 @@ namespace Hooking.Controllers
                 }
 
                 UserDetails userDetails = _context.UserDetails.FirstOrDefault(u => u.IdentityUserId == user.Id);
+                Console.WriteLine("id userdetailsa" + userDetails.Id.ToString());
+
                 userDeleteRequest.Id = Guid.NewGuid();
                 userDeleteRequest.IsApproved = false;
                 userDeleteRequest.UserDetailsId = userDetails.Id.ToString();
@@ -246,6 +253,8 @@ namespace Hooking.Controllers
                         userDeleteRequest.Type = DeletionType.COTTAGEOWNER;
                         break;
                     case "Korisnik":
+                        Console.WriteLine("usao u case korisnik");
+
                         userDeleteRequest.Type = DeletionType.USER;
                         break;
                     case "Instruktor":
@@ -258,7 +267,8 @@ namespace Hooking.Controllers
                         userDeleteRequest.Type = DeletionType.ADMIN;
                         break;
                 }
-                
+                Console.WriteLine("tik sam pred dodavanje");
+
                 _context.Add(userDeleteRequest);
                 await _context.SaveChangesAsync();
                 
