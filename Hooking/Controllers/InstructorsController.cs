@@ -367,6 +367,9 @@ namespace Hooking.Controllers
 
             ViewData["UserInstructor"] = userInstructor;
             ViewData["InstructorsAdventures"] = helpAdventures;
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+
 
 
             return View(instructor);
