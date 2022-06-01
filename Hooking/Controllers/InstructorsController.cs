@@ -31,60 +31,87 @@ namespace Hooking.Controllers
             var ins = from b in _context.UserDetails
                       select b;
 
-            switch (filter)
-            {
-                case "FirstName":
-                    ins = ins.Where(s => s.FirstName.Contains(searchString));
-                    break;
-                case "City":
-                    ins = ins.Where(s => s.City.Contains(searchString));
-                    break;
-                case "Country":
-                    ins = ins.Where(s => s.Country.Contains(searchString));
-                    break;
-                case "LastName":
-                    ins = ins.Where(s => s.LastName.Contains(searchString));
-                    break;
-                case "Address":
-                    ins = ins.Where(s => s.Address.Contains(searchString));
-                    break;
-            }
+            System.Diagnostics.Debug.WriteLine("sortorder je" + sortOrder.ToString());
+
             switch (sortOrder)
             {
                 case "FirstName":
+                    System.Diagnostics.Debug.WriteLine("sortiram po imenu");
                     ins = ins.OrderBy(b => b.FirstName);
                     break;
                 case "Address":
+                    System.Diagnostics.Debug.WriteLine("sortiram po adresi");
+
                     ins = ins.OrderBy(b => b.Address);
                     break;
                 case "City":
+                    System.Diagnostics.Debug.WriteLine("sortiram po gradu");
+
                     ins = ins.OrderBy(b => b.City);
                     break;
                 case "Country":
+                    System.Diagnostics.Debug.WriteLine("drzavi");
+
                     ins = ins.OrderBy(b => b.Country);
                     break;
                 case "LastName":
+
+                    System.Diagnostics.Debug.WriteLine("prezimenu");
+
                     ins = ins.OrderBy(b => b.FirstName);
                     break;
             }
+            if (filter != "" && filter != null)
+            {
+                switch (filter)
+                {
+                    case "FirstName":
+                        ins = ins.Where(s => s.FirstName.Contains(searchString));
+                        break;
+                    case "City":
+                        ins = ins.Where(s => s.City.Contains(searchString));
+                        break;
+                    case "Country":
+                        ins = ins.Where(s => s.Country.Contains(searchString));
+                        break;
+                    case "LastName":
+                        ins = ins.Where(s => s.LastName.Contains(searchString));
+                        break;
+                    case "Address":
+                        ins = ins.Where(s => s.Address.Contains(searchString));
+                        break;
+                }
+            }
             List<UserDetails> userIns = await ins.AsNoTracking().ToListAsync();
+
+            foreach(UserDetails ud in userIns)
+            {
+                System.Diagnostics.Debug.WriteLine("ime je "+ud.FirstName.ToString());
+            }
 
             var instructors = await _context.Instructor.ToListAsync();
             List<UserDetails> users = new List<UserDetails>();
-            foreach (Instructor instructor in instructors)
+
+            foreach (var userIn in userIns)
             {
-                Guid guid = new Guid(instructor.UserDetailsId);
-                UserDetails user = _context.UserDetails.Where(m => m.Id == guid).FirstOrDefault<UserDetails>();
-                foreach(var userIn in userIns)
+              //  Instructor instructor = _context.Instructor.Where(m => m.UserDetailsId == userIn.Id.ToString()).FirstOrDefault();
+                foreach(Instructor instruct in instructors)
                 {
-                    if(userIn.Id==user.Id && !users.Contains(user))
+                    if(instruct.UserDetailsId==userIn.Id.ToString() && !users.Contains(userIn))
                     {
-                        users.Add(user);
+                        users.Add(userIn);
                     }
                 }
             }
-            ViewData["UserInstructors"] = users;
 
+
+            ViewData["UserInstructors"] = users;
+            System.Diagnostics.Debug.WriteLine("usersi ");
+
+            foreach (UserDetails ud in users)
+            {
+                System.Diagnostics.Debug.WriteLine("ime je " + ud.FirstName.ToString());
+            }
             if (triedToDelete)
             {
                 ViewData["StatusMessage"] = "Nije moguće obrisati izabranog instruktora jer ima rezervisane avanture.";
@@ -121,8 +148,11 @@ namespace Hooking.Controllers
                // Adventure a = _context.Adventure.Where(m => m.InstructorId == adventure.InstructorId).FirstOrDefault<Adventure>();
               
             }
+            var fullAddress = userInstructor.Address + "," + userInstructor.City + "," + userInstructor.Country;
+
             ViewData["UserInstructor"] = userInstructor;
             ViewData["InstructorsAdventures"] = adventures;
+            ViewData["fullAddress"] = fullAddress;
 
 
             return View(instructor);
