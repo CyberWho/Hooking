@@ -97,6 +97,20 @@ namespace Hooking.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        private async Task<bool> boatAppealExists(BoatAppeal boatAppeal, string boatId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            foreach (BoatAppeal btAppeal in _context.BoatAppeal.ToList())
+            {
+                var appealUser = _context.Users.Where(m => m.Email == btAppeal.UserEmail);
+                if (user.Email == btAppeal.UserEmail && btAppeal.BoatId == boatId)
+                    return true;
+            }
+
+            return false;
+        }
+
         // GET: BoatAppeals/Create
         public IActionResult Create(Guid id, String boatOwnerId)
         {
@@ -123,8 +137,12 @@ namespace Hooking.Controllers
                 boatAppeal.BoatId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
                 boatAppeal.UserEmail = user.Email;
-                _context.Add(boatAppeal);
-                await _context.SaveChangesAsync();
+                if (!(await boatAppealExists(boatAppeal, boatAppeal.BoatId)))
+                {
+                    _context.Add(boatAppeal);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction("Index", "Boats");
 
                // return RedirectToAction(nameof(Index));

@@ -38,13 +38,7 @@ namespace Hooking.Controllers
         // GET: CottageAppeals
         public async Task<IActionResult> Index()
         {
-            /*_context.Add(new CottageAppeal
-            {
-                AppealContent = "Zalba",
-                CottageId = "b7f99563-a2da-4b94-9440-429fcacc8acd",
-                UserEmail = "sykohoto@onekisspresave.com"
-            });
-            _context.SaveChanges();*/
+
 
             return View(await _context.CottageAppeal.ToListAsync());
         }
@@ -106,6 +100,20 @@ namespace Hooking.Controllers
             return View(cottageAppeal);
         }
 
+        private async Task<bool> cottageAppealExists(CottageAppeal cottageAppeal,string cottageId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            foreach (CottageAppeal ctgAppeal in _context.CottageAppeal.ToList())
+            {
+                var appealUser = _context.Users.Where(m => m.Email == ctgAppeal.UserEmail);
+                if (user.Email == ctgAppeal.UserEmail && ctgAppeal.CottageId == cottageId)
+                    return true;
+            }
+
+            return false;
+        }
+
         // GET: CottageAppeals/Create
         public IActionResult Create(Guid id, String cottageOwnerId)
         {
@@ -136,8 +144,12 @@ namespace Hooking.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     cottageAppeal.UserEmail = user.Email;
                 }
-                _context.Add(cottageAppeal);
-                await _context.SaveChangesAsync();
+                if(!(await cottageAppealExists(cottageAppeal, cottageAppeal.CottageId)))
+                {
+                    _context.Add(cottageAppeal);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction("Index", "Cottages");
             }
             return View(cottageAppeal);

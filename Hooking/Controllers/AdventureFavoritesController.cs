@@ -72,7 +72,7 @@ namespace Hooking.Controllers
                 {
                     IdentityUser iUser = await _userManager.GetUserAsync(User);
                     _adventureService.Subscribe(id, adventureFavorites, iUser);
-                    return RedirectToAction("Index", "InstructorsAdventure");
+                    return RedirectToAction("Index", "Instructors");
                 }
             }
 
