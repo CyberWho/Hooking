@@ -30,35 +30,29 @@ namespace Hooking.Controllers
            
             var ins = from b in _context.UserDetails
                       select b;
-
+            var inst = from b in _context.Instructor // from instructor, with averagegrade
+                      select b;
             System.Diagnostics.Debug.WriteLine("sortorder je" + sortOrder.ToString());
 
             switch (sortOrder)
             {
                 case "FirstName":
-                    System.Diagnostics.Debug.WriteLine("sortiram po imenu");
                     ins = ins.OrderBy(b => b.FirstName);
                     break;
                 case "Address":
-                    System.Diagnostics.Debug.WriteLine("sortiram po adresi");
-
                     ins = ins.OrderBy(b => b.Address);
                     break;
                 case "City":
-                    System.Diagnostics.Debug.WriteLine("sortiram po gradu");
-
                     ins = ins.OrderBy(b => b.City);
                     break;
                 case "Country":
-                    System.Diagnostics.Debug.WriteLine("drzavi");
-
                     ins = ins.OrderBy(b => b.Country);
                     break;
                 case "LastName":
-
-                    System.Diagnostics.Debug.WriteLine("prezimenu");
-
                     ins = ins.OrderBy(b => b.FirstName);
+                    break;
+                case "AverageGrade":
+                    inst = inst.OrderByDescending(b => b.AverageGrade);
                     break;
             }
             if (filter != "" && filter != null)
@@ -89,8 +83,9 @@ namespace Hooking.Controllers
                 System.Diagnostics.Debug.WriteLine("ime je "+ud.FirstName.ToString());
             }
 
-            var instructors = await _context.Instructor.ToListAsync();
+            var instructors = await inst.AsNoTracking().ToListAsync();
             List<UserDetails> users = new List<UserDetails>();
+            List<Instructor> inses = new List<Instructor>();
 
             foreach (var userIn in userIns)
             {
@@ -100,12 +95,15 @@ namespace Hooking.Controllers
                     if(instruct.UserDetailsId==userIn.Id.ToString() && !users.Contains(userIn))
                     {
                         users.Add(userIn);
+                        inses.Add(instruct);
                     }
                 }
             }
 
 
             ViewData["UserInstructors"] = users;
+            ViewData["Instructors"] = inses;
+
             System.Diagnostics.Debug.WriteLine("usersi ");
 
             foreach (UserDetails ud in users)

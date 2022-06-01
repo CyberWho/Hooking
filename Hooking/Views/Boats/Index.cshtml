@@ -79,6 +79,9 @@
                 <th data-defaultsort="asc">
                     <a asp-action="Index" asp-route-sortOrder="AverageGrade">@Html.DisplayNameFor(model => model.AverageGrade)</a>
                 </th>
+                <th >
+                    @Html.DisplayNameFor(model => model.GradeCount)
+                </th>
                 <th hidden>
                     @Html.DisplayNameFor(model => model.RegularPrice)
                 </th>
@@ -94,69 +97,72 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Length)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Capacity)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.EngineNumber)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.EnginePower)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.MaxSpeed)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Country)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.CancelationPolicyId)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AverageGrade)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.RegularPrice)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.WeekendPrice)
-                    </td>
-                    <td hidden>
-                        @Html.DisplayFor(modelItem => item.RowVersion)
-                    </td>
-                    <td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Length)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Capacity)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.EngineNumber)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.EnginePower)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.MaxSpeed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.CancelationPolicyId)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AverageGrade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GradeCount)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.RegularPrice)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.WeekendPrice)
+                </td>
+                <td hidden>
+                    @Html.DisplayFor(modelItem => item.RowVersion)
+                </td>
+                <td>
 
-                        <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
-                        <a asp-action="Create" asp-controller="BoatFavorites" asp-route-id="@item.Id">Pretplati se</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
+                    <a asp-action="Create" asp-controller="BoatFavorites" asp-route-id="@item.Id">Pretplati se</a>
 
-                        @if (_signInManager.IsSignedIn(User))
+                    @if (_signInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin"))
                         {
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-action="Delete" asp-route-id="item.Id"> | Obriši</a>
-                            }
+                            <a asp-action="Delete" asp-route-id="item.Id"> | Obriši</a>
                         }
-                    </td>
-                </tr>
+                    }
+                </td>
+            </tr>
             }
         </tbody>
     </table>

@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = "Instruktori";
     List<UserDetails> userInstructors = (List<UserDetails>)ViewData["UserInstructors"];
+    List<Instructor> instructors = (List<Instructor>)ViewData["Instructors"];
     int i = 0;
 
 }
@@ -62,7 +63,12 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="Country">Drzava</a>
             </th>
-
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="AverageGrade">Prosecna ocena</a>
+            </th>
+            <th>
+                Broj ocena
+            </th>
             <th>
                 Biografija
             </th>
@@ -77,44 +83,49 @@
         @foreach (var item in Model)
         {
 
-            <tr>
-                @if (userInstructors.Count > 0 && i < userInstructors.Count)
-                {
+        <tr>
+            @if (userInstructors.Count > 0 && i < userInstructors.Count)
+            {
 
-                    <td>
-                        @userInstructors[i].FirstName
-                    </td>
-                    <td>
-                        @userInstructors[i].LastName
-                    </td>
-                    <td>
-                        @userInstructors[i].Address
-                    </td>
-                    <td>
-                        @userInstructors[i].City
-                    </td>
-                    <td>
-                        @userInstructors[i].Country
-                    </td>
+                <td>
+                    @userInstructors[i].FirstName
+                </td>
+                <td>
+                    @userInstructors[i].LastName
+                </td>
+                <td>
+                    @userInstructors[i].Address
+                </td>
+                <td>
+                    @userInstructors[i].City
+                </td>
+                <td>
+                    @userInstructors[i].Country
+                </td>
+                <td>
+                    @instructors[i].AverageGrade
+                </td>
+                <td>
+                    @instructors[i].GradeCount
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Biography)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Biography)
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
-
-                        @if (_signInManager.IsSignedIn(User))
+                    @if (_signInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin"))
                         {
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
-                            }
+                            <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>
                         }
-                    </td>
-                }
+                    }
+                </td>
+            }
 
 
-            </tr>
+        </tr>
             i++;
         }
     </tbody>
