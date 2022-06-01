@@ -85,7 +85,7 @@ namespace Hooking.Controllers
             System.Diagnostics.Debug.WriteLine("mpc: " + MaxPersonCount.ToString());
 
             if (StartDate <= DateTime.Now || EndDate <= DateTime.Now || StartDate > EndDate)
-                return RedirectToAction("InvalidFieldsError", "Home");
+                return RedirectToAction("ConcurrencyError", "Home");
 
 
             List<Cottage> tempCottages = await _context.Cottage.ToListAsync();

@@ -74,6 +74,8 @@ namespace Hooking.Controllers
             System.Diagnostics.Debug.WriteLine("cena: " + price.ToString());
             //    System.Diagnostics.Debug.WriteLine("grad: " + City.ToString());/
             System.Diagnostics.Debug.WriteLine("prosecna ocena: " + AverageGrade.ToString());
+            if (StartDate <= DateTime.Now || EndDate <= DateTime.Now || StartDate > EndDate)
+                return RedirectToAction("ConcurrencyError", "Home");
 
             List<Boat> tempBoats = await _context.Boat.ToListAsync();
 

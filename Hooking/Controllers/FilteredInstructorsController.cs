@@ -59,6 +59,8 @@ namespace Hooking.Controllers
             //  System.Diagnostics.Debug.WriteLine("grad " + City.ToString());
             System.Diagnostics.Debug.WriteLine("avg grade " + AverageGrade.ToString());
             System.Diagnostics.Debug.WriteLine("mpc " + MaxPersonCount.ToString());
+            if (StartDate <= DateTime.Now || EndDate <= DateTime.Now || StartDate > EndDate)
+                return RedirectToAction("ConcurrencyError", "Home");
             foreach (InstructorNotAvailablePeriod insNotAvailable in instructorNotAvailablePeriods)
             {
 
