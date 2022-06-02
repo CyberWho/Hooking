@@ -391,20 +391,38 @@ namespace Hooking.Controllers
             return View(tempInstructors);
         }
         [HttpGet("/Adventures/FinishAdventureReservation")]
-        public async Task<IActionResult> FinishAdventureReservation(Guid? adventureId)
+        public async Task<IActionResult> FinishAdventureReservation(Guid? adventureId,DateTime StartDate,DateTime EndDate)
         {
+            System.Diagnostics.Debug.WriteLine("id avanture je " + adventureId.ToString());
+            System.Diagnostics.Debug.WriteLine("pocetni datum je " + StartDate.ToString());
+            System.Diagnostics.Debug.WriteLine("krajnji datum je " + EndDate.ToString());
+
+
             if (adventureId == null)
             {
                 return NotFound();
             }
             AdventureDTO dto = _adventureService.GetAdventureDto((Guid)adventureId);
-            List<AdventureRealisation> advReals = _context.AdventureRealisation.Where(m => m.AdventureId == adventureId.ToString()).ToList();
+            List<AdventureRealisation> advReals = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId.ToString()).ToListAsync();
+            List<AdventureRealisation> tempAdvReals = await _context.AdventureRealisation.Where(m => m.AdventureId == adventureId.ToString()).ToListAsync();
             if (dto == null)
             {
                 return NotFound();
             }
+            foreach (AdventureRealisation advReal in tempAdvReals)
+            {
+                if(!(advReal.StartDate > StartDate && advReal.StartDate.AddHours(advReal.Duration) < EndDate))
+                {
+                    advReals.Remove(advReal);
+                }
+            }
+
             adventureImages = _adventureService.GetAdventureImages(adventureId ?? throw new NullReferenceException()).ToList();
+            AdventureFishingEquipment adventureFishingEquipment = _context.AdventureFishingEquipment.Where(m => m.AdventureId == adventureId.ToString()).FirstOrDefault<AdventureFishingEquipment>();
+            Guid fishingEquipmentId = Guid.Parse(adventureFishingEquipment.FishingEquipmentId);
+            FishingEquipment fishingEquipment = _context.FishingEquipment.Where(m => m.Id == fishingEquipmentId).FirstOrDefault<FishingEquipment>();
             ViewData["AdventureRealisation"] = advReals; //imamo sve realizacije avantura
+            ViewData["FishingEquipment"] = fishingEquipment;
 
             ViewData["AdventureImages"] = adventureImages;
             return View(dto);

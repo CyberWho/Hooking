@@ -56,6 +56,27 @@ namespace Hooking.Controllers
 
             await _context.SaveChangesAsync();
 
+
+            List<BoatReview> btReviews = _context.BoatReview.Where(m => m.BoatId == review.BoatId).ToList();
+            Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(review.BoatId)).FirstOrDefault();
+            int gradeCount = 0;
+            double gradeSum = 0;
+            foreach (BoatReview btReview in btReviews)
+            {
+                if (bt.Id == Guid.Parse(btReview.BoatId) && btReview.IsApproved)
+                {
+                    gradeCount++;
+                    gradeSum += Convert.ToDouble(btReview.Grade);
+                }
+            }
+
+            bt.AverageGrade = Math.Round(gradeSum / gradeCount, 2);
+            bt.GradeCount = gradeCount;
+
+            _context.Update(bt);
+            await _context.SaveChangesAsync();
+
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -121,24 +142,7 @@ namespace Hooking.Controllers
                 await _context.SaveChangesAsync();
 
 
-                List<BoatReview> btReviews = _context.BoatReview.Where(m => m.BoatId == boatReview.BoatId).ToList();
-                Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(boatReview.BoatId)).FirstOrDefault();
-                int gradeCount = 0;
-                double gradeSum = 0;
-                foreach (BoatReview btReview in btReviews)
-                {
-                    if (bt.Id == Guid.Parse(btReview.BoatId))
-                    {
-                        gradeCount++;
-                        gradeSum += Convert.ToDouble(btReview.Grade);
-                    }
-                }
-
-                bt.AverageGrade = Math.Round(gradeSum / gradeCount, 2);
-                bt.GradeCount = gradeCount;
-
-                _context.Update(bt);
-                await _context.SaveChangesAsync();
+               
 
 
 

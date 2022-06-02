@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hooking.Data;
 using Hooking.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace Hooking.Controllers
 {
@@ -15,11 +16,15 @@ namespace Hooking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public AdventureReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+
+        public AdventureReviewsController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _emailSender = emailSender;
+
         }
 
         // GET: AdventureReviews
@@ -44,6 +49,84 @@ namespace Hooking.Controllers
             }
 
             return View(adventureReview);
+        }
+        public async Task<IActionResult> Approve(Guid id)
+        {
+            AdventureReview review = await _context.AdventureReview.FindAsync(id);
+            if (review == null) return NotFound();
+
+            review.IsApproved = true;
+
+            Adventure adventure = _context.Adventure.Find(Guid.Parse(review.AdventureId));
+
+            Instructor instructor = _context.Instructor.Find(Guid.Parse(adventure.InstructorId));
+
+            UserDetails userDetails = _context.UserDetails.Find(Guid.Parse(instructor.UserDetailsId));
+
+            IdentityUser iUser = await _userManager.FindByIdAsync(userDetails.IdentityUserId);
+
+            await _emailSender.SendEmailAsync(iUser.Email, "Odobrena revizija",
+                $"Revizija sa sadržajem '{review.Review}' i ocenom {review.Grade} je podneta za Vas.");
+
+            await _context.SaveChangesAsync();
+
+            List<AdventureReview> advReviews = _context.AdventureReview.Where(m => m.AdventureId == review.AdventureId).ToList();
+
+            //ovde updatujemo prosenu ocenu za avanturu
+
+            Adventure adv = _context.Adventure.Where(m => m.Id == Guid.Parse(review.AdventureId)).FirstOrDefault();
+            int gradeCount = 0;
+            double gradeSum = 0;
+            foreach (AdventureReview advReview in advReviews)
+            {
+                if (adv.Id == Guid.Parse(advReview.AdventureId) && advReview.IsApproved)
+                {
+                    gradeCount++;
+                    gradeSum += Convert.ToDouble(advReview.Grade);
+                }
+            }
+
+            adv.AverageGrade = Math.Round(gradeSum / gradeCount, 2);
+         //   adv.GradeCount = gradeCount;
+            System.Diagnostics.Debug.WriteLine("grade count je " + gradeCount.ToString());
+
+            _context.Update(adv);
+            await _context.SaveChangesAsync();
+
+            // ovde updatujemo prosecnu ocenu za instruktora
+             gradeCount = 0;
+             gradeSum = 0;
+            foreach (AdventureReview advReview in advReviews)
+            {
+                foreach(Adventure ad in _context.Adventure.ToList())
+                
+                if(ad.Id==Guid.Parse(advReview.AdventureId) && ad.InstructorId==instructor.Id.ToString() 
+                        && advReview.IsApproved)
+                    {
+                        gradeCount++;
+                        gradeSum += Convert.ToDouble(advReview.Grade);
+                    }
+            }
+            instructor.AverageGrade = Math.Round(gradeSum / gradeCount, 2);
+            instructor.GradeCount = gradeCount;
+            System.Diagnostics.Debug.WriteLine("grade count je " + gradeCount.ToString());
+
+            _context.Update(instructor);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Deny(Guid id)
+        {
+            AdventureReview review = await _context.AdventureReview.FindAsync(id);
+            if (review == null) return NotFound();
+
+            review.IsApproved = false;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: AdventureReviews/Create

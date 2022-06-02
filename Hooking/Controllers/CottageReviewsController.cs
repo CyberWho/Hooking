@@ -60,6 +60,28 @@ namespace Hooking.Controllers
 
             await _context.SaveChangesAsync();
 
+            List<CottageReview> ctgReviews = _context.CottageReview.Where(m => m.CottageId == review.CottageId).ToList();
+
+            Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(review.CottageId)).FirstOrDefault();
+            int gradeCount = 0;
+            double gradeSum = 0;
+            foreach (CottageReview ctgReview in ctgReviews)
+            {
+                if (ctg.Id == Guid.Parse(ctgReview.CottageId) && ctgReview.IsApproved)
+                {
+                    gradeCount++;
+                    gradeSum += Convert.ToDouble(ctgReview.Grade);
+                }
+            }
+
+            ctg.AverageGrade = Math.Round(gradeSum / gradeCount, 2);
+            ctg.GradeCount = gradeCount;
+            System.Diagnostics.Debug.WriteLine("grade count je " + gradeCount.ToString());
+
+            _context.Update(ctg);
+            await _context.SaveChangesAsync();
+
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -123,24 +145,6 @@ namespace Hooking.Controllers
                 _context.Add(cottageReview);
                 await _context.SaveChangesAsync();
                 //updateujemo prosecnu ocenu u vikendici
-                List<CottageReview> ctgReviews = _context.CottageReview.Where(m => m.CottageId == cottageReview.CottageId).ToList();
-                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(cottageReview.CottageId)).FirstOrDefault();
-                int gradeCount = 0;
-                double gradeSum = 0;
-                foreach (CottageReview ctgReview in ctgReviews)
-                {
-                    if(ctg.Id==Guid.Parse(ctgReview.CottageId))
-                    {
-                        gradeCount++;
-                        gradeSum += Convert.ToDouble(ctgReview.Grade);
-                    }
-                }
-
-                ctg.AverageGrade = Math.Round(gradeSum / gradeCount,2);
-                ctg.GradeCount = gradeCount;
-
-                _context.Update(ctg);
-                await _context.SaveChangesAsync();
 
 
 

@@ -106,6 +106,20 @@ namespace Hooking.Controllers
             return View(adventureAppeal);
         }
 
+        private async Task<bool> adventureAppealExists(AdventureAppeal adventureAppeal, string adventureId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            foreach (AdventureAppeal advAppeal in _context.AdventureAppeal.ToList())
+            {
+                var appealUser = _context.Users.Where(m => m.Email == adventureAppeal.UserEmail);
+                if (user.Email == adventureAppeal.UserEmail && adventureAppeal.AdventureId == adventureId)
+                    return true;
+            }
+
+            return false;
+        }
+
         // GET: AdventureAppeals/Create
         public IActionResult Create(Guid id, String instructorId)
         {
@@ -131,8 +145,12 @@ namespace Hooking.Controllers
                 adventureAppeal.AdventureId = id.ToString();
                 var user = await _userManager.GetUserAsync(User);
                 adventureAppeal.UserEmail = user.Email;
-                _context.Add(adventureAppeal);
-                await _context.SaveChangesAsync();
+                if (!(await adventureAppealExists(adventureAppeal, adventureAppeal.AdventureId)))
+                {
+                    _context.Add(adventureAppeal);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction("Index","Instructors");
             }
             return View(adventureAppeal);
