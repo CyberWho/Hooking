@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Hooking.Models;
+using Hooking.Models.DTO;
 
 namespace Hooking.Data
 {
@@ -79,6 +80,7 @@ namespace Hooking.Data
         public DbSet<Hooking.Models.FilteredCottages> FilteredCottages { get; set; }
         public DbSet<Hooking.Models.FilteredBoats> FilteredBoats { get; set; }
         public DbSet<Hooking.Models.FilteredInstructors> FilteredInstructors { get; set; }
+        public DbSet<Hooking.Models.DTO.CottageReservationData> CottageReservationData { get; set; }
         
     }
 }

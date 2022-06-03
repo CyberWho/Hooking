@@ -11,11 +11,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.IO;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Hooking.Controllers
 {
+
     public class CottageReservationsController : Controller
     {
+        public static object LockObjectState = new object();
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -397,27 +401,7 @@ namespace Hooking.Controllers
             return true;
         }
 
-        private bool canFinishReservation(CottageReservation cottageReservation)
-        {
-            //cottage reservations in local buffer
-            var localCottageReservations = _context.CottageReservation.Local;
-            //ako 2 klijenta pokusaju rezervaciju na istu vikendicu u isto vreme provericemo da li u lokalnom
-            //bufferu postoji ta rezervacija u to vreme i ako postoji jedan od njih nece moci da rezervise
-            foreach (var localCottageReservation in localCottageReservations)
-            {
-                System.Diagnostics.Debug.WriteLine("prolaz u lokalu");
 
-                if (cottageReservation.CottageId == localCottageReservation.CottageId)
-                {
-                    if (!isAvailable(cottageReservation.StartDate, cottageReservation.EndDate, localCottageReservation.StartDate, localCottageReservation.EndDate))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return true;
-        }
 
         private bool isAlreadyReserved (CottageReservation cottageReservation)
         {
@@ -435,60 +419,64 @@ namespace Hooking.Controllers
             }
             return false;
         }
-        
 
+ 
         [HttpGet("/CottageReservations/CottageReservationFinished")]
         public async Task<IActionResult> CottageReservationFinished(String CottageId,DateTime StartDate,DateTime EndDate,Double Price,int MaxPersonCount)
         {
-            CottageReservation cottageReservation = new CottageReservation();
-           // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
-            
+
+            // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
+            var user = await _userManager.GetUserAsync(User);
+
             if (ModelState.IsValid)
             {
-                cottageReservation.Id = Guid.NewGuid();
+
+                CottageReservation cottageReservation = new CottageReservation();
+                    cottageReservation.Id = Guid.NewGuid();
                 cottageReservation.IsReviewed = false;
                 cottageReservation.CottageId = CottageId;
                 cottageReservation.StartDate = StartDate;
                 cottageReservation.EndDate = EndDate;
                 cottageReservation.Price = Price;
                 cottageReservation.MaxPersonCount = MaxPersonCount;
-                var user = await _userManager.GetUserAsync(User);
                 cottageReservation.UserDetailsId = user.Id;
-                if(isAlreadyReserved(cottageReservation))
-                {
-                    System.Diagnostics.Debug.WriteLine("spreman da redirektujem");
 
-                    return RedirectToAction("CottageAlreadyReserved", "Home");
-                }
-                if (canFinishReservation(cottageReservation))
+                lock (LockObjectState)
                 {
+                    Debug.WriteLine("usao u lock");
+                    if (isAlreadyReserved(cottageReservation))
+                    {
+                        return RedirectToAction("CottageAlreadyReserved", "Home");
+                    }
                     _context.Add(cottageReservation);
-                    await _context.SaveChangesAsync();
-                    CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
-                    cottageNotAvailablePeriod.Id = Guid.NewGuid();
-                    cottageNotAvailablePeriod.CottageId = CottageId;
-                    cottageNotAvailablePeriod.StartTime = StartDate;
-                    cottageNotAvailablePeriod.EndTime = EndDate;
-
-                    _context.Add(cottageNotAvailablePeriod);
-                    await _context.SaveChangesAsync();
-
-                    Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(CottageId)).FirstOrDefault();
-                    await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali vikendicu", $"Uspesno ste rezervisali vikendicu '{ctg.Name}' .");
-                    return RedirectToAction("Index", "Cottages");
+                    _context.SaveChanges();
                 }
-                else
-                {
-                    return RedirectToAction("ConcurrencyError", "Home");
-
-                }
+                Debug.WriteLine("sacuvao ssam rezervaciju vikendice");
 
 
 
-                // return View(cottageReservation);
-                //return  RedirectToPage("CottageReservationSuccessful", "CottageReservations");
-                //  return RedirectToPage("/Cottages/Index");
-                //  return RedirectToPage("/Views/CottageReservations/CottageReservationSuccessful");
+
+
+                //kreiramo period zauzetosti vikendice
+
+                CottageNotAvailablePeriod cottageNotAvailablePeriod = new CottageNotAvailablePeriod();
+                cottageNotAvailablePeriod.Id = Guid.NewGuid();
+                cottageNotAvailablePeriod.CottageId = CottageId;
+                cottageNotAvailablePeriod.StartTime = StartDate;
+                cottageNotAvailablePeriod.EndTime = EndDate;
+
+                _context.Add(cottageNotAvailablePeriod);
+                await _context.SaveChangesAsync();
+                Debug.WriteLine("sacuvao ssam cottage not available period");
+
+                //kreiramo dummy cottage rezervaciju
+
+
+
+                //saljemo mejl
+                Cottage ctg = _context.Cottage.Where(m => m.Id == Guid.Parse(CottageId)).FirstOrDefault();
+                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali vikendicu", $"Uspesno ste rezervisali vikendicu '{ctg.Name}' .");
+                return RedirectToAction("Index", "Cottages");
 
             }
 

@@ -428,11 +428,7 @@ namespace Hooking.Controllers
 
         public async Task<IActionResult> BoatsFiltered(DateTime StartDate, DateTime EndDate, double price = 0, string City = "", double AverageGrade = 0, int MaxPersonCount = 0)
         {
-            System.Diagnostics.Debug.WriteLine("startdate: " + StartDate.ToString());
-            System.Diagnostics.Debug.WriteLine("enddate: " + EndDate.ToString());
-            System.Diagnostics.Debug.WriteLine("cena: " + price.ToString());
-            //    System.Diagnostics.Debug.WriteLine("grad: " + City.ToString());/
-            System.Diagnostics.Debug.WriteLine("prosecna ocena: " + AverageGrade.ToString());
+
 
             List<Boat> tempBoats = await _context.Boat.ToListAsync();
 
@@ -505,8 +501,7 @@ namespace Hooking.Controllers
             var boatId = boat.Id.ToString();
             var boatOwner = _context.BoatOwner.Where(m => m.Id == Guid.Parse(boat.BoatOwnerId)).FirstOrDefault<BoatOwner>();
 
-            System.Diagnostics.Debug.WriteLine("id boat ownera" + boatOwner.Id.ToString());
-            System.Diagnostics.Debug.WriteLine("ud id boat ownera" + boatOwner.UserDetailsId.ToString());
+
 
             var boatOwnerUser = _context.UserDetails.Where(m => m.Id == Guid.Parse(boatOwner.UserDetailsId)).FirstOrDefault<UserDetails>();
 
