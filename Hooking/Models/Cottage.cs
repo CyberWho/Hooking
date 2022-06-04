@@ -33,6 +33,8 @@ namespace Hooking.Models
         public double WeekendPrice { get; set; }
         public string CottageOwnerId { get; set; }
 
+        public bool? hasSubscribers { get; set; }
+
         public Cottage()
         {
 

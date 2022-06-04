@@ -11,11 +11,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.IO;
 using Newtonsoft.Json;
+using System.Data;
+using System.Diagnostics;
 
 namespace Hooking.Controllers
 {
+
     public class BoatReservationsController : Controller
     {
+        public static object LockObjectState = new object();
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -364,24 +369,7 @@ namespace Hooking.Controllers
             return true;
         }
 
-        private bool canFinishReservation(BoatReservation boatReservation)
-        {
-            var localBoatReservations = _context.BoatReservation.Local;
 
-
-            foreach (var localBoatReservation in localBoatReservations)
-            {
-                if (boatReservation.BoatId == localBoatReservation.BoatId)
-                {
-
-                    if (!isAvailable(boatReservation.StartDate, boatReservation.EndDate, localBoatReservation.StartDate, localBoatReservation.EndDate))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
         private bool isAlreadyReserved(BoatReservation boatReservation)
         {
             List<BoatReservation> btReservations = _context.BoatReservation.ToList();
@@ -402,8 +390,11 @@ namespace Hooking.Controllers
         [HttpGet("/BoatReservations/BoatReservationFinished")]
         public async Task<IActionResult> BoatReservationFinished(String BoatId, DateTime StartDate, DateTime EndDate, Double Price, int PersonCount)
         {
-            BoatReservation boatReservation = new BoatReservation();
+
+
+                BoatReservation boatReservation = new BoatReservation();
             // System.Diagnostics.Debug.WriteLine(CottageId.ToString());
+            var user = await _userManager.GetUserAsync(User);
 
             Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(BoatId)).FirstOrDefault();
 
@@ -416,38 +407,47 @@ namespace Hooking.Controllers
                 boatReservation.EndDate = EndDate;
                 boatReservation.Price = Price;
                 boatReservation.PersonCount = PersonCount;
-                var user = await _userManager.GetUserAsync(User);
-                boatReservation.UserDetailsId = user.Id;
-                if(isAlreadyReserved(boatReservation))
+                boatReservation.UserDetailsId = user.Id.ToString();
+
+                lock (LockObjectState)
                 {
-                    return RedirectToAction("BoatAlreadyReserved", "Home");
-                }
-                if (canFinishReservation(boatReservation))
-                {
+                    Debug.WriteLine("usao u lock");
+                    if (isAlreadyReserved(boatReservation))
+                    {
+                        return RedirectToAction("BoatAlreadyReserved", "Home");
+                    }
                     _context.Add(boatReservation);
-                    await _context.SaveChangesAsync();
-                    BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
-                    boatNotAvailablePeriod.Id = Guid.NewGuid();
-                    boatNotAvailablePeriod.BoatId = BoatId;
-                    boatNotAvailablePeriod.StartTime = StartDate;
-                    boatNotAvailablePeriod.EndTime = EndDate;
-                    _context.Add(boatNotAvailablePeriod);
-                    await _context.SaveChangesAsync();
-                    await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali brod", $"Uspesno ste rezervisali brod '{bt.Name}' .");
-
-                    //     return RedirectToAction(nameof(Index));
-                    return RedirectToAction("Index", "Boats");
-                }
-                else
-                {
-                    return RedirectToAction("ConcurrencyError", "Home");
+                    _context.SaveChanges();
                 }
 
+                Debug.WriteLine("sacuvao ssam rezervaciju broda");
 
-                //   return RedirectToPage("/Cottages/Index");
-            }
+                BoatNotAvailablePeriod boatNotAvailablePeriod = new BoatNotAvailablePeriod();
+                boatNotAvailablePeriod.Id = Guid.NewGuid();
+                boatNotAvailablePeriod.BoatId = BoatId;
+                boatNotAvailablePeriod.StartTime = StartDate;
+                boatNotAvailablePeriod.EndTime = EndDate;
+                _context.Add(boatNotAvailablePeriod);
+                await _context.SaveChangesAsync();
+                Debug.WriteLine("sacuvao ssam boat not available period");
 
-            return View(boatReservation);
+                await _emailSender.SendEmailAsync(user.Email.ToString(), "Uspesno ste rezervisali brod", $"Uspesno ste rezervisali brod '{bt.Name}' .");
+
+
+                        //   transaction.Commit();
+                return RedirectToAction("Index", "Boats");
+                        
+
+             }
+
+
+
+
+
+                  return View(boatReservation);
+          //  }
+
+
         }
     }
 }

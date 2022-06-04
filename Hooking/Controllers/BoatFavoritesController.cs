@@ -82,8 +82,24 @@ namespace Hooking.Controllers
                     var user = await _userManager.GetUserAsync(User);
                     System.Diagnostics.Debug.WriteLine(user.Id);
                     boatFavorites.UserDetailsId = user.Id.ToString();
-                    _context.Add(boatFavorites);
-                    await _context.SaveChangesAsync();
+
+                    Boat bt = _context.Boat.Where(m => m.Id == Guid.Parse(boatFavorites.BoatId)).FirstOrDefault();
+                    bt.hasSubscribers = true;
+                    try
+                    {
+                        _context.Update(bt);
+                        await _context.SaveChangesAsync();
+                        _context.Add(boatFavorites);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        System.Diagnostics.Debug.WriteLine("bacam exception");
+                        return RedirectToAction("ConcurrencyError", "Home");
+
+                    }
+
+
                 }
             }
             return RedirectToAction("Index", "Boats");

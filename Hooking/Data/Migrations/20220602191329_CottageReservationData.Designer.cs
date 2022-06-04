@@ -4,14 +4,16 @@ using Hooking.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hooking.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602191329_CottageReservationData")]
+    partial class CottageReservationData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,9 +61,6 @@ namespace Hooking.Data.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
-
-                    b.Property<bool?>("hasSubscribers")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -516,9 +515,6 @@ namespace Hooking.Data.Migrations
 
                     b.Property<double>("WeekendPrice")
                         .HasColumnType("float");
-
-                    b.Property<bool?>("hasSubscribers")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -1042,9 +1038,6 @@ namespace Hooking.Data.Migrations
 
                     b.Property<double>("WeekendPrice")
                         .HasColumnType("float");
-
-                    b.Property<bool?>("hasSubscribers")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
