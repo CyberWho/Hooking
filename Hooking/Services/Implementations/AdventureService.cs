@@ -293,7 +293,7 @@ namespace Hooking.Services.Implementations
             _context.SaveChanges();
         }
 
-        public void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser)
+        public bool Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser)
         {
             favorite.Id = Guid.NewGuid();
             favorite.AdventureId = adventureId.ToString();
@@ -302,8 +302,23 @@ namespace Hooking.Services.Implementations
 
             favorite.UserDetailsId = userDetails.IdentityUserId.ToString();
 
-            _context.Add(favorite);
-            _context.SaveChanges();
+            Adventure adventure = _context.Adventure.Where(m => m.Id == adventureId).FirstOrDefault();
+            adventure.hasSubscribers = true;
+            try
+            {
+                _context.Update(adventure);
+                _context.SaveChanges();
+
+                _context.Add(favorite);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                System.Diagnostics.Debug.WriteLine("bacam exception");
+                return false;
+            }
+
         }
 
         public IEnumerable<UserDetails> GetAllUserDetails()

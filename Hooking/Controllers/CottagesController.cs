@@ -398,7 +398,7 @@ namespace Hooking.Controllers
             var cottage = await _context.Cottage.FindAsync(id);
             var cottageId = cottage.Id.ToString();
             List<CottageSpecialOfferReservation> cottageSpecialOfferReservationsFull = new List<CottageSpecialOfferReservation>();
-            List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageId).ToListAsync<CottageReservation>();
+            List<CottageReservation> cottageReservations = await _context.CottageReservation.Where(m => m.CottageId == cottageId && m.StartDate>DateTime.Now).ToListAsync<CottageReservation>();
             List<CottageSpecialOfferReservation> cottageSpecialOfferReservations = await _context.CottageSpecialOfferReservation.ToListAsync<CottageSpecialOfferReservation>();
             foreach(var cottageSpecialOfferReservation in cottageSpecialOfferReservations)
             {

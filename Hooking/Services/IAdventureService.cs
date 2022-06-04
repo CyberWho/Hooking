@@ -25,7 +25,7 @@ namespace Hooking.Services
         bool AdventureEditable(Guid adventureId);
         AdventureDTO GetAdventureDto(Guid adventureId);
         void Create(AdventureDTO dto);
-        void Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser);
+        bool Subscribe(Guid adventureId, AdventureFavorites favorite, IdentityUser identityUser);
         IEnumerable<UserDetails> GetAllUserDetails();
         IEnumerable<AdventureRealisation> GetAdventureRealiastions(Guid id);
         bool AdventureExists(Guid id);

@@ -294,6 +294,7 @@ namespace Hooking.Controllers
             {
                 _context.Adventure.Remove(adventure);
                 AdventuresAdventureRules rules = _context.AdventuresAdventureRules.FirstOrDefault(r => r.AdventureId == adventureId);
+
                 _context.AdventuresAdventureRules.Remove(rules);
                 await _context.SaveChangesAsync();
             }

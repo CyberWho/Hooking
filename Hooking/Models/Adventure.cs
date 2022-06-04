@@ -31,6 +31,9 @@ namespace Hooking.Models
         [DisplayName("Cena")]
         public int Price { get; set; }
 
+        public bool? hasSubscribers { get; set; }
+
+
         public Adventure(){}
         public Adventure(AdventureDTO dto)
         {

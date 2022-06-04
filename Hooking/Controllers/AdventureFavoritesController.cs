@@ -71,8 +71,13 @@ namespace Hooking.Controllers
                 if (ModelState.IsValid)
                 {
                     IdentityUser iUser = await _userManager.GetUserAsync(User);
-                    _adventureService.Subscribe(id, adventureFavorites, iUser);
-                    return RedirectToAction("Index", "Instructors");
+                    bool isSubscribed = _adventureService.Subscribe(id, adventureFavorites, iUser);
+                    if(isSubscribed)
+                    {
+                        return RedirectToAction("Index", "Instructors");
+                    }
+                    System.Diagnostics.Debug.WriteLine("bacam exception");
+                    return RedirectToAction("ConcurrencyError", "Home");
                 }
             }
 
