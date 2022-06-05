@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using NUnit.Framework;
 using Microsoft.Extensions.Logging;
@@ -17,30 +17,36 @@ using Hooking;
 using Hooking.Models.DTO;
 using System.Web.Http;
 using SeleniumExtras.WaitHelpers;
-using OpenQA.Selenium.Edge;
+using Hooking.Models;
 
 namespace IntegrationTests
 {
-    public class Tests
+    class IntegrationTest7
     {
         private IWebDriver _webDriver;
         private WebDriverWait _wait;
         private int _timeoutInSeconds = 30;
-        public LoginDTO loginDTO;
         [SetUp]
-        public void Setup()
+        public void SetUp()
         {
-            
-            _webDriver = new EdgeDriver("C://");
+            _webDriver = new ChromeDriver("C:\\chromedriver_win32\\");
             _wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(_timeoutInSeconds));
         }
-        #region Integration Test
-        public bool LogInCottageOwner(IWebDriver webDriver, WebDriverWait wait, LoginDTO loginDTO)
+        [Test]
+        public void  Test()
+        {
+            LoginDTO loginDTO = new LoginDTO("zenky1337@gmail.com", "Lazar1231.");
+
+            var results = LogInUser(_webDriver, _wait, loginDTO);
+            Assert.IsTrue(results);
+        }
+
+        private bool LogInUser(IWebDriver webDriver, WebDriverWait wait, LoginDTO loginDTO)
         {
             bool result = false;
             try
             {
-                webDriver.Navigate().GoToUrl("https://localhost:44306");
+                webDriver.Navigate().GoToUrl("https://localhost:44306/Identity/Account/Login");
                 webDriver.Manage().Window.Maximize();
                 IWebElement webElement;
                 // Username
@@ -57,6 +63,7 @@ namespace IntegrationTests
 
                 webDriver.FindElement(By.Id("submit_login")).Click();
 
+
                 wait.Until(ExpectedConditions.ElementExists(By.Id("home")));
                 webElement = webDriver.FindElement(By.Id("home"));
                 webElement.Click();
@@ -69,12 +76,10 @@ namespace IntegrationTests
                 webElement = webDriver.FindElement(By.Id("boats"));
                 webElement.Click();
 
-                wait.Until(ExpectedConditions.ElementExists(By.Id("adventures")));
-                webElement = webDriver.FindElement(By.Id("adventures"));
-                webElement.Click();
-
                 wait.Until(ExpectedConditions.ElementExists(By.Id("instructors")));
                 webElement = webDriver.FindElement(By.Id("instructors"));
+                webElement.Click();
+
 
                 if (webElement == null)
                 {
@@ -88,18 +93,6 @@ namespace IntegrationTests
                 Console.WriteLine(ex.Source + " - " + ex.Message + " - " + ex.StackTrace);
                 return result;
             }
-            
         }
-        #endregion
-
-        [Test]
-        public void Test1()
-        {
-            LoginDTO loginDTO = new LoginDTO("sandramitro99@gmail.com", "Aleks99!");
-            var results = LogInCottageOwner(_webDriver, _wait, loginDTO);
-            Assert.IsTrue(results);
-
-        }
-        
     }
 }
