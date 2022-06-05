@@ -104,6 +104,7 @@ namespace Hooking.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
+
             foreach (CottageAppeal ctgAppeal in _context.CottageAppeal.ToList())
             {
                 var appealUser = _context.Users.Where(m => m.Email == ctgAppeal.UserEmail);
@@ -133,8 +134,9 @@ namespace Hooking.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id,[Bind("CottageId,AppealContent,Id,RowVersion")] CottageAppeal cottageAppeal)
         {
-          
 
+            Debug.WriteLine("cottageId je " + id.ToString());
+       //     Debug.WriteLine("prosledjeni email je" + cottageAppeal.UserEmail.ToString());
             if (ModelState.IsValid)
             {
                 cottageAppeal.Id = Guid.NewGuid();

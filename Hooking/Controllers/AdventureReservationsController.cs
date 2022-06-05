@@ -278,7 +278,7 @@ namespace Hooking.Controllers
             return View(ins);
         }
 
-        private string adventureRealisationExists(AdventureRealisation adventureRealisation)
+        public string adventureRealisationExists(AdventureRealisation adventureRealisation)
         {
 
             Debug.WriteLine("prosledjeni id avanture " + adventureRealisation.AdventureId.ToString());
@@ -299,7 +299,6 @@ namespace Hooking.Controllers
                     return advRealisation.Id.ToString();
                      }
             }
-            Debug.WriteLine("vracam null");
             return "";
         }
 
