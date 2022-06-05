@@ -306,7 +306,7 @@ namespace Hooking.Services.Implementations
             adventure.hasSubscribers = true;
             try
             {
-                _context.Update(adventure);
+                _context.Adventure.Update(adventure);
                 _context.SaveChanges();
 
                 _context.Add(favorite);

@@ -89,7 +89,7 @@ namespace Hooking.Controllers
                     ctg.hasSubscribers = true;
                     try
                     {
-                        _context.Update(ctg);
+                        _context.Cottage.Update(ctg);
                         await _context.SaveChangesAsync();
                         _context.Add(cottageFavorites);
                         await _context.SaveChangesAsync();

@@ -87,7 +87,7 @@ namespace Hooking.Controllers
                     bt.hasSubscribers = true;
                     try
                     {
-                        _context.Update(bt);
+                        _context.Boat.Update(bt);
                         await _context.SaveChangesAsync();
                         _context.Add(boatFavorites);
                         await _context.SaveChangesAsync();
@@ -96,7 +96,6 @@ namespace Hooking.Controllers
                     {
                         System.Diagnostics.Debug.WriteLine("bacam exception");
                         return RedirectToAction("ConcurrencyError", "Home");
-
                     }
 
 
