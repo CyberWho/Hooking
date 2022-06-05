@@ -443,7 +443,6 @@ namespace Hooking.Controllers
 
                 lock (LockObjectState)
                 {
-                    Debug.WriteLine("usao u lock");
                     if (isAlreadyReserved(cottageReservation))
                     {
                         return RedirectToAction("CottageAlreadyReserved", "Home");

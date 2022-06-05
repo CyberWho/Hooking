@@ -89,15 +89,14 @@ namespace Hooking.Controllers
                     ctg.hasSubscribers = true;
                     try
                     {
-
+                        _context.Update(ctg);
+                        await _context.SaveChangesAsync();
                         _context.Add(cottageFavorites);
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        System.Diagnostics.Debug.WriteLine("bacam exception");
                         return RedirectToAction("ConcurrencyError", "Home");
-
                     }
 
                 }
