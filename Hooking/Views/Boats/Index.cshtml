@@ -152,10 +152,11 @@
                 <td>
 
                     <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
-                    <a asp-action="Create" asp-controller="BoatFavorites" asp-route-id="@item.Id">Pretplati se</a>
 
                     @if (_signInManager.IsSignedIn(User))
                     {
+                        <a asp-action="Create" asp-controller="BoatFavorites" asp-route-id="@item.Id">Pretplati se</a>
+
                         @if (User.IsInRole("Admin"))
                         {
                             <a asp-action="Delete" asp-route-id="@item.Id"> | Obriši</a>

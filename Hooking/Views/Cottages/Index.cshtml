@@ -137,19 +137,21 @@
                     <td>
 
                         <a asp-action="Details" asp-route-id="@item.Id">Prikaži još</a>
-                        @if (!User.IsInRole("Admin"))
-                        {
-                            <a asp-action="Create" asp-controller="CottageFavorites" asp-route-id="@item.Id"> | Pretplati se</a>
-                        }
                         @if (_signInManager.IsSignedIn(User))
                         {
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-action="Delete" asp-controller="Cottages" asp-route-id="@item.Id"> | Obriši</a>
-                            }
+                                @if (!User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Create" asp-controller="CottageFavorites" asp-route-id="@item.Id"> | Pretplati se</a>
+                                }
+                                @if (_signInManager.IsSignedIn(User))
+                                {
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="Delete" asp-controller="Cottages" asp-route-id="@item.Id"> | Obriši</a>
+                                    }
+                                }
                         }
-
-                    </td>
+                            </td>
                 </tr>
             }
         </tbody>
